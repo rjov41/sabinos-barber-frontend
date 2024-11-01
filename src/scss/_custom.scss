@@ -6,7 +6,7 @@
 // custom tweaks for scrollbar styling (wip)
 @import "scrollbar";
 
- // custom calendar today cell color
+// custom calendar today cell color
 .calendar-cell.today {
   --cui-calendar-cell-today-color: var(--cui-info) !important;
 }
@@ -14,4 +14,38 @@
 // custom select week cursor pointer
 .select-week .calendar-row.current {
   cursor: pointer;
+}
+
+.sidebar {
+  a.nav-link {
+    font-size: 0.9375rem;
+  }
+}
+
+[data-coreui-theme="light"] {
+  .header.header-sticky {
+    // $header-bg: #FFFFFF;
+    background-color: #f6f7fb;
+  }
+
+  .body {
+    // $header-bg: #FFFFFF;
+    // background-color: #F6F7FB;
+  }
+
+  .card {
+    // $header-bg: #FFFFFF;
+    background-color: #ffffff;
+  }
+  .card-header {
+    // $header-bg: #FFFFFF;
+    background-color: transparent;
+  }
+}
+
+[data-coreui-theme="dark"] {
+  .card-header {
+    // $header-bg: #FFFFFF;
+    background-color: transparent;
+  }
 }
