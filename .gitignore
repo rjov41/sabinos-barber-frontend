@@ -402,3 +402,6 @@ FodyWeavers.xsd
 .angular
 .angular/*
 .angular/
+
+package-lock.json
+.github
