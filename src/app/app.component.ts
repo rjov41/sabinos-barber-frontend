@@ -21,7 +21,7 @@ import { environment } from 'src/environments/environment';
   imports: [RouterOutlet],
 })
 export class AppComponent implements OnInit {
-  title = 'CoreUI Angular Admin Template';
+  title = 'Sabino´s App';
 
   readonly #destroyRef: DestroyRef = inject(DestroyRef);
   readonly #activatedRoute: ActivatedRoute = inject(ActivatedRoute);
