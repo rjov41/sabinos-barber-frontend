@@ -404,4 +404,5 @@ FodyWeavers.xsd
 .angular/
 
 package-lock.json
-.github
+.github/
+dist/
