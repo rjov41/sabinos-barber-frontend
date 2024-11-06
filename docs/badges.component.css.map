@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/documentacion/notifications/badges/badges.component.scss"],
+  "sourcesContent": [":host-context(.dark-theme) ::ng-deep c-badge {\r\n  &.bg-light:not([class*=\"dark:\"]) {\r\n    color: var(--cui-body-bg);\r\n  }\r\n\r\n  &.bg-light-gradient:not([class*=\"dark:\"]) {\r\n    color: var(--cui-body-bg);\r\n  }\r\n}\r\n\r\n"],
+  "mappings": ";AACE,cAAA,CAAA,YAAA,UAAA,OAAA,CAAA,QAAA,KAAA,CAAA;AACE,SAAA,IAAA;;AAGF,cAAA,CAAA,YAAA,UAAA,OAAA,CAAA,iBAAA,KAAA,CAAA;AACE,SAAA,IAAA;;",
+  "names": []
+}

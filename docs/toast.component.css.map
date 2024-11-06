@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/documentacion/notifications/toasters/toast-simple/toast.component.scss"],
+  "sourcesContent": [":host {\n  display: block;\n  overflow: hidden;\n}\n"],
+  "mappings": ";AAAA;AACE,WAAA;AACA,YAAA;;",
+  "names": []
+}

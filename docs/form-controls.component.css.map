@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/documentacion/forms/form-controls/form-controls.component.scss"],
+  "sourcesContent": [":host {\n  #exampleColorInput {\n    min-width: 2.5rem;\n  }\n  .color-box {\n    min-width: 2rem;\n    min-height: 2rem;\n  }\n}\n"],
+  "mappings": ";AACE,MAAA,CAAA;AACE,aAAA;;AAEF,MAAA,CAAA;AACE,aAAA;AACA,cAAA;;",
+  "names": []
+}
