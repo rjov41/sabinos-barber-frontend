@@ -39,7 +39,7 @@ Sabinos es una aplicación web desarrollada con **Angular 18**, diseñada como u
 
 5. **Acceder a la aplicación:**
    ```bash
-    Abre tu navegador y dirígete a http://localhost:4200/.
+    http://localhost:4200/.
    ```
 
 
