@@ -8,7 +8,10 @@ import {
   coerceElement,
   coerceNumberProperty,
   normalizePassiveListenerOptions
-} from "./chunk-SKHUCUEK.js";
+} from "./chunk-HQVF5EUR.js";
+import {
+  IconDirective
+} from "./chunk-7PA7IDKM.js";
 import {
   ActivatedRoute,
   NavigationEnd,
@@ -33,9 +36,6 @@ import {
   trigger,
   useAnimation
 } from "./chunk-OBOGUS4K.js";
-import {
-  IconDirective
-} from "./chunk-7PA7IDKM.js";
 import "./chunk-MYPAVRSF.js";
 import {
   AsyncPipe,

@@ -1,5 +1,4 @@
-export const logo = [
-  `<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1105px" height="184px" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g><path style="opacity:1" fill="#7f7741" d="M 226.5,2.5 C 230.82,1.83419 235.32,1.50086 240,1.5C 244.886,1.50727 249.386,2.17393 253.5,3.5C 244.584,2.52895 235.584,2.19561 226.5,2.5 Z"/></g>
@@ -173,5 +172,3 @@ export const logo = [
 <g><path style="opacity:1" fill="#7f7734" d="M 565.5,177.5 C 571.295,178.83 577.462,179.496 584,179.5C 590.538,179.496 596.705,178.83 602.5,177.5C 603.404,178.209 603.737,179.209 603.5,180.5C 590.5,180.5 577.5,180.5 564.5,180.5C 564.263,179.209 564.596,178.209 565.5,177.5 Z"/></g>
 <g><path style="opacity:1" fill="#cdc46c" d="M 545.5,176.5 C 545.047,177.458 544.381,178.292 543.5,179C 539.843,180.822 536.176,182.322 532.5,183.5C 530.167,183.5 527.833,183.5 525.5,183.5C 522.571,182.462 519.571,181.296 516.5,180C 515.619,179.292 514.953,178.458 514.5,177.5C 522.91,181.843 531.577,182.343 540.5,179C 539.833,178.667 539.167,178.333 538.5,178C 540.594,176.648 542.927,176.148 545.5,176.5 Z"/></g>
 </svg>
-`
-];

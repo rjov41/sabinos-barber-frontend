@@ -401,4 +401,4 @@ FodyWeavers.xsd
 # Angular
 .angular
 .angular/*
-
+.angular/

@@ -16,7 +16,10 @@ import {
 } from '@coreui/angular';
 
 import { DefaultFooterComponent, DefaultHeaderComponent } from './';
-import { navItems } from './_nav';
+import { navItems } from './navs/_nav';
+import { navItemsProject } from './navs/_nav-project';
+import { environment } from '../../../environments/environment';
+
 
 function isOverflown(element: HTMLElement) {
   return (
@@ -49,7 +52,8 @@ function isOverflown(element: HTMLElement) {
   ]
 })
 export class DefaultLayoutComponent {
-  public navItems = navItems;
+  public navItems = environment.production ? [...navItemsProject]: [...navItemsProject, ...navItems ];
+  
 
   onScrollbarUpdate($event: any) {
     // if ($event.verticalUsed) {
