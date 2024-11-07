@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/pages/pages.routes.ts"],
+  "sourcesContent": ["import { Routes } from '@angular/router';\r\n\r\nexport const routesPages: Routes = [\r\n  {\r\n    path: '',\r\n    children: [\r\n      {\r\n        path: '',\r\n        redirectTo: '',\r\n        pathMatch: 'full',\r\n      },\r\n      {\r\n        path: 'productos',\r\n        loadChildren: () =>\r\n          import('./producto/productos.routes').then((m) => m.routesProducto),\r\n        data: {\r\n          title: 'Productos',\r\n        },\r\n      },\r\n    ],\r\n  },\r\n];\r\n"],
+  "mappings": ";;;AAEO,IAAM,cAAsB;EACjC;IACE,MAAM;IACN,UAAU;MACR;QACE,MAAM;QACN,YAAY;QACZ,WAAW;;MAEb;QACE,MAAM;QACN,cAAc,MACZ,OAAO,gCAA6B,EAAE,KAAK,CAAC,MAAM,EAAE,cAAc;QACpE,MAAM;UACJ,OAAO;;;;;;",
+  "names": []
+}

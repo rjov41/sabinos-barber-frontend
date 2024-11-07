@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/documentacion/buttons/routes.ts"],
-  "sourcesContent": ["import { Routes } from '@angular/router';\n\nexport const routes: Routes = [\n  {\n    path: '',\n    data: {\n      title: 'Buttons'\n    },\n    children: [\n      {\n        path: '',\n        redirectTo: 'buttons',\n        pathMatch: 'full'\n      },\n      {\n        path: 'buttons',\n        loadComponent: () => import('./buttons/buttons.component').then(m => m.ButtonsComponent),\n        data: {\n          title: 'Buttons'\n        }\n      },\n      {\n        path: 'button-groups',\n        loadComponent: () => import('./button-groups/button-groups.component').then(m => m.ButtonGroupsComponent),\n        data: {\n          title: 'Button groups'\n        }\n      },\n      {\n        path: 'dropdowns',\n        loadComponent: () => import('./dropdowns/dropdowns.component').then(m => m.DropdownsComponent),\n        data: {\n          title: 'Dropdowns'\n        }\n      },\n    ]\n  }\n];\n\n"],
-  "mappings": ";;;AAEO,IAAM,SAAiB;EAC5B;IACE,MAAM;IACN,MAAM;MACJ,OAAO;;IAET,UAAU;MACR;QACE,MAAM;QACN,YAAY;QACZ,WAAW;;MAEb;QACE,MAAM;QACN,eAAe,MAAM,OAAO,iCAA6B,EAAE,KAAK,OAAK,EAAE,gBAAgB;QACvF,MAAM;UACJ,OAAO;;;MAGX;QACE,MAAM;QACN,eAAe,MAAM,OAAO,uCAAyC,EAAE,KAAK,OAAK,EAAE,qBAAqB;QACxG,MAAM;UACJ,OAAO;;;MAGX;QACE,MAAM;QACN,eAAe,MAAM,OAAO,mCAAiC,EAAE,KAAK,OAAK,EAAE,kBAAkB;QAC7F,MAAM;UACJ,OAAO;;;;;;",
-  "names": []
-}

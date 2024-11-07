@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/pages/producto/producto-insertar/producto-insertar.component.ts", "src/app/pages/producto/producto-insertar/producto-insertar.component.html"],
+  "sourcesContent": ["import { Component } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-producto-insertar',\r\n  standalone: true,\r\n  imports: [],\r\n  templateUrl: './producto-insertar.component.html',\r\n  styleUrl: './producto-insertar.component.scss'\r\n})\r\nexport class ProductoInsertarComponent {\r\n\r\n}\r\n", "<p>producto-insertar works!</p>\r\n"],
+  "mappings": ";;;;;;;;;;;AASM,IAAO,6BAAP,MAAO,2BAAyB;;;mCAAzB,4BAAyB;AAAA;2FAAzB,4BAAyB,WAAA,CAAA,CAAA,uBAAA,CAAA,GAAA,YAAA,MAAA,UAAA,CAAA,6BAAA,GAAA,OAAA,GAAA,MAAA,GAAA,UAAA,SAAA,mCAAA,IAAA,KAAA;AAAA,MAAA,KAAA,GAAA;ACTtC,IAAA,yBAAA,GAAA,GAAA;AAAG,IAAA,iBAAA,GAAA,0BAAA;AAAwB,IAAA,uBAAA;;;ADSrB,IAAO,4BAAP;;6EAAO,2BAAyB,EAAA,WAAA,6BAAA,UAAA,gFAAA,YAAA,GAAA,CAAA;AAAA,GAAA;",
+  "names": []
+}

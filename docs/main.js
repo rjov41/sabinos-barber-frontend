@@ -41,12 +41,15 @@ import {
   cilContrast,
   cilCreditCard,
   cilCursor,
+  cilCut,
   cilDescription,
   cilDollar,
   cilDrop,
   cilEnvelopeClosed,
   cilEnvelopeOpen,
+  cilFax,
   cilFile,
+  cilFilter,
   cilGrid,
   cilHome,
   cilInbox,
@@ -94,26 +97,19 @@ import {
   cilUserFemale,
   cilUserFollow,
   cilUserUnfollow
-} from "./chunk-BDAW5CLK.js";
+} from "./chunk-UAVO64J3.js";
 import {
-  ANIMATION_MODULE_TYPE,
   AUTO_STYLE,
   ActivatedRoute,
   AnimationGroupPlayer,
   AnimationMetadataType,
   AvatarComponent,
   BadgeComponent,
-  BehaviorSubject,
+  BreadcrumbRouterComponent,
   BrowserModule,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
   ColorModeService,
-  Component,
   ContainerComponent,
-  ContentChild,
   DOCUMENT,
-  DestroyRef,
-  Directive,
   DomRendererFactory2,
   DropdownComponent,
   DropdownDividerDirective,
@@ -122,37 +118,20 @@ import {
   DropdownMenuDirective,
   DropdownModule,
   DropdownToggleDirective,
-  EMPTY,
-  ElementRef,
-  EventEmitter,
   FooterComponent,
   HeaderComponent,
   HeaderNavComponent,
   HeaderTogglerDirective,
   IconDirective,
   IconSetService,
-  Inject,
-  Injectable,
-  InjectionToken,
-  Input,
   NavigationEnd,
   NgIf,
-  NgModule,
   NgTemplateOutlet,
-  NgZone,
   NoopAnimationPlayer,
-  Observable,
-  Optional,
-  Output,
-  PLATFORM_ID,
   Platform,
-  Renderer2,
-  RendererFactory2,
-  RendererStyleFlags2,
   Router,
   RouterLink,
   RouterOutlet,
-  RuntimeError,
   ShadowOnScrollDirective,
   SidebarBrandComponent,
   SidebarComponent,
@@ -162,16 +141,54 @@ import {
   SidebarNavComponent,
   SidebarToggleDirective,
   SidebarTogglerDirective,
-  Subject,
-  Subscription,
   Title,
-  ViewChild,
-  animationFrameScheduler,
-  auditTime,
   bootstrapApplication,
   coerceBooleanProperty,
   coerceElement,
   coerceNumberProperty,
+  getRtlScrollAxisType,
+  isPlatformBrowser,
+  provideRouter,
+  sequence,
+  style,
+  takeUntilDestroyed,
+  withEnabledBlockingInitialNavigation,
+  withInMemoryScrolling,
+  withRouterConfig,
+  withViewTransitions,
+  ɵPRE_STYLE
+} from "./chunk-JAOOB3SV.js";
+import {
+  ANIMATION_MODULE_TYPE,
+  BehaviorSubject,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ContentChild,
+  DestroyRef,
+  Directive,
+  EMPTY,
+  ElementRef,
+  EventEmitter,
+  Inject,
+  Injectable,
+  InjectionToken,
+  Input,
+  NgModule,
+  NgZone,
+  Observable,
+  Optional,
+  Output,
+  PLATFORM_ID,
+  Renderer2,
+  RendererFactory2,
+  RendererStyleFlags2,
+  RuntimeError,
+  Subject,
+  Subscription,
+  ViewChild,
+  animationFrameScheduler,
+  auditTime,
   computed,
   debounceTime,
   delay,
@@ -180,32 +197,21 @@ import {
   filter,
   finalize,
   fromEvent,
-  getRtlScrollAxisType,
   importProvidersFrom,
   inject,
   input,
-  isPlatformBrowser,
   map,
   merge,
   mergeMap,
   of,
   pairwise,
   performanceMarkFeature,
-  provideRouter,
-  sequence,
   setClassMetadata,
-  style,
   switchMap,
   take,
   takeUntil,
-  takeUntilDestroyed,
   takeWhile,
   tap,
-  withEnabledBlockingInitialNavigation,
-  withInMemoryScrolling,
-  withRouterConfig,
-  withViewTransitions,
-  ɵPRE_STYLE,
   ɵsetClassDebugInfo,
   ɵɵInheritDefinitionFeature,
   ɵɵNgOnChangesFeature,
@@ -252,7 +258,7 @@ import {
   ɵɵtext,
   ɵɵtextInterpolate1,
   ɵɵviewQuery
-} from "./chunk-VGFF44UQ.js";
+} from "./chunk-TU2APFZU.js";
 import {
   __objRest,
   __privateAdd,
@@ -536,6 +542,7 @@ var iconSubset = {
   cilShareBoxed,
   cilSpeech,
   cilSpeedometer,
+  cilCut,
   cilSpreadsheet,
   cilStar,
   cilSun,
@@ -548,7 +555,9 @@ var iconSubset = {
   cilUserFollow,
   cilUserUnfollow,
   logo,
-  signet
+  signet,
+  cilFax,
+  cilFilter
 };
 var IconSubset;
 (function(IconSubset2) {
@@ -636,6 +645,7 @@ var IconSubset;
   IconSubset2["cilShareBoxed"] = "cilShareBoxed";
   IconSubset2["cilSpeech"] = "cilSpeech";
   IconSubset2["cilSpeedometer"] = "cilSpeedometer";
+  IconSubset2["cilCut"] = "cilCut";
   IconSubset2["cilSpreadsheet"] = "cilSpreadsheet";
   IconSubset2["cilStar"] = "cilStar";
   IconSubset2["cilSun"] = "cilSun";
@@ -649,6 +659,8 @@ var IconSubset;
   IconSubset2["cilUserUnfollow"] = "cilUserUnfollow";
   IconSubset2["logo"] = "logo";
   IconSubset2["signet"] = "signet";
+  IconSubset2["cilFax"] = "cilFax";
+  IconSubset2["cilFilter"] = "cilFilter";
 })(IconSubset || (IconSubset = {}));
 
 // src/environments/environment.ts
@@ -667,7 +679,7 @@ var _AppComponent = class _AppComponent {
     __privateAdd(this, _titleService);
     __privateAdd(this, _colorModeService);
     __privateAdd(this, _iconSetService);
-    this.title = "CoreUI Angular Admin Template";
+    this.title = "Sabino\xB4s App";
     __privateSet(this, _destroyRef, inject(DestroyRef));
     __privateSet(this, _activatedRoute, inject(ActivatedRoute));
     __privateSet(this, _router, inject(Router));
@@ -4766,24 +4778,26 @@ var NoopAnimationsModule = _NoopAnimationsModule;
 var _DefaultFooterComponent = class _DefaultFooterComponent extends FooterComponent {
   constructor() {
     super();
+    this.YEAR = (/* @__PURE__ */ new Date()).getFullYear();
   }
 };
 _DefaultFooterComponent.\u0275fac = function DefaultFooterComponent_Factory(__ngFactoryType__) {
   return new (__ngFactoryType__ || _DefaultFooterComponent)();
 };
-_DefaultFooterComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _DefaultFooterComponent, selectors: [["app-default-footer"]], standalone: true, features: [\u0275\u0275InheritDefinitionFeature, \u0275\u0275StandaloneFeature], decls: 10, vars: 0, consts: [["href", "https://coreui.io/", "target", "_blank"], [1, "ms-auto"], ["href", "https://coreui.io/angular", "target", "_blank"]], template: function DefaultFooterComponent_Template(rf, ctx) {
+_DefaultFooterComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _DefaultFooterComponent, selectors: [["app-default-footer"]], standalone: true, features: [\u0275\u0275InheritDefinitionFeature, \u0275\u0275StandaloneFeature], decls: 8, vars: 1, consts: [[1, "ms-auto"], ["href", "https://coreui.io/angular", "target", "_blank"]], template: function DefaultFooterComponent_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div")(1, "a", 0);
-    \u0275\u0275text(2, "CoreUI");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "span");
-    \u0275\u0275text(4, " \xA9 2024 creativeLabs");
+    \u0275\u0275elementStart(0, "div")(1, "span");
+    \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(5, "div", 1);
-    \u0275\u0275text(6, " Powered by ");
-    \u0275\u0275elementStart(7, "a", 2)(8, "span");
-    \u0275\u0275text(9, " CoreUI for Angular");
+    \u0275\u0275elementStart(3, "div", 0);
+    \u0275\u0275text(4, " Desarrollado por ");
+    \u0275\u0275elementStart(5, "a", 1)(6, "span");
+    \u0275\u0275text(7, "Firma");
     \u0275\u0275elementEnd()()();
+  }
+  if (rf & 2) {
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate1(" \xA9 ", ctx.YEAR, " ");
   }
 } });
 var DefaultFooterComponent = _DefaultFooterComponent;
@@ -4794,100 +4808,100 @@ var DefaultFooterComponent = _DefaultFooterComponent;
 // src/app/layout/default-layout/default-header/default-header.component.ts
 var _forTrack0 = ($index, $item) => $item.name;
 var _c0 = () => ({ placement: "bottom-start" });
-function DefaultHeaderComponent_ng_container_8_Template(rf, ctx) {
+function DefaultHeaderComponent_ng_container_10_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainer(0);
   }
 }
-function DefaultHeaderComponent_ng_container_12_Template(rf, ctx) {
+function DefaultHeaderComponent_ng_container_14_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainer(0);
   }
 }
-function DefaultHeaderComponent_ng_template_13_Template(rf, ctx) {
+function DefaultHeaderComponent_ng_template_15_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "c-dropdown", 11)(1, "button", 12);
-    \u0275\u0275element(2, "c-avatar", 13);
+    \u0275\u0275elementStart(0, "c-dropdown", 12)(1, "button", 13);
+    \u0275\u0275element(2, "c-avatar", 14);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "ul", 14)(4, "li")(5, "h6", 15);
+    \u0275\u0275elementStart(3, "ul", 15)(4, "li")(5, "h6", 16);
     \u0275\u0275text(6, " Account ");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(7, "li")(8, "a", 16);
+    \u0275\u0275elementStart(7, "li")(8, "a", 17);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275element(9, "svg", 17);
+    \u0275\u0275element(9, "svg", 18);
     \u0275\u0275text(10, " Updates ");
     \u0275\u0275namespaceHTML();
-    \u0275\u0275elementStart(11, "c-badge", 18);
+    \u0275\u0275elementStart(11, "c-badge", 19);
     \u0275\u0275text(12, " 42");
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(13, "li")(14, "a", 19);
+    \u0275\u0275elementStart(13, "li")(14, "a", 20);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275element(15, "svg", 20);
+    \u0275\u0275element(15, "svg", 21);
     \u0275\u0275text(16, " Messages ");
     \u0275\u0275namespaceHTML();
-    \u0275\u0275elementStart(17, "c-badge", 21);
+    \u0275\u0275elementStart(17, "c-badge", 22);
     \u0275\u0275text(18, " 42 ");
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(19, "li")(20, "a", 16);
+    \u0275\u0275elementStart(19, "li")(20, "a", 17);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275element(21, "svg", 22);
+    \u0275\u0275element(21, "svg", 23);
     \u0275\u0275text(22, " Tasks ");
     \u0275\u0275namespaceHTML();
-    \u0275\u0275elementStart(23, "c-badge", 23);
+    \u0275\u0275elementStart(23, "c-badge", 24);
     \u0275\u0275text(24, " 42");
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(25, "li")(26, "a", 16);
+    \u0275\u0275elementStart(25, "li")(26, "a", 17);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275element(27, "svg", 24);
+    \u0275\u0275element(27, "svg", 25);
     \u0275\u0275text(28, " Comments ");
     \u0275\u0275namespaceHTML();
-    \u0275\u0275elementStart(29, "c-badge", 25);
+    \u0275\u0275elementStart(29, "c-badge", 26);
     \u0275\u0275text(30, " 42");
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(31, "li")(32, "h6", 26);
+    \u0275\u0275elementStart(31, "li")(32, "h6", 27);
     \u0275\u0275text(33, " Settings ");
     \u0275\u0275elementEnd()();
     \u0275\u0275element(34, "li");
-    \u0275\u0275elementStart(35, "li")(36, "a", 16);
+    \u0275\u0275elementStart(35, "li")(36, "a", 17);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275element(37, "svg", 27);
+    \u0275\u0275element(37, "svg", 28);
     \u0275\u0275text(38, " Profile ");
     \u0275\u0275elementEnd()();
     \u0275\u0275namespaceHTML();
-    \u0275\u0275elementStart(39, "li")(40, "a", 16);
+    \u0275\u0275elementStart(39, "li")(40, "a", 17);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275element(41, "svg", 28);
+    \u0275\u0275element(41, "svg", 29);
     \u0275\u0275text(42, " Settings ");
     \u0275\u0275elementEnd()();
     \u0275\u0275namespaceHTML();
-    \u0275\u0275elementStart(43, "li")(44, "a", 16);
+    \u0275\u0275elementStart(43, "li")(44, "a", 17);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275element(45, "svg", 29);
+    \u0275\u0275element(45, "svg", 30);
     \u0275\u0275text(46, " Payments ");
     \u0275\u0275namespaceHTML();
-    \u0275\u0275elementStart(47, "c-badge", 30);
+    \u0275\u0275elementStart(47, "c-badge", 31);
     \u0275\u0275text(48, " 42 ");
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(49, "li")(50, "a", 16);
+    \u0275\u0275elementStart(49, "li")(50, "a", 17);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275element(51, "svg", 31);
+    \u0275\u0275element(51, "svg", 32);
     \u0275\u0275text(52, " Projects ");
     \u0275\u0275namespaceHTML();
-    \u0275\u0275elementStart(53, "c-badge", 32);
+    \u0275\u0275elementStart(53, "c-badge", 33);
     \u0275\u0275text(54, " 42 ");
     \u0275\u0275elementEnd()()();
     \u0275\u0275elementStart(55, "li");
-    \u0275\u0275element(56, "hr", 33);
+    \u0275\u0275element(56, "hr", 34);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(57, "li")(58, "a", 16);
+    \u0275\u0275elementStart(57, "li")(58, "a", 17);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275element(59, "svg", 34);
+    \u0275\u0275element(59, "svg", 35);
     \u0275\u0275text(60, " Lock Account ");
     \u0275\u0275elementEnd()();
     \u0275\u0275namespaceHTML();
-    \u0275\u0275elementStart(61, "li")(62, "a", 16);
+    \u0275\u0275elementStart(61, "li")(62, "a", 17);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275element(63, "svg", 35);
+    \u0275\u0275element(63, "svg", 36);
     \u0275\u0275text(64, " Logout ");
     \u0275\u0275elementEnd()()()();
   }
@@ -4899,17 +4913,17 @@ function DefaultHeaderComponent_ng_template_13_Template(rf, ctx) {
     \u0275\u0275property("size", "md");
   }
 }
-function DefaultHeaderComponent_ng_template_15_For_5_Template(rf, ctx) {
+function DefaultHeaderComponent_ng_template_17_For_5_Template(rf, ctx) {
   if (rf & 1) {
     const _r1 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "button", 41);
-    \u0275\u0275listener("click", function DefaultHeaderComponent_ng_template_15_For_5_Template_button_click_0_listener() {
+    \u0275\u0275elementStart(0, "button", 42);
+    \u0275\u0275listener("click", function DefaultHeaderComponent_ng_template_17_For_5_Template_button_click_0_listener() {
       const mode_r2 = \u0275\u0275restoreView(_r1).$implicit;
       const ctx_r2 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r2.colorMode.set(mode_r2.name));
     });
     \u0275\u0275namespaceSVG();
-    \u0275\u0275element(1, "svg", 42);
+    \u0275\u0275element(1, "svg", 43);
     \u0275\u0275text(2);
     \u0275\u0275elementEnd();
   }
@@ -4923,15 +4937,15 @@ function DefaultHeaderComponent_ng_template_15_For_5_Template(rf, ctx) {
     \u0275\u0275textInterpolate1(" ", mode_r2.text, " ");
   }
 }
-function DefaultHeaderComponent_ng_template_15_Template(rf, ctx) {
+function DefaultHeaderComponent_ng_template_17_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "c-dropdown", 36)(1, "button", 37);
+    \u0275\u0275elementStart(0, "c-dropdown", 37)(1, "button", 38);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275element(2, "svg", 38);
+    \u0275\u0275element(2, "svg", 39);
     \u0275\u0275elementEnd();
     \u0275\u0275namespaceHTML();
-    \u0275\u0275elementStart(3, "div", 39);
-    \u0275\u0275repeaterCreate(4, DefaultHeaderComponent_ng_template_15_For_5_Template, 3, 3, "button", 40, _forTrack0);
+    \u0275\u0275elementStart(3, "div", 40);
+    \u0275\u0275repeaterCreate(4, DefaultHeaderComponent_ng_template_17_For_5_Template, 3, 3, "button", 41, _forTrack0);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -5038,7 +5052,7 @@ _colorModeService2 = new WeakMap();
 _DefaultHeaderComponent.\u0275fac = function DefaultHeaderComponent_Factory(__ngFactoryType__) {
   return new (__ngFactoryType__ || _DefaultHeaderComponent)();
 };
-_DefaultHeaderComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _DefaultHeaderComponent, selectors: [["app-default-header"]], inputs: { sidebarId: [1, "sidebarId"] }, standalone: true, features: [\u0275\u0275InheritDefinitionFeature, \u0275\u0275StandaloneFeature], decls: 17, vars: 4, consts: [["userDropdown", ""], ["themeDropdown", ""], [1, "border-bottom", "px-4", 3, "fluid"], ["cHeaderToggler", "", "toggle", "visible", "aria-label", "Toggle sidebar navigation", 1, "btn", 2, "margin-inline-start", "-14px", 3, "cSidebarToggle"], ["cIcon", "", "name", "cilMenu", "size", "lg"], [1, "d-none", "d-md-flex", "ms-auto"], [1, "ms-auto", "ms-md-0"], [1, "nav-item", "py-1"], [1, "vr", "h-100", "mx-2", "text-body", "text-opacity-75"], [4, "ngTemplateOutlet"], [1, "mx-0"], ["variant", "nav-item", 3, "popperOptions"], ["cDropdownToggle", "", "aria-label", "Open user menu", 1, "py-0", "pe-0", 3, "caret"], ["shape", "rounded-1", "src", "./assets/images/avatars/8.jpg", "status", "success", "textColor", "primary", "alt", "User avatar", 3, "size"], ["cDropdownMenu", "", 1, "pt-0", "w-auto"], ["cDropdownHeader", "", 1, "bg-body-secondary", "text-body-secondary", "fw-semibold", "py-2", "rounded-top"], ["cDropdownItem", "", "routerLink", ""], ["cIcon", "", "name", "cilBell", 1, "me-2"], ["color", "info", 1, "ms-2", "float-end"], ["cDropdownItem", "", "routerLink", "/apps/email/inbox"], ["cIcon", "", "name", "cilEnvelopeOpen", 1, "me-2"], ["color", "success", 1, "ms-2", "float-end"], ["cIcon", "", "name", "cilTask", 1, "me-2"], ["color", "danger", 1, "ms-2", "float-end"], ["cIcon", "", "name", "cilCommentSquare", 1, "me-2"], ["color", "warning", 1, "ms-auto"], ["cDropdownHeader", "", 1, "bg-body-secondary", "text-body-secondary", "fw-semibold", "py-2"], ["cIcon", "", "name", "cilUser", 1, "me-2"], ["cIcon", "", "name", "cilSettings", 1, "me-2"], ["cIcon", "", "name", "cilCreditCard", 1, "me-2"], ["color", "secondary", 1, "ms-2", "float-end"], ["cIcon", "", "name", "cilFile", 1, "me-2"], ["color", "primary", 1, "ms-2", "float-end"], ["cDropdownDivider", ""], ["cIcon", "", "name", "cilLockLocked", 1, "me-2"], ["cIcon", "", "name", "cilAccountLogout", 1, "me-2"], ["alignment", "end", "variant", "nav-item"], ["cDropdownToggle", "", "aria-label", "Open theme picker", 3, "caret"], ["cIcon", "", "size", "lg", 3, "name"], ["cDropdownMenu", ""], ["cDropdownItem", "", 1, "d-flex", "align-items-center", 3, "active"], ["cDropdownItem", "", 1, "d-flex", "align-items-center", 3, "click", "active"], ["cIcon", "", "size", "lg", 1, "me-2", 3, "name"]], template: function DefaultHeaderComponent_Template(rf, ctx) {
+_DefaultHeaderComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _DefaultHeaderComponent, selectors: [["app-default-header"]], inputs: { sidebarId: [1, "sidebarId"] }, standalone: true, features: [\u0275\u0275InheritDefinitionFeature, \u0275\u0275StandaloneFeature], decls: 19, vars: 4, consts: [["userDropdown", ""], ["themeDropdown", ""], [1, "border-bottom", "px-4", 3, "fluid"], ["cHeaderToggler", "", "toggle", "visible", "aria-label", "Toggle sidebar navigation", 1, "btn", 2, "margin-inline-start", "-14px", 3, "cSidebarToggle"], ["cIcon", "", "name", "cilMenu", "size", "lg"], [1, "d-none", "d-md-flex"], [1, "d-none", "d-md-flex", "ms-auto"], [1, "ms-auto", "ms-md-0"], [1, "nav-item", "py-1"], [1, "vr", "h-100", "mx-2", "text-body", "text-opacity-75"], [4, "ngTemplateOutlet"], [1, "mx-0"], ["variant", "nav-item", 3, "popperOptions"], ["cDropdownToggle", "", "aria-label", "Open user menu", 1, "py-0", "pe-0", 3, "caret"], ["shape", "rounded-1", "src", "./assets/images/avatars/8.jpg", "status", "success", "textColor", "primary", "alt", "User avatar", 3, "size"], ["cDropdownMenu", "", 1, "pt-0", "w-auto"], ["cDropdownHeader", "", 1, "bg-body-secondary", "text-body-secondary", "fw-semibold", "py-2", "rounded-top"], ["cDropdownItem", "", "routerLink", ""], ["cIcon", "", "name", "cilBell", 1, "me-2"], ["color", "info", 1, "ms-2", "float-end"], ["cDropdownItem", "", "routerLink", "/apps/email/inbox"], ["cIcon", "", "name", "cilEnvelopeOpen", 1, "me-2"], ["color", "success", 1, "ms-2", "float-end"], ["cIcon", "", "name", "cilTask", 1, "me-2"], ["color", "danger", 1, "ms-2", "float-end"], ["cIcon", "", "name", "cilCommentSquare", 1, "me-2"], ["color", "warning", 1, "ms-auto"], ["cDropdownHeader", "", 1, "bg-body-secondary", "text-body-secondary", "fw-semibold", "py-2"], ["cIcon", "", "name", "cilUser", 1, "me-2"], ["cIcon", "", "name", "cilSettings", 1, "me-2"], ["cIcon", "", "name", "cilCreditCard", 1, "me-2"], ["color", "secondary", 1, "ms-2", "float-end"], ["cIcon", "", "name", "cilFile", 1, "me-2"], ["color", "primary", 1, "ms-2", "float-end"], ["cDropdownDivider", ""], ["cIcon", "", "name", "cilLockLocked", 1, "me-2"], ["cIcon", "", "name", "cilAccountLogout", 1, "me-2"], ["alignment", "end", "variant", "nav-item"], ["cDropdownToggle", "", "aria-label", "Open theme picker", 3, "caret"], ["cIcon", "", "size", "lg", 3, "name"], ["cDropdownMenu", ""], ["cDropdownItem", "", 1, "d-flex", "align-items-center", 3, "active"], ["cDropdownItem", "", 1, "d-flex", "align-items-center", 3, "click", "active"], ["cIcon", "", "size", "lg", 1, "me-2", 3, "name"]], template: function DefaultHeaderComponent_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainerStart(0);
     \u0275\u0275elementStart(1, "c-container", 2)(2, "button", 3);
@@ -5046,33 +5060,36 @@ _DefaultHeaderComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent(
     \u0275\u0275element(3, "svg", 4);
     \u0275\u0275elementEnd();
     \u0275\u0275namespaceHTML();
-    \u0275\u0275element(4, "c-header-nav", 5);
-    \u0275\u0275elementStart(5, "c-header-nav", 6)(6, "div", 7);
-    \u0275\u0275element(7, "div", 8);
+    \u0275\u0275elementStart(4, "c-header-nav", 5);
+    \u0275\u0275element(5, "c-breadcrumb-router");
     \u0275\u0275elementEnd();
-    \u0275\u0275template(8, DefaultHeaderComponent_ng_container_8_Template, 1, 0, "ng-container", 9);
-    \u0275\u0275elementStart(9, "div", 7);
-    \u0275\u0275element(10, "div", 8);
+    \u0275\u0275element(6, "c-header-nav", 6);
+    \u0275\u0275elementStart(7, "c-header-nav", 7)(8, "div", 8);
+    \u0275\u0275element(9, "div", 9);
+    \u0275\u0275elementEnd();
+    \u0275\u0275template(10, DefaultHeaderComponent_ng_container_10_Template, 1, 0, "ng-container", 10);
+    \u0275\u0275elementStart(11, "div", 8);
+    \u0275\u0275element(12, "div", 9);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(11, "c-header-nav", 10);
-    \u0275\u0275template(12, DefaultHeaderComponent_ng_container_12_Template, 1, 0, "ng-container", 9);
+    \u0275\u0275elementStart(13, "c-header-nav", 11);
+    \u0275\u0275template(14, DefaultHeaderComponent_ng_container_14_Template, 1, 0, "ng-container", 10);
     \u0275\u0275elementEnd()();
     \u0275\u0275elementContainerEnd();
-    \u0275\u0275template(13, DefaultHeaderComponent_ng_template_13_Template, 65, 4, "ng-template", null, 0, \u0275\u0275templateRefExtractor)(15, DefaultHeaderComponent_ng_template_15_Template, 6, 2, "ng-template", null, 1, \u0275\u0275templateRefExtractor);
+    \u0275\u0275template(15, DefaultHeaderComponent_ng_template_15_Template, 65, 4, "ng-template", null, 0, \u0275\u0275templateRefExtractor)(17, DefaultHeaderComponent_ng_template_17_Template, 6, 2, "ng-template", null, 1, \u0275\u0275templateRefExtractor);
   }
   if (rf & 2) {
-    const userDropdown_r4 = \u0275\u0275reference(14);
-    const themeDropdown_r5 = \u0275\u0275reference(16);
+    const userDropdown_r4 = \u0275\u0275reference(16);
+    const themeDropdown_r5 = \u0275\u0275reference(18);
     \u0275\u0275advance();
     \u0275\u0275property("fluid", true);
     \u0275\u0275advance();
     \u0275\u0275property("cSidebarToggle", ctx.sidebarId());
-    \u0275\u0275advance(6);
+    \u0275\u0275advance(8);
     \u0275\u0275property("ngTemplateOutlet", themeDropdown_r5);
     \u0275\u0275advance(4);
     \u0275\u0275property("ngTemplateOutlet", userDropdown_r4);
   }
-}, dependencies: [ContainerComponent, HeaderTogglerDirective, SidebarToggleDirective, IconDirective, HeaderNavComponent, RouterLink, NgTemplateOutlet, DropdownComponent, DropdownToggleDirective, AvatarComponent, DropdownMenuDirective, DropdownHeaderDirective, DropdownItemDirective, BadgeComponent, DropdownDividerDirective], encapsulation: 2 });
+}, dependencies: [ContainerComponent, HeaderTogglerDirective, SidebarToggleDirective, IconDirective, HeaderNavComponent, RouterLink, NgTemplateOutlet, BreadcrumbRouterComponent, DropdownComponent, DropdownToggleDirective, AvatarComponent, DropdownMenuDirective, DropdownHeaderDirective, DropdownItemDirective, BadgeComponent, DropdownDividerDirective], encapsulation: 2 });
 var DefaultHeaderComponent = _DefaultHeaderComponent;
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(DefaultHeaderComponent, { className: "DefaultHeaderComponent", filePath: "src\\app\\layout\\default-layout\\default-header\\default-header.component.ts", lineNumber: 37 });
@@ -7265,7 +7282,7 @@ var navItems = [
   },
   {
     name: "Dashboard",
-    url: "/dashboard",
+    url: "/documentacion/dashboard",
     iconComponent: { name: "cil-speedometer" },
     badge: {
       color: "info",
@@ -7556,13 +7573,9 @@ var navItems = [
 // src/app/layout/default-layout/navs/_nav-project.ts
 var navItemsProject = [
   {
-    name: "Dashboard",
-    url: "/dashboard",
-    iconComponent: { name: "cil-speedometer" },
-    badge: {
-      color: "info",
-      text: "NEW"
-    }
+    name: "Productos",
+    url: "/productos",
+    iconComponent: { name: "cil-cut" }
   },
   {
     title: true,
@@ -7650,7 +7663,7 @@ _DefaultLayoutComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent(
 ], styles: ["\n\n[_nghost-%COMP%]   .ng-scrollbar[_ngcontent-%COMP%] {\n  --scrollbar-padding: 1px;\n  --scrollbar-size: 5px;\n  --scrollbar-thumb-color: var(--cui-gray-500, #999);\n  --scrollbar-thumb-hover-color: var(--cui-gray-400, #999);\n  --scrollbar-hover-size: calc(var(--scrollbar-size) * 1.5);\n}\n/*# sourceMappingURL=default-layout.component.css.map */"] });
 var DefaultLayoutComponent = _DefaultLayoutComponent;
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(DefaultLayoutComponent, { className: "DefaultLayoutComponent", filePath: "src\\app\\layout\\default-layout\\default-layout.component.ts", lineNumber: 54 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(DefaultLayoutComponent, { className: "DefaultLayoutComponent", filePath: "src\\app\\layout\\default-layout\\default-layout.component.ts", lineNumber: 55 });
 })();
 
 // src/app/app.routes.ts
@@ -7663,12 +7676,14 @@ var routes = [
   {
     path: "",
     component: DefaultLayoutComponent,
-    data: {
-      title: "Home"
-    },
-    children: []
+    children: [
+      {
+        path: "",
+        loadChildren: () => import("./pages.routes-2BFPE26Q.js").then((m) => m.routesPages)
+      }
+    ]
   },
-  { path: "**", redirectTo: "dashboard" }
+  { path: "**", redirectTo: "pages" }
 ];
 
 // src/app/app.routes-documentacion.ts
@@ -7681,68 +7696,68 @@ var routesDocumentacion = [
     children: [
       {
         path: "404",
-        loadComponent: () => import("./page404.component-GZXHVSW2.js").then((m) => m.Page404Component),
+        loadComponent: () => import("./page404.component-WFNG3Y54.js").then((m) => m.Page404Component),
         data: {
           title: "Page 404"
         }
       },
       {
         path: "500",
-        loadComponent: () => import("./page500.component-WNRNOTV2.js").then((m) => m.Page500Component),
+        loadComponent: () => import("./page500.component-FMB62FE4.js").then((m) => m.Page500Component),
         data: {
           title: "Page 500"
         }
       },
       {
         path: "login",
-        loadComponent: () => import("./login.component-YNFOOLU3.js").then((m) => m.LoginComponent),
+        loadComponent: () => import("./login.component-BZCZ3EIY.js").then((m) => m.LoginComponent),
         data: {
           title: "Login Page"
         }
       },
       {
         path: "dashboard",
-        loadChildren: () => import("./routes-STY5QUMS.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-F57F2DY7.js").then((m) => m.routes)
       },
       {
         path: "theme",
-        loadChildren: () => import("./routes-DHFOINLL.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-HC7ZZJ5M.js").then((m) => m.routes)
       },
       {
         path: "base",
-        loadChildren: () => import("./routes-VPDSVPBL.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-NUZYTU43.js").then((m) => m.routes)
       },
       {
         path: "buttons",
-        loadChildren: () => import("./routes-ZJHCGLFP.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-HNVVJ7KA.js").then((m) => m.routes)
       },
       {
         path: "forms",
-        loadChildren: () => import("./routes-MI3J42YP.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-DT3T6GL3.js").then((m) => m.routes)
       },
       {
         path: "icons",
-        loadChildren: () => import("./routes-MQIDQOJS.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-3KQKFUKY.js").then((m) => m.routes)
       },
       {
         path: "notifications",
-        loadChildren: () => import("./routes-IUBE2H6N.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-67FQF3AJ.js").then((m) => m.routes)
       },
       {
         path: "widgets",
-        loadChildren: () => import("./routes-WDDWQLOI.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-XVEY23VE.js").then((m) => m.routes)
       },
       {
         path: "charts",
-        loadChildren: () => import("./routes-ZYDTKK4H.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-QC7DN4RN.js").then((m) => m.routes)
       },
       {
         path: "pages",
-        loadChildren: () => import("./routes-C33FI4IU.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-JRFBV7NT.js").then((m) => m.routes)
       },
       {
         path: "register",
-        loadComponent: () => import("./register.component-JMJTUAHB.js").then((m) => m.RegisterComponent),
+        loadComponent: () => import("./register.component-UY5E3TNL.js").then((m) => m.RegisterComponent),
         data: {
           title: "Register Page"
         }

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/documentacion/icons/routes.ts"],
+  "sourcesContent": ["import { Routes } from '@angular/router';\n\nexport const routes: Routes = [\n  {\n    path: '',\n    data: {\n      title: 'Icons'\n    },\n    children: [\n      {\n        path: '',\n        redirectTo: 'coreui-icons',\n        pathMatch: 'full'\n      },\n      {\n        path: 'coreui-icons',\n        loadComponent: () => import('./coreui-icons.component').then(m => m.CoreUIIconsComponent),\n        data: {\n          title: 'CoreUI Icons'\n        }\n      },\n      {\n        path: 'brands',\n        loadComponent: () => import('./coreui-icons.component').then(m => m.CoreUIIconsComponent),\n        data: {\n          title: 'Brands'\n        }\n      },\n      {\n        path: 'flags',\n        loadComponent: () => import('./coreui-icons.component').then(m => m.CoreUIIconsComponent),\n        data: {\n          title: 'Flags'\n        }\n      }\n    ]\n  }\n];\n"],
+  "mappings": ";;;AAEO,IAAM,SAAiB;EAC5B;IACE,MAAM;IACN,MAAM;MACJ,OAAO;;IAET,UAAU;MACR;QACE,MAAM;QACN,YAAY;QACZ,WAAW;;MAEb;QACE,MAAM;QACN,eAAe,MAAM,OAAO,sCAA0B,EAAE,KAAK,OAAK,EAAE,oBAAoB;QACxF,MAAM;UACJ,OAAO;;;MAGX;QACE,MAAM;QACN,eAAe,MAAM,OAAO,sCAA0B,EAAE,KAAK,OAAK,EAAE,oBAAoB;QACxF,MAAM;UACJ,OAAO;;;MAGX;QACE,MAAM;QACN,eAAe,MAAM,OAAO,sCAA0B,EAAE,KAAK,OAAK,EAAE,oBAAoB;QACxF,MAAM;UACJ,OAAO;;;;;;",
+  "names": []
+}

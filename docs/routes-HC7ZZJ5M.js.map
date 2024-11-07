@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/documentacion/theme/routes.ts"],
+  "sourcesContent": ["import { Routes } from '@angular/router';\n\nexport const routes: Routes = [\n  {\n    path: '',\n    data: {\n      title: 'Theme'\n    },\n    children: [\n      {\n        path: '',\n        redirectTo: 'colors',\n        pathMatch: 'full'\n      },\n      {\n        path: 'colors',\n        loadComponent: () => import('./colors.component').then(m => m.ColorsComponent),\n        data: {\n          title: 'Colors'\n        }\n      },\n      {\n        path: 'typography',\n        loadComponent: () => import('./typography.component').then(m => m.TypographyComponent),\n        data: {\n          title: 'Typography'\n        }\n      }\n    ]\n  }\n];\n\n"],
+  "mappings": ";;;AAEO,IAAM,SAAiB;EAC5B;IACE,MAAM;IACN,MAAM;MACJ,OAAO;;IAET,UAAU;MACR;QACE,MAAM;QACN,YAAY;QACZ,WAAW;;MAEb;QACE,MAAM;QACN,eAAe,MAAM,OAAO,gCAAoB,EAAE,KAAK,OAAK,EAAE,eAAe;QAC7E,MAAM;UACJ,OAAO;;;MAGX;QACE,MAAM;QACN,eAAe,MAAM,OAAO,oCAAwB,EAAE,KAAK,OAAK,EAAE,mBAAmB;QACrF,MAAM;UACJ,OAAO;;;;;;",
+  "names": []
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/pages/producto/producto-editar/producto-editar.component.ts", "src/app/pages/producto/producto-editar/producto-editar.component.html"],
+  "sourcesContent": ["import { Component } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-producto-editar',\r\n  standalone: true,\r\n  imports: [],\r\n  templateUrl: './producto-editar.component.html',\r\n  styleUrl: './producto-editar.component.scss'\r\n})\r\nexport class ProductoEditarComponent {\r\n\r\n}\r\n", "<p>producto-editar works!</p>\r\n"],
+  "mappings": ";;;;;;;;;;;AASM,IAAO,2BAAP,MAAO,yBAAuB;;;mCAAvB,0BAAuB;AAAA;yFAAvB,0BAAuB,WAAA,CAAA,CAAA,qBAAA,CAAA,GAAA,YAAA,MAAA,UAAA,CAAA,6BAAA,GAAA,OAAA,GAAA,MAAA,GAAA,UAAA,SAAA,iCAAA,IAAA,KAAA;AAAA,MAAA,KAAA,GAAA;ACTpC,IAAA,yBAAA,GAAA,GAAA;AAAG,IAAA,iBAAA,GAAA,wBAAA;AAAsB,IAAA,uBAAA;;;ADSnB,IAAO,0BAAP;;6EAAO,yBAAuB,EAAA,WAAA,2BAAA,UAAA,4EAAA,YAAA,GAAA,CAAA;AAAA,GAAA;",
+  "names": []
+}
