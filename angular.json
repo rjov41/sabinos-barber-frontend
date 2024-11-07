@@ -40,6 +40,8 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/sabinos-barber-frontend/",
+              "deployUrl": "/sabinos-barber-frontend/",
               "budgets": [
                 {
                   "type": "initial",
