@@ -7725,31 +7725,31 @@ var routesDocumentacion = [
       },
       {
         path: "base",
-        loadChildren: () => import("./routes-QI3XJ2UO.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-RVFKYZIY.js").then((m) => m.routes)
       },
       {
         path: "buttons",
-        loadChildren: () => import("./routes-BHEKGHRX.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-OTZOQJ54.js").then((m) => m.routes)
       },
       {
         path: "forms",
-        loadChildren: () => import("./routes-TMX6HNL2.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-VGMQDWRZ.js").then((m) => m.routes)
       },
       {
         path: "icons",
-        loadChildren: () => import("./routes-P7K6TIM5.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-2H6GCE2H.js").then((m) => m.routes)
       },
       {
         path: "notifications",
-        loadChildren: () => import("./routes-AUSYH2XC.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-6WGUI4JK.js").then((m) => m.routes)
       },
       {
         path: "widgets",
-        loadChildren: () => import("./routes-UQYT2S43.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-A3KZSVLE.js").then((m) => m.routes)
       },
       {
         path: "charts",
-        loadChildren: () => import("./routes-UMDM3NQP.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-PMS3AVIJ.js").then((m) => m.routes)
       },
       {
         path: "pages",
