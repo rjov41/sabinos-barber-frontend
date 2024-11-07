@@ -52,6 +52,8 @@
               "outputHashing": "all"
             },
             "development": {
+              "baseHref": "/sabinos-barber-frontend/",
+              "deployUrl": "/sabinos-barber-frontend/",
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,

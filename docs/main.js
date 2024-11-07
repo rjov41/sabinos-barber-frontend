@@ -7660,7 +7660,7 @@ _DefaultLayoutComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent(
   ContainerComponent,
   RouterOutlet,
   DefaultFooterComponent
-], styles: ["\n\n[_nghost-%COMP%]   .ng-scrollbar[_ngcontent-%COMP%] {\n  --scrollbar-padding: 1px;\n  --scrollbar-size: 5px;\n  --scrollbar-thumb-color: var(--cui-gray-500, #999);\n  --scrollbar-thumb-hover-color: var(--cui-gray-400, #999);\n  --scrollbar-hover-size: calc(var(--scrollbar-size) * 1.5);\n}\n/*# sourceMappingURL=default-layout.component.css.map */"] });
+], styles: ["\n\n[_nghost-%COMP%]   .ng-scrollbar[_ngcontent-%COMP%] {\n  --scrollbar-padding: 1px;\n  --scrollbar-size: 5px;\n  --scrollbar-thumb-color: var(--cui-gray-500, #999);\n  --scrollbar-thumb-hover-color: var(--cui-gray-400, #999);\n  --scrollbar-hover-size: calc(var(--scrollbar-size) * 1.5);\n}\n/*# sourceMappingURL=/sabinos-barber-frontend/default-layout.component.css.map */"] });
 var DefaultLayoutComponent = _DefaultLayoutComponent;
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(DefaultLayoutComponent, { className: "DefaultLayoutComponent", filePath: "src\\app\\layout\\default-layout\\default-layout.component.ts", lineNumber: 55 });
@@ -7717,7 +7717,7 @@ var routesDocumentacion = [
       },
       {
         path: "dashboard",
-        loadChildren: () => import("./routes-F57F2DY7.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-V5ECEEEP.js").then((m) => m.routes)
       },
       {
         path: "theme",
@@ -7725,31 +7725,31 @@ var routesDocumentacion = [
       },
       {
         path: "base",
-        loadChildren: () => import("./routes-NUZYTU43.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-QI3XJ2UO.js").then((m) => m.routes)
       },
       {
         path: "buttons",
-        loadChildren: () => import("./routes-HNVVJ7KA.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-BHEKGHRX.js").then((m) => m.routes)
       },
       {
         path: "forms",
-        loadChildren: () => import("./routes-DT3T6GL3.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-TMX6HNL2.js").then((m) => m.routes)
       },
       {
         path: "icons",
-        loadChildren: () => import("./routes-3KQKFUKY.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-P7K6TIM5.js").then((m) => m.routes)
       },
       {
         path: "notifications",
-        loadChildren: () => import("./routes-67FQF3AJ.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-AUSYH2XC.js").then((m) => m.routes)
       },
       {
         path: "widgets",
-        loadChildren: () => import("./routes-XVEY23VE.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-UQYT2S43.js").then((m) => m.routes)
       },
       {
         path: "charts",
-        loadChildren: () => import("./routes-QC7DN4RN.js").then((m) => m.routes)
+        loadChildren: () => import("./routes-UMDM3NQP.js").then((m) => m.routes)
       },
       {
         path: "pages",
