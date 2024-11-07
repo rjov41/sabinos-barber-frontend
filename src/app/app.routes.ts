@@ -10,10 +10,13 @@ export const routes: Routes = [
   {
     path: '',
     component: DefaultLayoutComponent,
-    data: {
-      title: 'Home',
-    },
-    children: [],
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./pages/pages.routes').then((m) => m.routesPages),
+      },
+    ],
   },
-  { path: '**', redirectTo: 'dashboard' },
+  { path: '**', redirectTo: 'pages' },
 ];

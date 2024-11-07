@@ -5,6 +5,7 @@ import { NgScrollbar } from 'ngx-scrollbar';
 import { IconDirective } from '@coreui/icons-angular';
 import {
   ContainerComponent,
+  InputGroupComponent,
   ShadowOnScrollDirective,
   SidebarBrandComponent,
   SidebarComponent,
@@ -12,14 +13,13 @@ import {
   SidebarHeaderComponent,
   SidebarNavComponent,
   SidebarToggleDirective,
-  SidebarTogglerDirective
+  SidebarTogglerDirective,
 } from '@coreui/angular';
 
 import { DefaultFooterComponent, DefaultHeaderComponent } from './';
 import { navItems } from './navs/_nav';
 import { navItemsProject } from './navs/_nav-project';
 import { environment } from '../../../environments/environment';
-
 
 function isOverflown(element: HTMLElement) {
   return (
@@ -48,12 +48,14 @@ function isOverflown(element: HTMLElement) {
     ShadowOnScrollDirective,
     ContainerComponent,
     RouterOutlet,
-    DefaultFooterComponent
-  ]
+    DefaultFooterComponent,
+    InputGroupComponent,
+  ],
 })
 export class DefaultLayoutComponent {
-  public navItems = environment.production ? [...navItemsProject]: [...navItemsProject, ...navItems ];
-  
+  public navItems = environment.production
+    ? [...navItemsProject]
+    : [...navItemsProject, ...navItems];
 
   onScrollbarUpdate($event: any) {
     // if ($event.verticalUsed) {

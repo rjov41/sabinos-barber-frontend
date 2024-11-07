@@ -11,7 +11,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Dashboard',
-    url: '/dashboard',
+    url: '/documentacion/dashboard',
     iconComponent: { name: 'cil-speedometer' },
     badge: {
       color: 'info',

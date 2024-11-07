@@ -405,4 +405,5 @@ FodyWeavers.xsd
 
 package-lock.json
 .github/
+.vscode/
 dist/
