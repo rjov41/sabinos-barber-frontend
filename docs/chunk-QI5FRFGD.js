@@ -1,0 +1,1 @@
+import"./chunk-MKQW6NQN.js";var o=[{path:"",children:[{path:"",redirectTo:"",pathMatch:"full"},{path:"productos",loadChildren:()=>import("./chunk-UXFKI4MO.js").then(t=>t.routesProducto),data:{title:"Productos"}}]}];export{o as routesPages};
