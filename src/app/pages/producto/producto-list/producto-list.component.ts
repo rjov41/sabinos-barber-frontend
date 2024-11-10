@@ -46,7 +46,6 @@ interface IUser {
     InputGroupComponent,
     FormControlDirective,
     ButtonDirective,
-    ContainerComponent,
     IconDirective,
     PaginationComponent,
     PageItemDirective,
