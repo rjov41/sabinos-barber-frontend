@@ -1,14 +1,14 @@
-import { Directive, HostListener, ElementRef } from '@angular/core'
+import { Directive, HostListener, ElementRef } from '@angular/core';
 
 @Directive({
   selector: '[appOnlyCharacters]',
 })
 export class OnlyCharactersDirective {
-  regexStr = '^[a-zA-ZàáèéìíòóùúñÀÁÈÉÌÍÒÓÙÚÑ ]*$'
+  regexStr = '^[a-zA-ZàáèéìíòóùúñÀÁÈÉÌÍÒÓÙÚÑ ]*$';
 
   constructor(private el: ElementRef) {}
 
-  @HostListener('keydown', ['$event']) onKeyDown(event) {
-    return new RegExp(this.regexStr).test(event.key)
+  @HostListener('keydown', ['$event']) onKeyDown(event: any) {
+    return new RegExp(this.regexStr).test(event.key);
   }
 }

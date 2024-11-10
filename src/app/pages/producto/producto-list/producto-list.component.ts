@@ -15,6 +15,8 @@ import {
   PaginationComponent,
   PageItemDirective,
   PageLinkDirective,
+  GridModule,
+  CardModule,
 } from '@coreui/angular';
 import { IconDirective } from '@coreui/icons-angular';
 
@@ -39,12 +41,8 @@ interface IUser {
   standalone: true,
   imports: [
     TableDirective,
-    ColComponent,
-    CardBodyComponent,
-    CardComponent,
-    CardFooterComponent,
-    CardHeaderComponent,
-    RowComponent,
+    CardModule,
+    GridModule,
     InputGroupComponent,
     FormControlDirective,
     ButtonDirective,

@@ -35,11 +35,9 @@ export class AppComponent implements OnInit {
     this.#titleService.setTitle(this.title);
     // iconSet singleton
     this.#iconSetService.icons = { ...iconSubset };
-    this.#colorModeService.localStorageItemName.set(
-      'coreui-free-angular-admin-template-theme-default'
-    );
+    this.#colorModeService.localStorageItemName.set(environment.SabinosTheme);
     this.#colorModeService.eventName.set('ColorSchemeChange');
-    console.log(environment);
+    // console.log(environment);
   }
 
   ngOnInit(): void {

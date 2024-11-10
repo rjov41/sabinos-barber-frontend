@@ -1,15 +1,15 @@
-import { Directive, HostListener, ElementRef } from '@angular/core'
+import { Directive, HostListener, ElementRef } from '@angular/core';
 
 @Directive({
   selector: '[appOnlyNumbers]',
 })
 export class OnlyNumbersDirective {
-  regexStr = '^[0-9]*$'
+  regexStr = '^[0-9]*$';
 
   constructor(private el: ElementRef) {}
 
-  @HostListener('keypress', ['$event']) onKeyPress(event) {
+  @HostListener('keypress', ['$event']) onKeyPress(event: any) {
     // console.log("asfasf");
-    return new RegExp(this.regexStr).test(event.key)
+    return new RegExp(this.regexStr).test(event.key);
   }
 }

@@ -1,0 +1,127 @@
+<form cForm [formGroup]="ClienteCrudForm" class="form-cliente-crud">
+  <c-row class="mb-4 flex-wrap">
+    <c-col [md]="4">
+      <div cFormFloating class="mb-3">
+        <input
+          cFormControl
+          id="marcaInput"
+          placeholder="marca"
+          type="text"
+          formControlName="marca"
+          [ngClass]="{
+            'is-invalid':
+              getControl('marca').invalid && getControl('marca').touched,
+            'is-valid': getControl('marca').valid
+          }"
+          appOnlyAlphanumeric
+        />
+        <label cLabel for="marcaInput">Marca</label>
+        <app-valid-messages-form
+          [errors]="getControlError('marca')"
+          [messages]="ClienteCrudErrorMessages['marca']"
+        ></app-valid-messages-form>
+      </div>
+    </c-col>
+    <c-col [md]="4">
+      <div cFormFloating class="mb-3">
+        <input
+          cFormControl
+          id="descripcionInput"
+          placeholder="Descripción"
+          type="text"
+          formControlName="descripcion"
+          [ngClass]="{
+            'is-invalid':
+              getControl('descripcion').invalid &&
+              getControl('descripcion').touched,
+            'is-valid': getControl('descripcion').valid
+          }"
+          appOnlyAlphanumeric
+        />
+        <label cLabel for="descripcionInput">Descripción</label>
+        <app-valid-messages-form
+          [errors]="getControlError('descripcion')"
+          [messages]="ClienteCrudErrorMessages['descripcion']"
+        ></app-valid-messages-form>
+      </div>
+    </c-col>
+    <c-col [md]="4">
+      <div cFormFloating class="mb-3">
+        <input
+          cFormControl
+          id="cantidadInput"
+          placeholder="Cantidad"
+          type="text"
+          formControlName="cantidad"
+          [ngClass]="{
+            'is-invalid':
+              getControl('cantidad').invalid && getControl('cantidad').touched,
+            'is-valid': getControl('cantidad').valid
+          }"
+          appOnlyNumbers
+        />
+        <label cLabel for="cantidadInput">Cantidad</label>
+        <app-valid-messages-form
+          [errors]="getControlError('cantidad')"
+          [messages]="ClienteCrudErrorMessages['cantidad']"
+        ></app-valid-messages-form>
+      </div>
+    </c-col>
+  </c-row>
+  <c-row class="flex-wrap mb-4">
+    <c-col [md]="4">
+      <div cFormFloating class="mb-3">
+        <input
+          cFormControl
+          id="precioInput"
+          placeholder="Precio"
+          type="text"
+          formControlName="precio"
+          [ngClass]="{
+            'is-invalid':
+              getControl('precio').invalid && getControl('precio').touched,
+            'is-valid': getControl('precio').valid
+          }"
+          appOnlyNumberAndPoint
+        />
+        <label cLabel for="precioInput">Precio</label>
+        <app-valid-messages-form
+          [errors]="getControlError('precio')"
+          [messages]="ClienteCrudErrorMessages['precio']"
+        ></app-valid-messages-form>
+      </div>
+    </c-col>
+    <c-col [md]="4">
+      <div cFormFloating>
+        <select
+          cSelect
+          id="estadoInput"
+          formControlName="estado"
+          [ngClass]="{
+            'is-invalid':
+              getControl('estado').invalid && getControl('estado').touched,
+            'is-valid': getControl('estado').valid
+          }"
+        >
+          <option selected="selected" value="">Seleccione un estado</option>
+          <option value="1">Activo</option>
+          <option value="0">Eliminado</option>
+        </select>
+        <label cLabel for="estadoInput">Estado</label>
+      </div>
+      <app-valid-messages-form
+        [errors]="getControlError('estado')"
+        [messages]="ClienteCrudErrorMessages['estado']"
+      ></app-valid-messages-form>
+    </c-col>
+  </c-row>
+  <c-row class="mb-4">
+    <c-col class="text-center">
+      @if (Cliente) {
+      <button cButton color="info" (click)="sendValueFom()">Editar</button>
+      } @else {
+      <button cButton color="info" (click)="sendValueFom()">Agregar</button>
+      }
+    </c-col>
+  </c-row>
+</form>

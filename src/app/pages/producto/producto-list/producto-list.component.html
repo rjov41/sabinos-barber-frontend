@@ -1,16 +1,28 @@
 <c-card class="my-4">
   <c-card-body class="pt-4">
-    <c-container [fluid]="true" class="my-table-full">
-      <c-container [fluid]="true" class="px-0 mb-2">
-        <button cButton color="info" class="me-3">
+    <c-container [fluid]="true" class="my-table-full px-0">
+      <c-container
+        [fluid]="true"
+        class="px-0 mb-2 d-flex flex-wrap botones-table"
+      >
+        <button cButton color="info" class="btn-action-table">
           <svg cIcon height="18" name="cil-filter"></svg>
           Filtros
         </button>
 
-        <button cButton color="info" class="mr-3">
+        <button cButton color="info" class="mx-3 btn-action-table">
           <svg cIcon height="18" name="cil-fax"></svg>
           Descargar
         </button>
+
+        <a
+          [routerLink]="['insertar']"
+          cButton
+          color="info"
+          class="mr-3 btn-action-table"
+        >
+          <svg cIcon height="18" name="cil-fax"></svg> Agregar</a
+        >
       </c-container>
 
       <!-- <c-row class="mb-4 pt-3 justify-content-start"> -->
