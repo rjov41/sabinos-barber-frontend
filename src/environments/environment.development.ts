@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
   SabinosTheme: 'Sabinos-Theme',
-  apiUrl: 'https://staging.example.com/api',
+  apiUrl: 'http://127.0.0.1:8000/api/',
 };

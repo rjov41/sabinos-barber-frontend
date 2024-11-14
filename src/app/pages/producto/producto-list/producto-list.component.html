@@ -1,9 +1,9 @@
 <c-card class="my-4">
   <c-card-body class="pt-4">
-    <c-container [fluid]="true" class="my-table-full px-0">
+    <c-container [fluid]="true" class="my-table-full px-0" *ngIf="!loaderTable">
       <c-container
         [fluid]="true"
-        class="px-0 mb-2 d-flex flex-wrap botones-table"
+        class="px-0 mb-3 d-flex flex-wrap botones-table"
       >
         <button cButton color="info" class="btn-action-table">
           <svg cIcon height="18" name="cil-filter"></svg>
@@ -25,13 +25,6 @@
         >
       </c-container>
 
-      <!-- <c-row class="mb-4 pt-3 justify-content-start"> -->
-      <!-- <c-col> -->
-
-      <!-- </c-col> -->
-      <!-- <c-col> -->
-      <!-- </c-col> -->
-      <!-- </c-row> -->
       <c-row class="mb-4">
         <c-col>
           <div class="small text-body-secondary mt-3">
@@ -39,7 +32,7 @@
           </div>
         </c-col>
         <c-col class="d-flex justify-content-end" md="4">
-          <c-input-group class="mt-3">
+          <c-input-group class="">
             <input class="" aria-describedby="button-addon2" cFormControl />
             <button
               cButton
@@ -64,37 +57,60 @@
           >
             <thead class="text-nowrap text-truncate">
               <tr>
-                <th class="bg-body-tertiary">User</th>
-                <th class="bg-body-tertiary">User</th>
-                <th class="bg-body-tertiary text-center">Country</th>
-                <th class="bg-body-tertiary">Usage</th>
-                <th class="bg-body-tertiary text-center">Payment Method</th>
-                <th class="bg-body-tertiary">Activity</th>
+                <th class="bg-body-tertiary">#</th>
+                <th class="bg-body-tertiary">Marca</th>
+                <th class="bg-body-tertiary">Descripción</th>
+                <th class="bg-body-tertiary">Local</th>
+                <th class="bg-body-tertiary">Precio</th>
+                <th class="bg-body-tertiary">Cantidad</th>
+                <th class="bg-body-tertiary"></th>
               </tr>
             </thead>
             <tbody>
-              @for (user of users; track user.name; let i = $index) {
+              @for (producto of ProductosList.data; track producto.descripcion;
+              let i = $index) {
               <tr>
                 <td>
-                  <div>name</div>
-                  <div class="small text-body-secondary text-nowrap">
+                  <span>{{ producto.id }}</span>
+                  <!-- <div class="small text-body-secondary text-nowrap">
                     <span> Registered: </span>
+                  </div> -->
+                </td>
+                <td>
+                  <span>{{ producto.marca }}</span>
+                </td>
+                <td>
+                  <span>{{ producto.descripcion }}</span>
+                </td>
+                <td>
+                  <span>{{ producto.local_id }}</span>
+                </td>
+                <td>
+                  <span>{{ producto.precio }}</span>
+                </td>
+                <td>
+                  <span>{{ producto.cantidad }}</span>
+                </td>
+                <td>
+                  <div class="d-flex flex-direction">
+                    <div class="me-3" ngbTooltip="Editar">
+                      <a
+                        [routerLink]="['/frecuencia', 'editar']"
+                        cTooltip="Editar"
+                      >
+                        <svg cIcon height="18" name="cil-pencil"></svg>
+                      </a>
+                    </div>
+                    <div class="" ngbTooltip="Eliminar">
+                      <span
+                        class="text-primary pointer"
+                        role="button"
+                        cTooltip="Eliminar"
+                      >
+                        <svg cIcon height="18" name="cil-trash"></svg>
+                      </span>
+                    </div>
                   </div>
-                </td>
-                <td class="text-center">
-                  <span> Registered: </span>
-                </td>
-                <td class="text-center">
-                  <span> Registered: </span>
-                </td>
-                <td class="text-center">
-                  <span> Registered: </span>
-                </td>
-                <td class="text-center">
-                  <span> Registered: </span>
-                </td>
-                <td class="text-center">
-                  <span> Registered: </span>
                 </td>
               </tr>
               }
@@ -105,22 +121,32 @@
       <c-row class="">
         <c-col>
           <c-pagination aria-label="Page navigation example">
-            <li cPageItem [disabled]="true">
-              <span cPageLink [routerLink]>Anterior</span>
-            </li>
-            <li cPageItem>
-              <a cPageLink [routerLink]>1</a>
-            </li>
-            <li cPageItem [active]="true">
-              <span cPageLink [routerLink]>2</span>
-            </li>
-            <li cPageItem>
-              <a cPageLink [routerLink]>3</a>
-            </li>
-            <li cPageItem>
-              <a cPageLink [routerLink]>Siguiente</a>
+            <!-- [ngClass]="{
+              active: listado.active,
+              disabled: listado.url == null
+            }" -->
+            <li
+              cPageItem
+              *ngFor="let listado of ProductosList.links"
+              [active]="listado.active ? true : false"
+              [disabled]="listado.url ? false : true"
+            >
+              <span cPageLink [routerLink] [innerHTML]="listado.label"></span>
             </li>
           </c-pagination>
+        </c-col>
+      </c-row>
+    </c-container>
+    <c-container
+      [fluid]="true"
+      class="my-table-full px-0 text-center"
+      *ngIf="loaderTable"
+    >
+      <c-row class="mb-4">
+        <c-col>
+          <div class="small text-body-secondary mt-3">
+            <span class="h4"> Cargando productos...</span>
+          </div>
         </c-col>
       </c-row>
     </c-container>

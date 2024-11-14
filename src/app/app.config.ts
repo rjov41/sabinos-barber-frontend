@@ -3,7 +3,6 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import {
   provideRouter,
   withEnabledBlockingInitialNavigation,
-  withHashLocation,
   withInMemoryScrolling,
   withRouterConfig,
   withViewTransitions,
@@ -14,6 +13,8 @@ import { IconSetService } from '@coreui/icons-angular';
 import { routes } from './app.routes';
 import { environment } from 'src/environments/environment';
 import { routesDocumentacion } from './app.routes-documentacion';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './shared/interceptor/auth-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -32,6 +33,7 @@ export const appConfig: ApplicationConfig = {
       withViewTransitions()
       // withHashLocation()
     ),
+    provideHttpClient(withInterceptors([authInterceptor])),
     importProvidersFrom(SidebarModule, DropdownModule),
     IconSetService,
     provideAnimations(),

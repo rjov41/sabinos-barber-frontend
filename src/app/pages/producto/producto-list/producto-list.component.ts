@@ -1,24 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { delay, timer } from 'rxjs';
 import {
   ButtonDirective,
-  CardBodyComponent,
-  CardComponent,
-  CardFooterComponent,
-  CardHeaderComponent,
-  ColComponent,
   FormControlDirective,
   InputGroupComponent,
-  RowComponent,
   TableDirective,
-  ContainerComponent,
   PaginationComponent,
   PageItemDirective,
   PageLinkDirective,
   GridModule,
   CardModule,
+  TooltipDirective,
 } from '@coreui/angular';
 import { IconDirective } from '@coreui/icons-angular';
+import {
+  ProductoResponse,
+  ProductosService,
+} from '../../../services/productos.service';
+import { CommonModule } from '@angular/common';
+import { Listado } from 'src/app/models/Listados.model';
+import { Producto } from 'src/app/models/Producto.model';
 
 interface IUser {
   name: string;
@@ -51,9 +53,16 @@ interface IUser {
     PageItemDirective,
     PageLinkDirective,
     RouterLink,
+    CommonModule,
+    TooltipDirective,
   ],
 })
 export class ProductoListComponent {
+  private _productosService = inject(ProductosService);
+
+  loaderTable: boolean = true;
+  ProductosList!: Listado<Producto>;
+
   public users: IUser[] = [
     {
       name: 'Yiorgos Avraamu',
@@ -134,4 +143,19 @@ export class ProductoListComponent {
       color: 'dark',
     },
   ];
+
+  ngOnInit(): void {
+    this.getProductos();
+  }
+
+  getProductos() {
+    this._productosService
+      .getProductos()
+      .pipe(delay(3000))
+      .subscribe((data: Listado<Producto>) => {
+        this.loaderTable = false;
+        this.ProductosList = { ...data };
+        console.log(data);
+      });
+  }
 }
