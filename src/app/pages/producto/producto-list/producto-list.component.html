@@ -95,7 +95,7 @@
                   <div class="d-flex flex-direction">
                     <div class="me-3" ngbTooltip="Editar">
                       <a
-                        [routerLink]="['/frecuencia', 'editar']"
+                        [routerLink]="['/productos', 'editar', producto.id]"
                         cTooltip="Editar"
                       >
                         <svg cIcon height="18" name="cil-pencil"></svg>
@@ -120,7 +120,7 @@
       </c-row>
       <c-row class="">
         <c-col>
-          <c-pagination aria-label="Page navigation example">
+          <c-pagination aria-label="Page navigation">
             <!-- [ngClass]="{
               active: listado.active,
               disabled: listado.url == null
@@ -130,6 +130,8 @@
               *ngFor="let listado of ProductosList.links"
               [active]="listado.active ? true : false"
               [disabled]="listado.url ? false : true"
+              (click)="newPage(listado)"
+              class="pointer"
             >
               <span cPageLink [routerLink] [innerHTML]="listado.label"></span>
             </li>
