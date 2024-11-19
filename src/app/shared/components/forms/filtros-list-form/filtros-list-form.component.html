@@ -1,0 +1,86 @@
+<c-card class="my-4">
+  <c-card-body class="pt-4">
+    <c-container [fluid]="true" class="px-0">
+      <c-row class="mb-5">
+        <c-col [md]="6">
+          <div cFormFloating class="mb-3">
+            <input
+              cFormControl
+              id="IdInput"
+              placeholder="id"
+              type="text"
+              [(ngModel)]="filtro.id"
+              appOnlyAlphanumeric
+            />
+            <label cLabel for="IdInput">Id</label>
+          </div>
+        </c-col>
+        <c-col [md]="6">
+          <div cFormFloating class="mb-3">
+            <input
+              cFormControl
+              id="marcaInput"
+              placeholder="id"
+              type="text"
+              [(ngModel)]="filtro.marca"
+              appOnlyAlphanumeric
+            />
+            <label cLabel for="IdInput">Marca</label>
+          </div>
+        </c-col>
+        <c-col [md]="6">
+          <div cFormFloating class="mb-3">
+            <input
+              cFormControl
+              id="descripcionInput"
+              placeholder="id"
+              type="text"
+              [(ngModel)]="filtro.descripcion"
+              appOnlyAlphanumeric
+            />
+            <label cLabel for="descripcionInput">Descripción</label>
+          </div>
+        </c-col>
+        <c-col [md]="6">
+          <div cFormFloating class="mb-3">
+            <input
+              type="text"
+              id="rangeCalendarCenter"
+              class="form-control"
+              style="
+                box-shadow: none;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+              "
+              readonly
+              ngxDaterangepickerBootstrap
+              [(ngModel)]="filtro.fecha"
+              [drops]="'down'"
+              [opens]="'center'"
+              [locale]="locale"
+              [showCustomRangeLabel]="false"
+              [showCancel]="true"
+              [linkedCalendars]="false"
+              [alwaysShowCalendars]="true"
+              [showRangeLabelOnInput]="false"
+              [keepCalendarOpeningWithRange]="false"
+              (datesUpdated)="datesUpdatedRange($event)"
+              aria-describedby="rangeCalendarCenterDesc"
+              [ngModelOptions]="{ standalone: true }"
+            />
+            <label cLabel for="descripcionInput">Descripción</label>
+          </div>
+        </c-col>
+      </c-row>
+      <c-row>
+        <c-col class="text-center">
+          <button cButton class="me-3" color="secondary">Limpiar</button>
+          <button cButton class="" color="primary" (click)="onFiltrar()">
+            Filtrar
+          </button>
+        </c-col>
+      </c-row>
+    </c-container>
+  </c-card-body>
+</c-card>

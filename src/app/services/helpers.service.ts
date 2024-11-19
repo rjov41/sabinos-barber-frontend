@@ -1,14 +1,9 @@
-import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
-import { Producto } from '../models/Producto.model';
-import { Listado } from '../models/Listados.model';
 import { ParametersUrl } from '../models/Parameter.model';
 
 const URL_PRODUCTO = `${environment.apiUrl}productos`;
-export type ProductoResponse = Producto[] | Listado<Producto>;
-
 @Injectable({
   providedIn: 'root',
 })

@@ -84,3 +84,22 @@
     background-color: #212631 !important;
   }
 }
+
+.form-floating {
+  .form-control,
+  .form-select {
+    min-height: 45px;
+    height: 45px;
+  }
+
+  .form-select {
+    padding-top: 1.05rem;
+  }
+
+  label {
+    line-height: 12px;
+  }
+}
+.invalid-feedback {
+  display: block;
+}

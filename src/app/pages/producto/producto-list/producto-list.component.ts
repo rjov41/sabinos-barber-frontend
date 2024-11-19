@@ -12,6 +12,8 @@ import {
   GridModule,
   CardModule,
   TooltipDirective,
+  ModalModule,
+  ButtonModule,
 } from '@coreui/angular';
 import { IconDirective } from '@coreui/icons-angular';
 import { ProductosService } from '../../../services/productos.service';
@@ -19,6 +21,7 @@ import { CommonModule } from '@angular/common';
 import { Listado } from 'src/app/models/Listados.model';
 import { Producto } from 'src/app/models/Producto.model';
 import { ParametersUrl } from 'src/app/models/Parameter.model';
+import { FiltrosListFormComponent } from '../../../shared/components/forms/filtros-list-form/filtros-list-form.component';
 
 interface IUser {
   name: string;
@@ -53,6 +56,9 @@ interface IUser {
     RouterLink,
     CommonModule,
     TooltipDirective,
+    FiltrosListFormComponent,
+    ModalModule,
+    ButtonModule,
   ],
 })
 export class ProductoListComponent {
@@ -65,6 +71,7 @@ export class ProductoListComponent {
     disablePaginate: '0',
   };
   ProductosList!: Listado<Producto>;
+  visible = false;
 
   ngOnInit(): void {
     this.getProductos();
@@ -89,5 +96,17 @@ export class ProductoListComponent {
     this.ParametrosURL.link = link.url;
 
     this.getProductos();
+  }
+
+  toggleLiveDemo() {
+    this.visible = !this.visible;
+  }
+  filtroEvent(event: any) {
+    console.log(event);
+    this.visible = !this.visible;
+  }
+
+  handleLiveDemoChange(event: any) {
+    this.visible = event;
   }
 }

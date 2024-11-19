@@ -67,17 +67,18 @@
       class="py-0 pe-0"
       aria-label="Open user menu"
     >
-      <c-avatar
+      <!-- <c-avatar
         shape="rounded-1"
         [size]="'md'"
         src="./assets/images/avatars/8.jpg"
         status="success"
         textColor="primary"
         alt="User avatar"
-      />
+      /> -->
+      <svg cIcon name="cilUser" height="20" width="20"></svg>
     </button>
     <ul cDropdownMenu class="pt-0 w-auto">
-      <li>
+      <!-- <li>
         <h6
           cDropdownHeader
           class="bg-body-secondary text-body-secondary fw-semibold py-2 rounded-top"
@@ -156,12 +157,12 @@
           <svg cIcon class="me-2" name="cilLockLocked"></svg>
           Lock Account
         </a>
-      </li>
-      <li>
-        <a cDropdownItem routerLink="">
+      </li> -->
+      <li class="pointer">
+        <span cDropdownItem (click)="logout()">
           <svg cIcon class="me-2" name="cilAccountLogout"></svg>
-          Logout
-        </a>
+          Cerrar sesión
+        </span>
       </li>
     </ul>
   </c-dropdown>

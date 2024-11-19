@@ -1,0 +1,69 @@
+<form cForm [formGroup]="LoginForm">
+  <c-container class="mb-5">
+    <c-input-group class="">
+      <span cInputGroupText>
+        <svg cIcon name="cilUser"></svg>
+      </span>
+      <input
+        cFormControl
+        id="emailInput"
+        placeholder="Email"
+        type="text"
+        formControlName="email"
+        [ngClass]="{
+          'is-invalid':
+            getControl('email').invalid && getControl('email').touched,
+          'is-valid': getControl('email').valid
+        }"
+        appOnlyEmailCharacters
+      />
+    </c-input-group>
+    <app-valid-messages-form
+      [errors]="getControlError('email')"
+      [messages]="LoginErrorMessages['email']"
+    ></app-valid-messages-form>
+  </c-container>
+  <c-container class="mb-4">
+    <c-input-group>
+      <span cInputGroupText>
+        <svg cIcon name="cilLockLocked"></svg>
+      </span>
+      <input
+        cFormControl
+        id="passwordInput"
+        placeholder="password"
+        type="password"
+        formControlName="password"
+        [ngClass]="{
+          'is-invalid':
+            getControl('password').invalid && getControl('password').touched,
+          'is-valid': getControl('password').valid
+        }"
+        appOnlyAlphanumeric
+      />
+    </c-input-group>
+    <app-valid-messages-form
+      [errors]="getControlError('password')"
+      [messages]="LoginErrorMessages['password']"
+    ></app-valid-messages-form>
+  </c-container>
+
+  <c-row class="text-center justify-content-center align-items-center mt-4">
+    <c-col xs="6">
+      <button
+        [disabled]="!LoginForm.valid || loadingFormLogin"
+        cButton
+        class="px-4"
+        color="primary"
+        (click)="login()"
+      >
+        @if(loadingFormLogin){
+        <c-spinner aria-hidden="true" size="sm" />
+        <span class="ms-2">Accediendo</span>
+        }@else{
+        <span>Acceder</span>
+        }
+      </button>
+    </c-col>
+  </c-row>
+</form>

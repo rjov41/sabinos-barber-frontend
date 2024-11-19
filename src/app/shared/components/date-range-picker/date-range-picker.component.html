@@ -1,0 +1,52 @@
+<!-- @if(SelectType == "range"){ -->
+<input
+  type="text"
+  id="rangeCalendarCenter"
+  class="form-control"
+  style="
+    box-shadow: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  "
+  readonly
+  ngxDaterangepickerBootstrap
+  [(ngModel)]="selectedRangeCalendarCenter"
+  [drops]="dropsDown"
+  [opens]="opensCenter"
+  [locale]="locale"
+  [showCustomRangeLabel]="false"
+  [showCancel]="true"
+  [linkedCalendars]="false"
+  [alwaysShowCalendars]="true"
+  [showRangeLabelOnInput]="false"
+  [keepCalendarOpeningWithRange]="false"
+  [isCustomDate]="isCustomDate"
+  [isInvalidDate]="isInvalidDate"
+  (datesUpdated)="datesUpdatedRange($event)"
+  aria-describedby="rangeCalendarCenterDesc"
+/>
+<!-- } @if(SelectType == "onlyOne"){
+<input
+  type="text"
+  id="singleCalendarCenter"
+  class="form-control"
+  style="
+    box-shadow: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  "
+  readonly
+  ngxDaterangepickerBootstrap
+  [singleDatePicker]="true"
+  [(ngModel)]="selectedSingleCalendarCenter"
+  [drops]="dropsDown"
+  [opens]="opensCenter"
+  [locale]="locale"
+  [isCustomDate]="isCustomDate"
+  [isInvalidDate]="isInvalidDate"
+  (datesUpdated)="datesUpdatedSingle($event)"
+  aria-describedby="singleCalendarCenterDesc"
+/>
+} -->

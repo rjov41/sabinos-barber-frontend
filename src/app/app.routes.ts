@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { DefaultLayoutComponent } from './layout';
+import { loginGuard } from './guards/login.guard';
 
 export const routes: Routes = [
   {
@@ -10,6 +11,7 @@ export const routes: Routes = [
   {
     path: '',
     component: DefaultLayoutComponent,
+    canActivate: [loginGuard],
     children: [
       {
         path: '',
@@ -18,5 +20,17 @@ export const routes: Routes = [
       },
     ],
   },
-  { path: '**', redirectTo: 'pages' },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./pages/login/login.component').then((c) => c.LoginComponent),
+  },
+  {
+    path: '404',
+    loadComponent: () =>
+      import('./pages/error404/error404.component').then(
+        (c) => c.Error404Component
+      ),
+  },
+  { path: '**', redirectTo: '404' },
 ];

@@ -14,7 +14,8 @@ import { routes } from './app.routes';
 import { environment } from 'src/environments/environment';
 import { routesDocumentacion } from './app.routes-documentacion';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { authInterceptor } from './shared/interceptor/auth-interceptor';
+import { authInterceptor } from './shared/interceptors/auth-interceptor';
+import { provideDaterangepickerLocale } from 'ngx-daterangepicker-bootstrap';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -37,5 +38,9 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(SidebarModule, DropdownModule),
     IconSetService,
     provideAnimations(),
+    provideDaterangepickerLocale({
+      separator: ' - ',
+      applyLabel: 'Okay',
+    }),
   ],
 };

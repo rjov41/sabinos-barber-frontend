@@ -5,7 +5,12 @@
         [fluid]="true"
         class="px-0 mb-3 d-flex flex-wrap botones-table"
       >
-        <button cButton color="info" class="btn-action-table">
+        <button
+          cButton
+          color="info"
+          class="btn-action-table"
+          (click)="toggleLiveDemo()"
+        >
           <svg cIcon height="18" name="cil-filter"></svg>
           Filtros
         </button>
@@ -24,7 +29,6 @@
           <svg cIcon height="18" name="cil-fax"></svg> Agregar</a
         >
       </c-container>
-
       <c-row class="mb-4">
         <c-col>
           <div class="small text-body-secondary mt-3">
@@ -67,8 +71,8 @@
               </tr>
             </thead>
             <tbody>
-              @for (producto of ProductosList.data; track producto.descripcion;
-              let i = $index) {
+              @for (producto of ProductosList.data; track producto.id; let i =
+              $index) {
               <tr>
                 <td>
                   <span>{{ producto.id }}</span>
@@ -154,3 +158,17 @@
     </c-container>
   </c-card-body>
 </c-card>
+
+<c-modal
+  id="liveDemoModal"
+  [visible]="visible"
+  (visibleChange)="handleLiveDemoChange($event)"
+>
+  <c-modal-header>
+    <h5 cModalTitle><svg cIcon height="18" name="cil-filter"></svg> Filtros</h5>
+    <button (click)="toggleLiveDemo()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <app-filtros-list-form (filtrar)="filtroEvent()" />
+  </c-modal-body>
+</c-modal>

@@ -6,6 +6,7 @@ import { OnlyAlphanumericDirective } from './only-alphanumeric.directive';
 import { OnlyDecimalsDirective } from './only-decimals.directive';
 import { OnlyNumberAndPointDirective } from './only-number-and-point.directive';
 import { BlockCopyPasteDirective } from './block-copy-paste.directive';
+import { OnlyEmailCharactersDirective } from './only-email-characters.directive';
 
 @NgModule({
   imports: [BlockCopyPasteDirective],
@@ -16,6 +17,7 @@ import { BlockCopyPasteDirective } from './block-copy-paste.directive';
     OnlyAlphanumericDirective,
     OnlyDecimalsDirective,
     OnlyNumberAndPointDirective,
+    OnlyEmailCharactersDirective,
   ],
   exports: [
     OnlyNumbersDirective,
@@ -25,6 +27,7 @@ import { BlockCopyPasteDirective } from './block-copy-paste.directive';
     OnlyAlphanumericDirective,
     OnlyDecimalsDirective,
     OnlyNumberAndPointDirective,
+    OnlyEmailCharactersDirective,
   ],
 })
 export class DirectivesModule {}
