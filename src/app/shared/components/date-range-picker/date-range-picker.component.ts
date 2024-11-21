@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import dayjs, { Dayjs, locale } from 'dayjs';
 import 'dayjs/locale/es'; // Cambia 'es' al idioma que necesites
@@ -13,18 +14,15 @@ dayjs.locale('es'); // Configura el idioma global
 @Component({
   selector: 'app-date-range-picker',
   standalone: true,
-  imports: [
-    NgxDaterangepickerBootstrapComponent,
-    NgxDaterangepickerBootstrapDirective,
-    FormsModule,
-  ],
+  imports: [NgxDaterangepickerBootstrapDirective, FormsModule, CommonModule],
   templateUrl: './date-range-picker.component.html',
   styleUrl: './date-range-picker.component.scss',
 })
 export class DateRangePickerComponent {
-  @Input() SelectType!: string;
-  @Input() startDate!: any;
-  @Input() endDate = dayjs().startOf('day');
+  // @Input() SelectType!: string
+  @Input() selectedRangeCalendar!: any;
+  @Input() floatingInput: boolean = false;
+  @Output() handleDate = new EventEmitter<any>();
 
   dropsDown = 'down';
   dropsUp = 'up';
@@ -32,23 +30,23 @@ export class DateRangePickerComponent {
   opensCenter = 'center';
   opensLeft = 'left';
   selectedRangeCalendarTimeRight: any;
-  selectedRangeCalendarCenter: any;
-  selectedRangeCalendarAutoLeft: any;
+
+  // selectedRangeCalendarAutoLeft: any;
   selectedSingleCalendarTimeRight: any;
   selectedSingleCalendarCenter: any;
   selectedSingleCalendarAutoLeft: any;
   selectedSimpleCalendarTimeUpRight: any;
   selectedSimpleCalendarUpCenter: any;
   selectedSimpleCalendarAutoUpLeft: any;
-  selectedRangeCalendarTimeInline: any;
+  // selectedRangeCalendarTimeInline: any;
   maxDate?: Dayjs;
   minDate?: Dayjs;
   invalidDates: Dayjs[] = [];
 
   locale = {
     firstDay: 1,
-    startDate: this.startDate,
-    endDate: this.endDate,
+    // startDate: this.startDate,
+    // endDate: this.endDate,
     format: 'DD-MM-YYYY',
     applyLabel: 'Aplicar',
     cancelLabel: 'Cancelar',
@@ -76,37 +74,37 @@ export class DateRangePickerComponent {
   // ];
 
   constructor() {
-    this.selectedRangeCalendarTimeRight = {
-      startDate: dayjs().startOf('day'),
-      endDate: dayjs().endOf('day'),
-    };
-    this.selectedRangeCalendarCenter = {
-      startDate: dayjs().startOf('day'),
-      endDate: dayjs().endOf('day'),
-    };
-    this.selectedRangeCalendarAutoLeft = {
-      startDate: dayjs().startOf('day'),
-      endDate: dayjs().endOf('day'),
-    };
-    this.selectedSingleCalendarTimeRight = dayjs().startOf('day');
-    this.selectedSingleCalendarCenter = dayjs().startOf('day');
-    this.selectedSingleCalendarAutoLeft = dayjs().startOf('day');
-    this.selectedSimpleCalendarTimeUpRight = {
-      startDate: dayjs().startOf('day'),
-      endDate: dayjs().endOf('day'),
-    };
-    this.selectedSimpleCalendarUpCenter = {
-      startDate: dayjs().startOf('day'),
-      endDate: dayjs().endOf('day'),
-    };
-    this.selectedSimpleCalendarAutoUpLeft = {
-      startDate: dayjs().startOf('day'),
-      endDate: dayjs().endOf('day'),
-    };
-    this.selectedRangeCalendarTimeInline = {
-      startDate: dayjs().startOf('day'),
-      endDate: dayjs().endOf('day'),
-    };
+    // this.selectedRangeCalendarTimeRight = {
+    //   startDate: dayjs().startOf('day'),
+    //   endDate: dayjs().endOf('day'),
+    // };
+    // this.selectedRangeCalendar = {
+    //   startDate: dayjs().startOf('day'),
+    //   endDate: dayjs().endOf('day'),
+    // };
+    // this.selectedRangeCalendarAutoLeft = {
+    //   startDate: dayjs().startOf('day'),
+    //   endDate: dayjs().endOf('day'),
+    // };
+    // this.selectedSingleCalendarTimeRight = dayjs().startOf('day');
+    // this.selectedSingleCalendarCenter = dayjs().startOf('day');
+    // this.selectedSingleCalendarAutoLeft = dayjs().startOf('day');
+    // this.selectedSimpleCalendarTimeUpRight = {
+    //   startDate: dayjs().startOf('day'),
+    //   endDate: dayjs().endOf('day'),
+    // };
+    // this.selectedSimpleCalendarUpCenter = {
+    //   startDate: dayjs().startOf('day'),
+    //   endDate: dayjs().endOf('day'),
+    // };
+    // this.selectedSimpleCalendarAutoUpLeft = {
+    //   startDate: dayjs().startOf('day'),
+    //   endDate: dayjs().endOf('day'),
+    // };
+    // this.selectedRangeCalendarTimeInline = {
+    //   startDate: dayjs().startOf('day'),
+    //   endDate: dayjs().endOf('day'),
+    // };
   }
 
   isInvalidDate = (m: Dayjs) => {
@@ -122,8 +120,9 @@ export class DateRangePickerComponent {
   //   return tooltip ? tooltip.text : false;
   // };
 
-  datesUpdatedRange($event: Object) {
-    console.log('range', $event);
+  datesUpdatedRange(event: any) {
+    if (event.startDate && event.endDate) this.handleDate.emit(event);
+    // console.log('range', event);
   }
 
   datesUpdatedSingle($event: any) {

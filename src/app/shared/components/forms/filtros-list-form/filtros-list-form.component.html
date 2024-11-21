@@ -2,21 +2,25 @@
   <c-card-body class="pt-4">
     <c-container [fluid]="true" class="px-0">
       <c-row class="mb-5">
+        @if(showId){
         <c-col [md]="6">
-          <div cFormFloating class="mb-3">
+          <div class="mb-3">
+            <label cLabel for="IdInput">Id</label>
             <input
               cFormControl
               id="IdInput"
+              name="id"
               placeholder="id"
               type="text"
               [(ngModel)]="filtro.id"
               appOnlyAlphanumeric
             />
-            <label cLabel for="IdInput">Id</label>
           </div>
         </c-col>
+        } @if(showMarca){
         <c-col [md]="6">
-          <div cFormFloating class="mb-3">
+          <div class="mb-3">
+            <label cLabel for="marcaInput">Marca</label>
             <input
               cFormControl
               id="marcaInput"
@@ -24,59 +28,79 @@
               type="text"
               [(ngModel)]="filtro.marca"
               appOnlyAlphanumeric
+              name="marca"
             />
-            <label cLabel for="IdInput">Marca</label>
           </div>
         </c-col>
+        } @if(showDescripcion){
         <c-col [md]="6">
-          <div cFormFloating class="mb-3">
+          <div class="mb-3">
+            <label cLabel for="descripcionInput">Descripción</label>
             <input
               cFormControl
               id="descripcionInput"
               placeholder="id"
               type="text"
               [(ngModel)]="filtro.descripcion"
+              name="descripcion"
               appOnlyAlphanumeric
             />
-            <label cLabel for="descripcionInput">Descripción</label>
           </div>
         </c-col>
+        } @if(showDate){
         <c-col [md]="6">
-          <div cFormFloating class="mb-3">
-            <input
-              type="text"
-              id="rangeCalendarCenter"
-              class="form-control"
-              style="
-                box-shadow: none;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                white-space: nowrap;
-              "
-              readonly
-              ngxDaterangepickerBootstrap
-              [(ngModel)]="filtro.fecha"
-              [drops]="'down'"
-              [opens]="'center'"
-              [locale]="locale"
-              [showCustomRangeLabel]="false"
-              [showCancel]="true"
-              [linkedCalendars]="false"
-              [alwaysShowCalendars]="true"
-              [showRangeLabelOnInput]="false"
-              [keepCalendarOpeningWithRange]="false"
-              (datesUpdated)="datesUpdatedRange($event)"
-              aria-describedby="rangeCalendarCenterDesc"
-              [ngModelOptions]="{ standalone: true }"
+          <div class="mb-3">
+            <app-date-range-picker
+              [selectedRangeCalendar]="filtro.fecha"
+              (handleDate)="handleDate($event)"
             />
-            <label cLabel for="descripcionInput">Descripción</label>
           </div>
         </c-col>
+        } @if(showLocales){
+        <c-col [md]="6">
+          <div class="mb-3">
+            <label cLabel for="LocalInput">Locales</label>
+            <select
+              cSelect
+              [(ngModel)]="filtro.local_id"
+              name="local"
+              id="LocalInput"
+            >
+              <option [ngValue]="0">Todos</option>
+              <option
+                *ngFor="let local of Locales; let i = index"
+                [ngValue]="local.id"
+              >
+                {{ local.nombre }}
+              </option>
+            </select>
+          </div>
+        </c-col>
+        } @if(showEstado){
+        <c-col [md]="6">
+          <div class="mb-3">
+            <label cLabel for="estadoInput">Estado</label>
+            <select
+              cSelect
+              [(ngModel)]="filtro.estado"
+              id="estadoInput"
+              name="estado"
+            >
+              <option [ngValue]="2">Todos</option>
+              <option [ngValue]="1">Activo</option>
+              <option [ngValue]="0">Eliminado</option>
+            </select>
+          </div>
+        </c-col>
+        }
       </c-row>
       <c-row>
         <c-col class="text-center">
-          <button cButton class="me-3" color="secondary">Limpiar</button>
+          <button cButton class="me-3" color="secondary" (click)="onLimpiar()">
+            Limpiar
+          </button>
           <button cButton class="" color="primary" (click)="onFiltrar()">
+            <svg cIcon height="18" name="cil-filter"></svg>
             Filtrar
           </button>
         </c-col>

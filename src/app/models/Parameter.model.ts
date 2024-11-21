@@ -7,4 +7,7 @@ export interface ParametersUrl {
   dateFin?: string;
   allDates?: boolean;
   disablePaginate?: string;
+
+  local?: string | number;
+  local_model?: string;
 }

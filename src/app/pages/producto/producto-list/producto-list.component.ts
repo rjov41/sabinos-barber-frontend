@@ -14,6 +14,7 @@ import {
   TooltipDirective,
   ModalModule,
   ButtonModule,
+  ModalService,
 } from '@coreui/angular';
 import { IconDirective } from '@coreui/icons-angular';
 import { ProductosService } from '../../../services/productos.service';
@@ -22,6 +23,15 @@ import { Listado } from 'src/app/models/Listados.model';
 import { Producto } from 'src/app/models/Producto.model';
 import { ParametersUrl } from 'src/app/models/Parameter.model';
 import { FiltrosListFormComponent } from '../../../shared/components/forms/filtros-list-form/filtros-list-form.component';
+import { IModalAction } from '@coreui/angular/lib/modal/modal.service';
+import logger from 'src/app/shared/utils/logger';
+import { Filtro, FiltroKeys } from 'src/app/models/Filter.model';
+import dayjs from 'dayjs';
+import { HelpersService } from 'src/app/services/helpers.service';
+import Swal from 'sweetalert2';
+import { ColorModeService } from '@coreui/angular';
+import { environment } from 'src/environments/environment';
+import { FormsModule } from '@angular/forms';
 
 interface IUser {
   name: string;
@@ -59,19 +69,26 @@ interface IUser {
     FiltrosListFormComponent,
     ModalModule,
     ButtonModule,
+    FormsModule,
   ],
 })
 export class ProductoListComponent {
-  private _productosService = inject(ProductosService);
+  private _ProductosService = inject(ProductosService);
+  private _ModalService = inject(ModalService);
+  private _HelpersService = inject(HelpersService);
+  readonly #ColorModeService = inject(ColorModeService);
 
   loaderTable: boolean = true;
   ParametrosURL: ParametersUrl = {
     allDates: true,
+    estado: 1,
     link: null,
     disablePaginate: '0',
+    local_model: '1',
+    dateIni: dayjs().startOf('month').format('YYYY-MM-DD'),
+    dateFin: dayjs().endOf('month').format('YYYY-MM-DD'),
   };
   ProductosList!: Listado<Producto>;
-  visible = false;
 
   ngOnInit(): void {
     this.getProductos();
@@ -79,7 +96,8 @@ export class ProductoListComponent {
 
   getProductos() {
     this.loaderTable = true;
-    this._productosService
+
+    this._ProductosService
       .getProductos(this.ParametrosURL)
       // .pipe(delay(3000))
       .subscribe((data: Listado<Producto>) => {
@@ -98,15 +116,68 @@ export class ProductoListComponent {
     this.getProductos();
   }
 
-  toggleLiveDemo() {
-    this.visible = !this.visible;
-  }
-  filtroEvent(event: any) {
-    console.log(event);
-    this.visible = !this.visible;
+  modalStatusById(id: string, show: boolean) {
+    const action: IModalAction = { show, id };
+    this._ModalService.toggle(action);
   }
 
-  handleLiveDemoChange(event: any) {
-    this.visible = event;
+  filtroEvent(filtros: Filtro) {
+    console.log('filtros', filtros);
+    const FILTROS_SANETIZE = this._HelpersService.filterData(filtros);
+    console.log('FILTROS_SANETIZE', FILTROS_SANETIZE);
+
+    this.ParametrosURL = {
+      ...this.ParametrosURL,
+      ...FILTROS_SANETIZE,
+    };
+
+    console.log('this.ParametrosURL', this.ParametrosURL);
+    this.getProductos();
+  }
+
+  buscar() {
+    this.getProductos();
+  }
+
+  eliminar(producto: Producto) {
+    Swal.mixin({
+      customClass: {
+        container: this.#ColorModeService.getStoredTheme(
+          environment.SabinosTheme
+        ),
+      },
+    })
+      .fire({
+        title: '¿Estás seguro?',
+        text: 'Este producto se eliminará y no podrás recuperarlo.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#51cbce',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          this._ProductosService
+            .deleteProducto(Number(producto.id))
+            .subscribe((data) => {
+              this.ProductosList.data = this.ProductosList.data.filter(
+                (product) => product.id != producto.id
+              );
+
+              Swal.mixin({
+                customClass: {
+                  container: this.#ColorModeService.getStoredTheme(
+                    environment.SabinosTheme
+                  ),
+                },
+              }).fire({
+                text: data[0],
+                icon: 'success',
+              });
+            });
+        }
+      });
   }
 }

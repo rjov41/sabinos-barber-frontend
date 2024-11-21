@@ -8,21 +8,21 @@ import { HelpersService } from './helpers.service';
 import { ParametersUrl } from '../models/Parameter.model';
 import logger from '../shared/utils/logger';
 
-const URL_PRODUCTO = `${environment.apiUrl}producto`;
+const URL_PRODUCTO = `${environment.apiUrl}local`;
 export type ProductoResponse = Producto[] | Listado<Producto>;
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProductosService {
+export class LocalesService {
   // constructor(private http: HttpClient) {}
   private http = inject(HttpClient);
   private _Helpers = inject(HelpersService);
 
   // public methods
-  getProductos(parametersURL: ParametersUrl): Observable<any> {
+  getLocales(parametersURL: ParametersUrl): Observable<any> {
     let URL = parametersURL.link ? parametersURL.link : URL_PRODUCTO;
-    logger.log(URL, parametersURL);
+    // logger.log(URL, parametersURL);
     return this.http.get<any>(URL, {
       params: this._Helpers.formatParameters(parametersURL),
       responseType: 'json',
@@ -31,12 +31,6 @@ export class ProductosService {
 
   getProductoById(id: number): Observable<any> {
     return this.http.get<any>(`${URL_PRODUCTO}/${id}`, {
-      responseType: 'json',
-    });
-  }
-
-  deleteProducto(id: number): Observable<any> {
-    return this.http.delete<any>(`${URL_PRODUCTO}/${id}`, {
       responseType: 'json',
     });
   }

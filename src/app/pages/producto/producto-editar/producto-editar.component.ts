@@ -65,7 +65,8 @@ export class ProductoEditarComponent {
       .updateProducto(this.Id, producto)
       .subscribe((data) => {
         this.loader = false;
-        console.log(data);
+        // console.log(data);
+        this.Producto = data.producto;
         Swal.mixin({
           customClass: {
             container: this.#colorModeService.getStoredTheme(

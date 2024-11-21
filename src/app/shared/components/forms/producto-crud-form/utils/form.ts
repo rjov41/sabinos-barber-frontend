@@ -6,7 +6,7 @@ export interface ProductoCrudForm {
   descripcion: FormControl<string | null>;
   cantidad: FormControl<number | null>;
   precio: FormControl<number | null>;
-  estado: FormControl<string | number | null>;
+  local_id: FormControl<string | number | null>;
 }
 
 export const ProductoCrudFormBuilder = () =>
@@ -17,5 +17,5 @@ export const ProductoCrudFormBuilder = () =>
     ]),
     cantidad: new FormControl(null, [...ProductoCrudValidators['cantidad']]),
     precio: new FormControl(null, [...ProductoCrudValidators['precio']]),
-    estado: new FormControl('', [...ProductoCrudValidators['estado']]),
+    local_id: new FormControl('', [...ProductoCrudValidators['local_id']]),
   });

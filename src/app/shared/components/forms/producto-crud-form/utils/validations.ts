@@ -9,7 +9,7 @@ export const ProductoCrudValidators: FormGroupValidators = {
   descripcion: [Validators.required, Validators.maxLength(20)],
   cantidad: [Validators.required, Validators.maxLength(3)],
   precio: [Validators.required, Validators.maxLength(15)],
-  estado: [Validators.required],
+  local_id: [Validators.required],
 };
 
 export const ProductoCrudErrorMessages: FormErrorMessages = {
@@ -29,7 +29,7 @@ export const ProductoCrudErrorMessages: FormErrorMessages = {
     required: 'El precio es requerido.',
     maxlength: 'Solo se permite 15 números.',
   },
-  estado: {
-    required: 'El estado es requerido.',
+  local_id: {
+    required: 'El local es requerido.',
   },
 };

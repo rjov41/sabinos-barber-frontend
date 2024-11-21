@@ -23,6 +23,9 @@ import Swal from 'sweetalert2';
 import logger from 'src/app/shared/utils/logger';
 import { environment } from 'src/environments/environment';
 import { DirectivesModule } from '../../../directivas/directives.module';
+import { Producto } from 'src/app/models/Producto.model';
+import { LocalesService } from 'src/app/services/Local.service';
+import { Local } from 'src/app/models/Local.model';
 
 @Component({
   selector: 'app-producto-crud-form',
@@ -48,12 +51,25 @@ export class ProductoCrudFormComponent {
   readonly ProductoCrudErrorMessages = ProductoCrudErrorMessages;
   ProductoCrudForm = ProductoCrudFormBuilder();
   #colorModeService = inject(ColorModeService);
+  _LocalesServices = inject(LocalesService);
 
-  @Input() Producto: any = null;
+  @Input() Producto!: Producto;
   @Output() FormsValues = new EventEmitter<any>();
 
+  Locales: Local[] = [];
+  ngOnInit(): void {
+    this.getLocales();
+  }
   ngOnChanges(): void {
     if (this.Producto) this.setFormValues();
+  }
+
+  getLocales() {
+    this._LocalesServices
+      .getLocales({ disablePaginate: '1', link: null })
+      .subscribe((locales: Local[]) => {
+        this.Locales = locales;
+      });
   }
 
   getControlError(name: string): ValidationErrors | null {
@@ -71,12 +87,14 @@ export class ProductoCrudFormComponent {
   }
 
   setFormValues() {
+    console.log(this.Producto);
+
     this.ProductoCrudForm.patchValue({
-      marca: 'marca',
-      descripcion: 'descripcion',
-      cantidad: 5,
-      precio: 20.5,
-      estado: 1,
+      marca: this.Producto.marca,
+      cantidad: this.Producto.cantidad,
+      descripcion: this.Producto.descripcion,
+      local_id: this.Producto.local_id,
+      precio: this.Producto.precio,
     });
   }
 

@@ -9,7 +9,7 @@
           cButton
           color="info"
           class="btn-action-table"
-          (click)="toggleLiveDemo()"
+          (click)="modalStatusById('filtros', true)"
         >
           <svg cIcon height="18" name="cil-filter"></svg>
           Filtros
@@ -32,24 +32,33 @@
       <c-row class="mb-4">
         <c-col>
           <div class="small text-body-secondary mt-3">
-            <span class=""> Productos: 5 </span>
+            <span class=""> Productos: {{ ProductosList.total }}</span>
           </div>
         </c-col>
         <c-col class="d-flex justify-content-end" md="4">
           <c-input-group class="">
-            <input class="" aria-describedby="button-addon2" cFormControl />
+            <input
+              class=""
+              aria-describedby="button-addon2"
+              cFormControl
+              name="buscar"
+              id="buscarId"
+              [(ngModel)]="ParametrosURL.filter"
+            />
             <button
               cButton
               color="secondary"
-              id="button-addon2"
+              id="buscarId"
               type="button"
               variant="outline"
+              (click)="buscar()"
             >
               Buscar
             </button>
           </c-input-group>
         </c-col>
       </c-row>
+      @if(ProductosList.data.length > 0){
       <c-row class="mb-4">
         <c-col>
           <table
@@ -77,8 +86,8 @@
                 <td>
                   <span>{{ producto.id }}</span>
                   <!-- <div class="small text-body-secondary text-nowrap">
-                    <span> Registered: </span>
-                  </div> -->
+                      <span> Registered: </span>
+                    </div> -->
                 </td>
                 <td>
                   <span>{{ producto.marca }}</span>
@@ -87,13 +96,15 @@
                   <span>{{ producto.descripcion }}</span>
                 </td>
                 <td>
-                  <span>{{ producto.local_id }}</span>
+                  <span>{{ producto.local.nombre }}</span>
                 </td>
                 <td>
-                  <span>{{ producto.precio }}</span>
+                  <span>{{
+                    producto.precio | currency : "ARS" : "symbol"
+                  }}</span>
                 </td>
                 <td>
-                  <span>{{ producto.cantidad }}</span>
+                  <span>{{ producto.cantidad }} unidades</span>
                 </td>
                 <td>
                   <div class="d-flex flex-direction">
@@ -105,7 +116,11 @@
                         <svg cIcon height="18" name="cil-pencil"></svg>
                       </a>
                     </div>
-                    <div class="" ngbTooltip="Eliminar">
+                    <div
+                      class=""
+                      ngbTooltip="Eliminar"
+                      (click)="eliminar(producto)"
+                    >
                       <span
                         class="text-primary pointer"
                         role="button"
@@ -122,13 +137,13 @@
           </table>
         </c-col>
       </c-row>
-      <c-row class="">
+      <c-row>
         <c-col>
           <c-pagination aria-label="Page navigation">
             <!-- [ngClass]="{
-              active: listado.active,
-              disabled: listado.url == null
-            }" -->
+                active: listado.active,
+                disabled: listado.url == null
+              }" -->
             <li
               cPageItem
               *ngFor="let listado of ProductosList.links"
@@ -142,6 +157,15 @@
           </c-pagination>
         </c-col>
       </c-row>
+      }@else{
+      <c-row>
+        <c-col>
+          <c-container [fluid]="true">
+            <h4 class="text-center py-5">No se encontraron productos</h4>
+          </c-container>
+        </c-col>
+      </c-row>
+      }
     </c-container>
     <c-container
       [fluid]="true"
@@ -159,16 +183,17 @@
   </c-card-body>
 </c-card>
 
-<c-modal
-  id="liveDemoModal"
-  [visible]="visible"
-  (visibleChange)="handleLiveDemoChange($event)"
->
+<c-modal id="filtros">
   <c-modal-header>
     <h5 cModalTitle><svg cIcon height="18" name="cil-filter"></svg> Filtros</h5>
-    <button (click)="toggleLiveDemo()" cButtonClose></button>
+    <button (click)="modalStatusById('filtros', false)" cButtonClose></button>
   </c-modal-header>
   <c-modal-body>
-    <app-filtros-list-form (filtrar)="filtroEvent()" />
+    <app-filtros-list-form
+      (filtrar)="filtroEvent($event)"
+      [showLocales]="true"
+      [showDate]="true"
+      [showEstado]="true"
+    />
   </c-modal-body>
 </c-modal>

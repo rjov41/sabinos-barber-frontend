@@ -1,7 +1,10 @@
 <!-- @if(SelectType == "range"){ -->
+@if(!floatingInput){
+<label cLabel for="RangeDateInput" class="form-label">Rango de fechas</label>
+}
 <input
   type="text"
-  id="rangeCalendarCenter"
+  id="RangeDateInput"
   class="form-control"
   style="
     box-shadow: none;
@@ -11,7 +14,7 @@
   "
   readonly
   ngxDaterangepickerBootstrap
-  [(ngModel)]="selectedRangeCalendarCenter"
+  [(ngModel)]="selectedRangeCalendar"
   [drops]="dropsDown"
   [opens]="opensCenter"
   [locale]="locale"
@@ -24,8 +27,11 @@
   [isCustomDate]="isCustomDate"
   [isInvalidDate]="isInvalidDate"
   (datesUpdated)="datesUpdatedRange($event)"
-  aria-describedby="rangeCalendarCenterDesc"
+  cFormControl
 />
+@if(floatingInput){
+<label cLabel for="RangeDateInput" *ngIf="floatingInput">Rango de fechas</label>
+}
 <!-- } @if(SelectType == "onlyOne"){
 <input
   type="text"

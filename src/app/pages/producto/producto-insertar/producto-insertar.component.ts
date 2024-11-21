@@ -1,23 +1,17 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { ClienteCrudComponent } from '../../../shared/components/forms/cliente-crud/cliente-crud.component';
+import { Router, RouterLink } from '@angular/router';
 import logger from 'src/app/shared/utils/logger';
 import {
-  CardBodyComponent,
-  CardComponent,
-  CardFooterComponent,
-  CardHeaderComponent,
   CardModule,
-  ColComponent,
   ColorModeService,
   ContainerComponent,
   GridModule,
-  RowComponent,
 } from '@coreui/angular';
 import { ProductosService } from 'src/app/services/productos.service';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
 import { Producto } from '../../../models/Producto.model';
+import { ProductoCrudFormComponent } from '../../../shared/components/forms/producto-crud-form/producto-crud-form.component';
 
 @Component({
   selector: 'app-producto-insertar',
@@ -27,14 +21,14 @@ import { Producto } from '../../../models/Producto.model';
   imports: [
     CardModule,
     GridModule,
-    RouterLink,
     ContainerComponent,
-    ClienteCrudComponent,
+    ProductoCrudFormComponent,
   ],
 })
 export class ProductoInsertarComponent {
   #colorModeService = inject(ColorModeService);
   private _ProductosService = inject(ProductosService);
+  private _Router = inject(Router);
 
   loader: boolean = true;
 
@@ -74,7 +68,7 @@ export class ProductoInsertarComponent {
           icon: 'success',
         })
         .then((result) => {
-          console.log(result);
+          this._Router.navigateByUrl(`/productos/editar/${data.producto.id}`);
         });
     });
   }
