@@ -75,7 +75,6 @@ export class LoginComponent {
       //   delay(30000)
       // )
       .subscribe((data) => {
-        console.log(data);
         this.loadingFormLogin = false;
         let Auth: Auth = { ...data };
 

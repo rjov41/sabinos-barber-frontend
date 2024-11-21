@@ -32,12 +32,12 @@ export class HelpersService {
     return params;
   }
 
-  filterData(filtros: Filtro) {
+  filterData(filtros: Filtro): Filtro {
     const newFiltros = Object.entries(filtros)
       .filter(([key, value]) => this.excludeInFilter(key, value, filtros)) // Pasar el objeto completo para procesar fecha
       .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
 
-    return newFiltros;
+    return newFiltros as Filtro;
   }
 
   private excludeInFilter(key: string, value: any, filtros: Filtro): boolean {
@@ -46,10 +46,11 @@ export class HelpersService {
       local_id: 0,
     };
 
-    // Reemplazar valores de dateIni y dateFin si existe fecha
-    if (key === 'fecha' && filtros.fecha?.startDate && filtros.fecha?.endDate) {
-      filtros.dateIni = dayjs(filtros.fecha.startDate).format('YYYY-MM-DD');
-      filtros.dateFin = dayjs(filtros.fecha.endDate).format('YYYY-MM-DD');
+    // filtro la fecha
+    if (key === 'fecha') {
+      // if (key === 'fecha' && filtros.fecha?.startDate && filtros.fecha?.endDate) {
+      // filtros.dateIni = dayjs(filtros.fecha.startDate).format('YYYY-MM-DD');
+      // filtros.dateFin = dayjs(filtros.fecha.endDate).format('YYYY-MM-DD');
       return false; // Excluir el campo `fecha`
     }
 

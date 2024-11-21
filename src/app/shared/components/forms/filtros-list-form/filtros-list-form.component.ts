@@ -100,7 +100,7 @@ export class FiltrosListFormComponent {
   }
 
   handleDate(event: { endDate: dayjs.Dayjs; startDate: dayjs.Dayjs }) {
-    console.log('range', event);
+    logger.log('range', event);
     this.filtro.fecha = event;
   }
 }

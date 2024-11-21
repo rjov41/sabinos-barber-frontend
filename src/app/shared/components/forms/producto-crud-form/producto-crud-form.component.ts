@@ -87,7 +87,7 @@ export class ProductoCrudFormComponent {
   }
 
   setFormValues() {
-    console.log(this.Producto);
+    logger.log(this.Producto);
 
     this.ProductoCrudForm.patchValue({
       marca: this.Producto.marca,

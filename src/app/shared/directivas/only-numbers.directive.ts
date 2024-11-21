@@ -9,7 +9,6 @@ export class OnlyNumbersDirective {
   constructor(private el: ElementRef) {}
 
   @HostListener('keypress', ['$event']) onKeyPress(event: any) {
-    // console.log("asfasf");
     return new RegExp(this.regexStr).test(event.key);
   }
 }

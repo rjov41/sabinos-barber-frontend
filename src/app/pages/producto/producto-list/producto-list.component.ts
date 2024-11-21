@@ -122,16 +122,19 @@ export class ProductoListComponent {
   }
 
   filtroEvent(filtros: Filtro) {
-    console.log('filtros', filtros);
+    logger.log('filtros', filtros);
+
+    filtros.dateIni = dayjs(filtros.fecha.startDate).format('YYYY-MM-DD');
+    filtros.dateFin = dayjs(filtros.fecha.endDate).format('YYYY-MM-DD');
     const FILTROS_SANETIZE = this._HelpersService.filterData(filtros);
-    console.log('FILTROS_SANETIZE', FILTROS_SANETIZE);
 
     this.ParametrosURL = {
       ...this.ParametrosURL,
       ...FILTROS_SANETIZE,
+      dateIni: FILTROS_SANETIZE.dateIni,
     };
+    logger.log('this.ParametrosURL', this.ParametrosURL);
 
-    console.log('this.ParametrosURL', this.ParametrosURL);
     this.getProductos();
   }
 

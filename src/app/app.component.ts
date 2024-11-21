@@ -37,7 +37,6 @@ export class AppComponent implements OnInit {
     this.#iconSetService.icons = { ...iconSubset };
     this.#colorModeService.localStorageItemName.set(environment.SabinosTheme);
     this.#colorModeService.eventName.set('ColorSchemeChange');
-    // console.log(environment);
   }
 
   ngOnInit(): void {
