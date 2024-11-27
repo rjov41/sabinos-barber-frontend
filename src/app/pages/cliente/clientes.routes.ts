@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-export const routesProducto: Routes = [
+export const routesCliente: Routes = [
   {
     path: '',
     children: [
@@ -12,8 +12,8 @@ export const routesProducto: Routes = [
       {
         path: '',
         loadComponent: () =>
-          import('./producto-list/producto-list.component').then(
-            (m) => m.ProductoListComponent
+          import('./cliente-listado/cliente-listado.component').then(
+            (m) => m.ClienteListadoComponent
           ),
         data: {
           title: 'Listado',
@@ -23,8 +23,8 @@ export const routesProducto: Routes = [
         // Ruta de edición con el parámetro dinámico :id
         path: 'editar/:id',
         loadComponent: () =>
-          import('./producto-editar/producto-editar.component').then(
-            (m) => m.ProductoEditarComponent
+          import('./cliente-editar/cliente-editar.component').then(
+            (m) => m.ClienteEditarComponent
           ),
         data: {
           title: 'Editar',
@@ -33,8 +33,8 @@ export const routesProducto: Routes = [
       {
         path: 'insertar',
         loadComponent: () =>
-          import('./producto-insertar/producto-insertar.component').then(
-            (m) => m.ProductoInsertarComponent
+          import('./cliente-insertar/cliente-insertar.component').then(
+            (m) => m.ClienteInsertarComponent
           ),
         data: {
           title: 'Agregar',

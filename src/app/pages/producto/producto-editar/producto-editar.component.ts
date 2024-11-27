@@ -1,11 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CardModule, ColorModeService, GridModule } from '@coreui/angular';
-import { delay } from 'rxjs';
-import { Listado } from 'src/app/models/Listados.model';
 import { Producto } from 'src/app/models/Producto.model';
 import { ProductosService } from 'src/app/services/productos.service';
-import { ClienteCrudComponent } from 'src/app/shared/components/forms/cliente-crud/cliente-crud.component';
 import logger from 'src/app/shared/utils/logger';
 import { ProductoCrudFormComponent } from '../../../shared/components/forms/producto-crud-form/producto-crud-form.component';
 import Swal from 'sweetalert2';
@@ -16,12 +13,7 @@ import { environment } from 'src/environments/environment';
   standalone: true,
   templateUrl: './producto-editar.component.html',
   styleUrl: './producto-editar.component.scss',
-  imports: [
-    CardModule,
-    GridModule,
-    ClienteCrudComponent,
-    ProductoCrudFormComponent,
-  ],
+  imports: [CardModule, GridModule, ProductoCrudFormComponent],
 })
 export class ProductoEditarComponent {
   #colorModeService = inject(ColorModeService);

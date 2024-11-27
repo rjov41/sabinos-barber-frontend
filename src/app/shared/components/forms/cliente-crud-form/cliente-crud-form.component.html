@@ -1,0 +1,79 @@
+<form cForm [formGroup]="ClienteCrudForm" class="form-Cliente-crud">
+  <c-row class="mb-4 flex-wrap">
+    <c-col [md]="4">
+      <div cFormFloating class="mb-3">
+        <input
+          cFormControl
+          id="nombreInput"
+          placeholder="nombre"
+          type="text"
+          formControlName="nombre"
+          [ngClass]="{
+            'is-invalid':
+              getControl('nombre').invalid && getControl('nombre').touched,
+            'is-valid': getControl('nombre').valid
+          }"
+          appOnlyAlphanumeric
+        />
+        <label cLabel for="nombreInput">Nombre</label>
+        <app-valid-messages-form
+          [errors]="getControlError('nombre')"
+          [messages]="ClienteCrudErrorMessages['nombre']"
+        ></app-valid-messages-form>
+      </div>
+    </c-col>
+    <c-col [md]="4">
+      <div cFormFloating class="mb-3">
+        <input
+          cFormControl
+          id="apellidoInput"
+          placeholder="Descripción"
+          type="text"
+          formControlName="apellido"
+          [ngClass]="{
+            'is-invalid':
+              getControl('apellido').invalid && getControl('apellido').touched,
+            'is-valid': getControl('apellido').valid
+          }"
+          appOnlyAlphanumeric
+        />
+        <label cLabel for="apellidoInput">Apellido</label>
+        <app-valid-messages-form
+          [errors]="getControlError('apellido')"
+          [messages]="ClienteCrudErrorMessages['apellido']"
+        ></app-valid-messages-form>
+      </div>
+    </c-col>
+    <c-col [md]="4">
+      <div cFormFloating class="mb-3">
+        <input
+          cFormControl
+          id="telefonoInput"
+          placeholder="telefono"
+          type="text"
+          formControlName="telefono"
+          [ngClass]="{
+            'is-invalid':
+              getControl('telefono').invalid && getControl('telefono').touched,
+            'is-valid': getControl('telefono').valid
+          }"
+          appOnlyNumbers
+        />
+        <label cLabel for="telefonoInput">Teléfono</label>
+        <app-valid-messages-form
+          [errors]="getControlError('telefono')"
+          [messages]="ClienteCrudErrorMessages['telefono']"
+        ></app-valid-messages-form>
+      </div>
+    </c-col>
+  </c-row>
+  <c-row class="mb-4">
+    <c-col class="text-center">
+      @if (Cliente) {
+      <button cButton color="info" (click)="sendValueFom()">Editar</button>
+      } @else {
+      <button cButton color="info" (click)="sendValueFom()">Agregar</button>
+      }
+    </c-col>
+  </c-row>
+</form>

@@ -24,7 +24,15 @@
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@shared/*": [
+        "src/app/shared/*"
+      ],
+    },
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
@@ -40,5 +48,5 @@
     {
       "path": "./tsconfig.spec.json"
     },
-  ]
+  ],
 }

@@ -23,15 +23,15 @@ import Swal from 'sweetalert2';
 import logger from 'src/app/shared/utils/logger';
 import { environment } from 'src/environments/environment';
 import { DirectivesModule } from '../../../directivas/directives.module';
+import { Cliente } from 'src/app/models/Cliente.model';
+import { LocalesService } from 'src/app/services/local.service';
+import { Local } from 'src/app/models/Local.model';
 
 @Component({
-  selector: 'app-cliente-crud',
+  selector: 'app-cliente-crud-form',
   standalone: true,
-  templateUrl: './cliente-crud.component.html',
-  styleUrl: './cliente-crud.component.scss',
   imports: [
     CommonModule,
-    SelectComponent,
     RowComponent,
     ColComponent,
     ButtonDirective,
@@ -43,17 +43,32 @@ import { DirectivesModule } from '../../../directivas/directives.module';
     ModalModule,
     DirectivesModule,
   ],
+  templateUrl: './cliente-crud-form.component.html',
+  styleUrl: './cliente-crud-form.component.scss',
 })
-export class ClienteCrudComponent {
+export class ClienteCrudFormComponent {
   readonly ClienteCrudErrorMessages = ClienteCrudErrorMessages;
   ClienteCrudForm = ClienteCrudFormBuilder();
   #colorModeService = inject(ColorModeService);
+  _LocalesServices = inject(LocalesService);
 
-  @Input() Cliente: any = null;
+  @Input() Cliente!: Cliente;
   @Output() FormsValues = new EventEmitter<any>();
 
+  Locales: Local[] = [];
   ngOnInit(): void {
+    this.getLocales();
+  }
+  ngOnChanges(): void {
     if (this.Cliente) this.setFormValues();
+  }
+
+  getLocales() {
+    this._LocalesServices
+      .getLocales({ disablePaginate: '1', link: null })
+      .subscribe((locales: Local[]) => {
+        this.Locales = locales;
+      });
   }
 
   getControlError(name: string): ValidationErrors | null {
@@ -71,12 +86,12 @@ export class ClienteCrudComponent {
   }
 
   setFormValues() {
+    logger.log(this.Cliente);
+
     this.ClienteCrudForm.patchValue({
-      marca: 'marca',
-      descripcion: 'descripcion',
-      cantidad: 5,
-      precio: 20.5,
-      estado: 1,
+      nombre: this.Cliente.nombre,
+      apellido: this.Cliente.apellido,
+      telefono: this.Cliente.telefono,
     });
   }
 

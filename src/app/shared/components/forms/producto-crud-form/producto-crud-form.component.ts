@@ -24,7 +24,7 @@ import logger from 'src/app/shared/utils/logger';
 import { environment } from 'src/environments/environment';
 import { DirectivesModule } from '../../../directivas/directives.module';
 import { Producto } from 'src/app/models/Producto.model';
-import { LocalesService } from 'src/app/services/Local.service';
+import { LocalesService } from 'src/app/services/local.service';
 import { Local } from 'src/app/models/Local.model';
 
 @Component({
@@ -32,7 +32,6 @@ import { Local } from 'src/app/models/Local.model';
   standalone: true,
   imports: [
     CommonModule,
-    SelectComponent,
     RowComponent,
     ColComponent,
     ButtonDirective,

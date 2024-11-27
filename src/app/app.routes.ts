@@ -32,5 +32,5 @@ export const routes: Routes = [
         (c) => c.Error404Component
       ),
   },
-  { path: '**', redirectTo: '404' },
+  // { path: '**', redirectTo: '404' },
 ];

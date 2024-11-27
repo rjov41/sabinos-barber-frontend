@@ -7,6 +7,11 @@ export const navItemsProject: INavData[] = [
     iconComponent: { name: 'cil-cut' },
   },
   {
+    name: 'Clientes',
+    url: '/clientes',
+    iconComponent: { name: 'cil-user' },
+  },
+  {
     title: true,
     name: 'Theme',
   },
