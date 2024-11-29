@@ -91,4 +91,22 @@ export const routesPages: Routes = [
       },
     ],
   },
+  {
+    path: '',
+    children: [
+      {
+        path: '',
+        redirectTo: '',
+        pathMatch: 'full',
+      },
+      {
+        path: 'empleados',
+        loadChildren: () =>
+          import('./empleado/empleado.routes').then((m) => m.routesEmpleado),
+        data: {
+          title: 'Empleados',
+        },
+      },
+    ],
+  },
 ];

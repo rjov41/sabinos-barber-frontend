@@ -8,56 +8,59 @@ import {
   ButtonDirective,
   ColComponent,
   ColorModeService,
-  ContainerComponent,
   FormFloatingDirective,
   FormModule,
   ModalModule,
   RowComponent,
-  SpinnerComponent,
 } from '@coreui/angular';
-import { SelectComponent } from 'src/app/documentacion/forms/select/select.component';
-import { LoginFormBuilder } from './utils/form';
+import { EmpleadoCrudFormBuilder } from './utils/form';
 import { CommonModule } from '@angular/common';
 import { ValidMessagesFormComponent } from '../../valid-messages-form/valid-messages-form.component';
-import { LoginErrorMessages } from './utils/validations';
+import { EmpleadoCrudErrorMessages } from './utils/validations';
 import Swal from 'sweetalert2';
 import logger from 'src/app/shared/utils/logger';
 import { environment } from 'src/environments/environment';
 import { DirectivesModule } from '../../../directivas/directives.module';
-import { IconDirective } from '@coreui/icons-angular';
+import { EmpleadosService } from 'src/app/services/empleados.service';
+import { Empleado } from 'src/app/models/Empleado.model';
 
 @Component({
-  selector: 'app-login-form',
+  selector: 'app-empleado-crud-form',
   standalone: true,
-  templateUrl: './login-form.component.html',
-  styleUrl: './login-form.component.scss',
   imports: [
     CommonModule,
-    ContainerComponent,
     RowComponent,
     ColComponent,
     ButtonDirective,
+    FormFloatingDirective,
     FormModule,
     ReactiveFormsModule,
     ValidMessagesFormComponent,
     ModalModule,
     DirectivesModule,
-    IconDirective,
-    SpinnerComponent,
   ],
+  templateUrl: './empleado-crud-form.component.html',
+  styleUrl: './empleado-crud-form.component.scss',
 })
-export class LoginFormComponent {
+export class EmpleadoCrudFormComponent {
+  readonly EmpleadoCrudErrorMessages = EmpleadoCrudErrorMessages;
+  EmpleadoCrudForm = EmpleadoCrudFormBuilder();
   #colorModeService = inject(ColorModeService);
+  _EmpleadosService = inject(EmpleadosService);
 
-  LoginForm = LoginFormBuilder();
+  @Input() Empleado!: Empleado;
+  @Output() FormsValues = new EventEmitter<any>();
 
-  readonly LoginErrorMessages = LoginErrorMessages;
+  Empleadoes: Empleado[] = [];
 
-  @Output() LoginFormValues = new EventEmitter<any>();
-  @Input() loadingFormLogin: boolean = false;
+  ngOnChanges(): void {
+    if (this.Empleado) this.setFormValues();
+  }
 
   getControlError(name: string): ValidationErrors | null {
-    const control = this.LoginForm.controls ? this.LoginForm.get(name) : null;
+    const control = this.EmpleadoCrudForm.controls
+      ? this.EmpleadoCrudForm.get(name)
+      : null;
 
     return control && control.touched && control.invalid
       ? control.errors
@@ -65,13 +68,22 @@ export class LoginFormComponent {
   }
 
   getControl(name: string): FormControl {
-    return this.LoginForm.get(name) as FormControl;
+    return this.EmpleadoCrudForm.get(name) as FormControl;
   }
 
-  login() {
-    if (this.LoginForm.valid) {
-      this.loadingFormLogin = true;
-      this.LoginFormValues.emit(this.LoginForm.value);
+  setFormValues() {
+    logger.log(this.Empleado);
+
+    this.EmpleadoCrudForm.patchValue({
+      nombre_completo: this.Empleado.nombre_completo,
+      dni: this.Empleado.dni,
+      // apellido: this.Empleado.nombre,
+    });
+  }
+
+  sendValueFom() {
+    if (this.EmpleadoCrudForm.valid) {
+      this.FormsValues.emit(this.EmpleadoCrudForm.value);
     } else {
       Swal.mixin({
         customClass: {
