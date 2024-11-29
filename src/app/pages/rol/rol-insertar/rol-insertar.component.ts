@@ -1,30 +1,30 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CardModule, ColorModeService, GridModule } from '@coreui/angular';
-import { Local } from 'src/app/models/Local.model';
-import { LocalesService } from 'src/app/services/locales.service';
+import { Role } from 'src/app/models/Role.model';
+import { RolesService } from 'src/app/services/role.service';
 import logger from 'src/app/shared/utils/logger';
 
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
-import { LocalesCrudFormComponent } from '../../../shared/components/forms/locales-crud-form/locales-crud-form.component';
+import { RolCrudFormComponent } from '../../../shared/components/forms/rol-crud-form/rol-crud-form.component';
 
 @Component({
-  selector: 'app-local-insertar',
+  selector: 'app-rol-insertar',
   standalone: true,
-  imports: [CardModule, GridModule, LocalesCrudFormComponent],
-  templateUrl: './local-insertar.component.html',
-  styleUrl: './local-insertar.component.scss',
+  imports: [CardModule, GridModule, RolCrudFormComponent],
+  templateUrl: './rol-insertar.component.html',
+  styleUrl: './rol-insertar.component.scss',
 })
-export class LocalInsertarComponent {
+export class RolInsertarComponent {
   #colorModeService = inject(ColorModeService);
-  private _LocalesService = inject(LocalesService);
+  private _RolesService = inject(RolesService);
   private _Router = inject(Router);
 
   loader: boolean = true;
 
-  FormsValues(Local: Local) {
-    logger.log(Local);
+  FormsValues(Rol: Role) {
+    logger.log(Rol);
 
     Swal.mixin({
       customClass: {
@@ -33,7 +33,7 @@ export class LocalInsertarComponent {
         ),
       },
     }).fire({
-      title: 'Agregando Local',
+      title: 'Agregando rol',
       text: 'Esto puede demorar un momento.',
       timerProgressBar: true,
       allowEscapeKey: false,
@@ -44,7 +44,7 @@ export class LocalInsertarComponent {
         Swal.showLoading();
       },
     });
-    this._LocalesService.createLocal(Local).subscribe((data) => {
+    this._RolesService.createRol(Rol).subscribe((data) => {
       this.loader = false;
       console.log(data);
       Swal.mixin({
@@ -55,11 +55,11 @@ export class LocalInsertarComponent {
         },
       })
         .fire({
-          text: 'Local agregado con éxito',
+          text: 'Rol agregado con éxito',
           icon: 'success',
         })
         .then((result) => {
-          this._Router.navigateByUrl(`/locales/editar/${data.Local.id}`);
+          this._Router.navigateByUrl(`/roles/editar/${data.Rol.id}`);
         });
     });
   }

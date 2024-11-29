@@ -58,7 +58,7 @@ export class ClienteInsertarComponent {
           icon: 'success',
         })
         .then((result) => {
-          this._Router.navigateByUrl(`/Clientes/editar/${data.Cliente.id}`);
+          this._Router.navigateByUrl(`/clientes/editar/${data.Cliente.id}`);
         });
     });
   }

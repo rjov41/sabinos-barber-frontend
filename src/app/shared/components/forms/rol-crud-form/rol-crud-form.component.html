@@ -1,0 +1,35 @@
+<form cForm [formGroup]="RolCrudForm" class="form-Rol-crud">
+  <c-row class="mb-4 flex-wrap justify-content-center">
+    <c-col [md]="4">
+      <div cFormFloating class="mb-3">
+        <input
+          cFormControl
+          id="nameInput"
+          placeholder="name"
+          type="text"
+          formControlName="name"
+          [ngClass]="{
+            'is-invalid':
+              getControl('name').invalid && getControl('name').touched,
+            'is-valid': getControl('name').valid
+          }"
+          appOnlyAlphanumeric
+        />
+        <label cLabel for="nameInput">Nombre</label>
+        <app-valid-messages-form
+          [errors]="getControlError('name')"
+          [messages]="RolCrudErrorMessages['name']"
+        ></app-valid-messages-form>
+      </div>
+    </c-col>
+  </c-row>
+  <c-row class="mb-4">
+    <c-col class="text-center">
+      @if (Rol) {
+      <button cButton color="info" (click)="sendValueFom()">Editar</button>
+      } @else {
+      <button cButton color="info" (click)="sendValueFom()">Agregar</button>
+      }
+    </c-col>
+  </c-row>
+</form>

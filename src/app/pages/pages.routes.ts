@@ -55,4 +55,22 @@ export const routesPages: Routes = [
       },
     ],
   },
+  {
+    path: '',
+    children: [
+      {
+        path: '',
+        redirectTo: '',
+        pathMatch: 'full',
+      },
+      {
+        path: 'roles',
+        loadChildren: () =>
+          import('./rol/local.routes').then((m) => m.routesRol),
+        data: {
+          title: 'Roles',
+        },
+      },
+    ],
+  },
 ];
