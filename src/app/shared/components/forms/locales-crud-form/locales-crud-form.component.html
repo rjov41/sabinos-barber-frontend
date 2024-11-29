@@ -1,0 +1,35 @@
+<form cForm [formGroup]="LocalCrudForm" class="form-Local-crud">
+  <c-row class="mb-4 flex-wrap justify-content-center">
+    <c-col [md]="4">
+      <div cFormFloating class="mb-3">
+        <input
+          cFormControl
+          id="nombreInput"
+          placeholder="nombre"
+          type="text"
+          formControlName="nombre"
+          [ngClass]="{
+            'is-invalid':
+              getControl('nombre').invalid && getControl('nombre').touched,
+            'is-valid': getControl('nombre').valid
+          }"
+          appOnlyAlphanumeric
+        />
+        <label cLabel for="nombreInput">Nombre</label>
+        <app-valid-messages-form
+          [errors]="getControlError('nombre')"
+          [messages]="LocalCrudErrorMessages['nombre']"
+        ></app-valid-messages-form>
+      </div>
+    </c-col>
+  </c-row>
+  <c-row class="mb-4">
+    <c-col class="text-center">
+      @if (Local) {
+      <button cButton color="info" (click)="sendValueFom()">Editar</button>
+      } @else {
+      <button cButton color="info" (click)="sendValueFom()">Agregar</button>
+      }
+    </c-col>
+  </c-row>
+</form>

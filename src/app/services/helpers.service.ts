@@ -1,16 +1,18 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
 import { ParametersUrl } from '../models/Parameter.model';
-import logger from '../shared/utils/logger';
 import { Filtro } from '../models/Filter.model';
-import dayjs from 'dayjs';
+import { ColorModeService } from '@coreui/angular';
+import Swal from 'sweetalert2';
 
 const URL_PRODUCTO = `${environment.apiUrl}productos`;
 @Injectable({
   providedIn: 'root',
 })
 export class HelpersService {
+  readonly #ColorModeService = inject(ColorModeService);
+
   headerJson_Token(): HttpHeaders {
     let config = {
       'Content-Type': 'application/json',
@@ -61,5 +63,26 @@ export class HelpersService {
 
     // Incluir claves con valores no vacíos
     return value !== '';
+  }
+
+  loaderSweetAlert({ title, text }: { title: string; text: string }) {
+    Swal.mixin({
+      customClass: {
+        container: this.#ColorModeService.getStoredTheme(
+          environment.SabinosTheme
+        ),
+      },
+    }).fire({
+      title,
+      text,
+      timerProgressBar: true,
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      // allowEnterKey: false,
+      focusConfirm: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
   }
 }

@@ -1,6 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { delay, timer } from 'rxjs';
 import {
   ButtonDirective,
   FormControlDirective,
@@ -17,40 +16,25 @@ import {
   ModalService,
 } from '@coreui/angular';
 import { IconDirective } from '@coreui/icons-angular';
-import { ProductosService } from '../../../services/productos.service';
+
 import { CommonModule } from '@angular/common';
 import { Listado } from 'src/app/models/Listados.model';
-import { Producto } from 'src/app/models/Producto.model';
+import { Local } from 'src/app/models/Local.model';
 import { ParametersUrl } from 'src/app/models/Parameter.model';
 import { FiltrosListFormComponent } from '../../../shared/components/forms/filtros-list-form/filtros-list-form.component';
 import { IModalAction } from '@coreui/angular/lib/modal/modal.service';
 import logger from 'src/app/shared/utils/logger';
-import { Filtro, FiltroKeys } from 'src/app/models/Filter.model';
+import { Filtro } from 'src/app/models/Filter.model';
 import dayjs from 'dayjs';
 import { HelpersService } from 'src/app/services/helpers.service';
 import Swal from 'sweetalert2';
 import { ColorModeService } from '@coreui/angular';
 import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
-
-interface IUser {
-  name: string;
-  state: string;
-  registered: string;
-  country: string;
-  usage: number;
-  period: string;
-  payment: string;
-  activity: string;
-  avatar: string;
-  status: string;
-  color: string;
-}
+import { LocalesService } from '../../../services/locales.service';
 
 @Component({
-  selector: 'app-producto-list',
-  templateUrl: './producto-list.component.html',
-  styleUrl: './producto-list.component.scss',
+  selector: 'app-local-listado',
   standalone: true,
   imports: [
     TableDirective,
@@ -71,9 +55,11 @@ interface IUser {
     ButtonModule,
     FormsModule,
   ],
+  templateUrl: './local-listado.component.html',
+  styleUrl: './local-listado.component.scss',
 })
-export class ProductoListComponent {
-  private _ProductosService = inject(ProductosService);
+export class LocalListadoComponent {
+  private _LocalsService = inject(LocalesService);
   private _ModalService = inject(ModalService);
   private _HelpersService = inject(HelpersService);
   readonly #ColorModeService = inject(ColorModeService);
@@ -84,25 +70,24 @@ export class ProductoListComponent {
     estado: 1,
     link: null,
     disablePaginate: '0',
-    local_model: '1',
     dateIni: dayjs().startOf('month').format('YYYY-MM-DD'),
     dateFin: dayjs().endOf('month').format('YYYY-MM-DD'),
   };
-  ProductosList!: Listado<Producto>;
+  LocalList!: Listado<Local>;
 
   ngOnInit(): void {
-    this.getProductos();
+    this.getLocals();
   }
 
-  getProductos() {
+  getLocals() {
     this.loaderTable = true;
 
-    this._ProductosService
-      .getProductos(this.ParametrosURL)
+    this._LocalsService
+      .getLocales(this.ParametrosURL)
       // .pipe(delay(3000))
-      .subscribe((data: Listado<Producto>) => {
+      .subscribe((data: Listado<Local>) => {
         this.loaderTable = false;
-        this.ProductosList = { ...data };
+        this.LocalList = { ...data };
         console.log(data);
       });
   }
@@ -113,7 +98,7 @@ export class ProductoListComponent {
 
     this.ParametrosURL.link = link.url;
 
-    this.getProductos();
+    this.getLocals();
   }
 
   modalStatusById(id: string, show: boolean) {
@@ -135,14 +120,14 @@ export class ProductoListComponent {
     };
     logger.log('this.ParametrosURL', this.ParametrosURL);
 
-    this.getProductos();
+    this.getLocals();
   }
 
   buscar() {
-    this.getProductos();
+    this.getLocals();
   }
 
-  eliminar(producto: Producto) {
+  eliminar(Local: Local) {
     Swal.mixin({
       customClass: {
         container: this.#ColorModeService.getStoredTheme(
@@ -152,7 +137,7 @@ export class ProductoListComponent {
     })
       .fire({
         title: '¿Estás seguro?',
-        text: 'Este producto se eliminará y no podrás recuperarlo.',
+        text: 'Este local se eliminará y no podrás recuperarlo.',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#51cbce',
@@ -163,7 +148,7 @@ export class ProductoListComponent {
       .then((result) => {
         if (result.isConfirmed) {
           this._HelpersService.loaderSweetAlert({
-            title: 'Eliminando producto',
+            title: 'Eliminando local',
             text: 'Esto puede demorar un momento.',
           });
           // Swal.mixin({
@@ -173,7 +158,7 @@ export class ProductoListComponent {
           //     ),
           //   },
           // }).fire({
-          //   title: 'Eliminando producto',
+          //   title: 'Eliminando local',
           //   text: 'Esto puede demorar un momento.',
           //   timerProgressBar: true,
           //   allowEscapeKey: false,
@@ -184,11 +169,11 @@ export class ProductoListComponent {
           //     Swal.showLoading();
           //   },
           // });
-          this._ProductosService
-            .deleteProducto(Number(producto.id))
+          this._LocalsService
+            .deleteLocal(Number(Local.id))
             .subscribe((data) => {
-              this.ProductosList.data = this.ProductosList.data.filter(
-                (product) => product.id != producto.id
+              this.LocalList.data = this.LocalList.data.filter(
+                (local) => local.id != Local.id
               );
 
               Swal.mixin({

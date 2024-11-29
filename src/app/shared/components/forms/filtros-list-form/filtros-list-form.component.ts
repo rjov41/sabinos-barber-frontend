@@ -23,7 +23,7 @@ import { IconDirective } from '@coreui/icons-angular';
 import { NgxDaterangepickerBootstrapDirective } from 'ngx-daterangepicker-bootstrap';
 import logger from 'src/app/shared/utils/logger';
 import { DateRangePickerComponent } from '../../date-range-picker/date-range-picker.component';
-import { LocalesService } from '../../../../services/local.service';
+import { LocalesService } from '../../../../services/locales.service';
 import { Local } from 'src/app/models/Local.model';
 import { ParametersUrl } from 'src/app/models/Parameter.model';
 import { IniciarFiltro } from '../../../utils/constants/filtro';

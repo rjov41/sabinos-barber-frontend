@@ -37,4 +37,22 @@ export const routesPages: Routes = [
       },
     ],
   },
+  {
+    path: '',
+    children: [
+      {
+        path: '',
+        redirectTo: '',
+        pathMatch: 'full',
+      },
+      {
+        path: 'locales',
+        loadChildren: () =>
+          import('./local/local.routes').then((m) => m.routesLocal),
+        data: {
+          title: 'Locales',
+        },
+      },
+    ],
+  },
 ];

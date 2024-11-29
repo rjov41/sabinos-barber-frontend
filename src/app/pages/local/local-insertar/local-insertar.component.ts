@@ -1,29 +1,30 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CardModule, ColorModeService, GridModule } from '@coreui/angular';
-import { Cliente } from 'src/app/models/Cliente.model';
-import { ClientesService } from 'src/app/services/clientes.service';
+import { Local } from 'src/app/models/Local.model';
+import { LocalesService } from 'src/app/services/locales.service';
 import logger from 'src/app/shared/utils/logger';
 
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
-import { ClienteCrudFormComponent } from '../../../shared/components/forms/cliente-crud-form/cliente-crud-form.component';
+import { LocalesCrudFormComponent } from '../../../shared/components/forms/locales-crud-form/locales-crud-form.component';
+
 @Component({
-  selector: 'app-cliente-insertar',
+  selector: 'app-local-insertar',
   standalone: true,
-  templateUrl: './cliente-insertar.component.html',
-  styleUrl: './cliente-insertar.component.scss',
-  imports: [CardModule, GridModule, ClienteCrudFormComponent],
+  imports: [CardModule, GridModule, LocalesCrudFormComponent],
+  templateUrl: './local-insertar.component.html',
+  styleUrl: './local-insertar.component.scss',
 })
-export class ClienteInsertarComponent {
+export class LocalInsertarComponent {
   #colorModeService = inject(ColorModeService);
-  private _ClientesService = inject(ClientesService);
+  private _LocalesService = inject(LocalesService);
   private _Router = inject(Router);
 
   loader: boolean = true;
 
-  FormsValues(Cliente: Cliente) {
-    logger.log(Cliente);
+  FormsValues(Local: Local) {
+    logger.log(Local);
 
     Swal.mixin({
       customClass: {
@@ -32,7 +33,7 @@ export class ClienteInsertarComponent {
         ),
       },
     }).fire({
-      title: 'Agregando Cliente',
+      title: 'Agregando Local',
       text: 'Esto puede demorar un momento.',
       timerProgressBar: true,
       allowEscapeKey: false,
@@ -43,7 +44,7 @@ export class ClienteInsertarComponent {
         Swal.showLoading();
       },
     });
-    this._ClientesService.createCliente(Cliente).subscribe((data) => {
+    this._LocalesService.createLocal(Local).subscribe((data) => {
       this.loader = false;
       console.log(data);
       Swal.mixin({
@@ -54,11 +55,11 @@ export class ClienteInsertarComponent {
         },
       })
         .fire({
-          text: 'Cliente agregado con éxito',
+          text: 'Local agregado con éxito',
           icon: 'success',
         })
         .then((result) => {
-          this._Router.navigateByUrl(`/Clientes/editar/${data.Cliente.id}`);
+          this._Router.navigateByUrl(`/Locals/editar/${data.Local.id}`);
         });
     });
   }

@@ -1,6 +1,6 @@
 <c-card class="my-4">
   <c-card-header>
-    <p class="h3">Editar cliente</p>
+    <p class="h3">Editar Local</p>
   </c-card-header>
   <c-card-body class="pt-4">
     @if(loader){
@@ -8,7 +8,7 @@
       <c-row class="mb-4">
         <c-col>
           <div class="small text-body-secondary mt-3">
-            <span class="h4"> Cargando cliente...</span>
+            <span class="h4"> Cargando local...</span>
           </div>
         </c-col>
       </c-row>
@@ -22,10 +22,10 @@
               (FormsValues)="FormsValues($event)"
               [Producto]="Producto"
             /> -->
-            <app-cliente-crud-form
+            <app-locales-crud-form
               (FormsValues)="FormsValues($event)"
-              [Cliente]="Cliente"
-            ></app-cliente-crud-form>
+              [Local]="Local"
+            ></app-locales-crud-form>
           </div>
         </c-col>
       </c-row>

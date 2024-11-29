@@ -148,6 +148,29 @@ export class ClienteListadoComponent {
       })
       .then((result) => {
         if (result.isConfirmed) {
+          this._HelpersService.loaderSweetAlert({
+            title: 'Eliminando cliente',
+            text: 'Esto puede demorar un momento.',
+          });
+          // Swal.mixin({
+          //   customClass: {
+          //     container: this.#ColorModeService.getStoredTheme(
+          //       environment.SabinosTheme
+          //     ),
+          //   },
+          // }).fire({
+          //   title: 'Eliminando cliente',
+          //   text: 'Esto puede demorar un momento.',
+          //   timerProgressBar: true,
+          //   allowEscapeKey: false,
+          //   allowOutsideClick: false,
+          //   // allowEnterKey: false,
+          //   focusConfirm: false,
+          //   didOpen: () => {
+          //     Swal.showLoading();
+          //   },
+          // });
+
           this._ClientesService
             .deleteCliente(Number(Cliente.id))
             .subscribe((data) => {

@@ -24,7 +24,7 @@ import logger from 'src/app/shared/utils/logger';
 import { environment } from 'src/environments/environment';
 import { DirectivesModule } from '../../../directivas/directives.module';
 import { Cliente } from 'src/app/models/Cliente.model';
-import { LocalesService } from 'src/app/services/local.service';
+import { LocalesService } from 'src/app/services/locales.service';
 import { Local } from 'src/app/models/Local.model';
 
 @Component({

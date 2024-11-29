@@ -64,7 +64,7 @@ export class ProductoInsertarComponent {
         },
       })
         .fire({
-          text: 'Producto modificado con éxito',
+          text: 'Producto agregado con éxito',
           icon: 'success',
         })
         .then((result) => {
