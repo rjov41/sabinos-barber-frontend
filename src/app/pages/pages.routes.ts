@@ -73,4 +73,22 @@ export const routesPages: Routes = [
       },
     ],
   },
+  {
+    path: '',
+    children: [
+      {
+        path: '',
+        redirectTo: '',
+        pathMatch: 'full',
+      },
+      {
+        path: 'usuarios',
+        loadChildren: () =>
+          import('./usuario/usuario.routes').then((m) => m.routesUsuario),
+        data: {
+          title: 'Usuarios',
+        },
+      },
+    ],
+  },
 ];

@@ -1,0 +1,175 @@
+<form cForm [formGroup]="UsuarioCrudForm" class="form-Usuario-crud">
+  <c-row class="mb-4 flex-wrap justify-content-center">
+    <c-col [md]="4">
+      <div cFormFloating class="mb-3">
+        <input
+          cFormControl
+          id="nombre_completoInput"
+          placeholder="nombre_completo"
+          type="text"
+          formControlName="nombre_completo"
+          [ngClass]="{
+            'is-invalid':
+              getControl('nombre_completo').invalid &&
+              getControl('nombre_completo').touched,
+            'is-valid': getControl('nombre_completo').valid
+          }"
+          appOnlyAlphanumeric
+        />
+        <label cLabel for="nombre_completoInput">Nombre completo</label>
+        <app-valid-messages-form
+          [errors]="getControlError('nombre_completo')"
+          [messages]="UsuarioCrudErrorMessages['nombre_completo']"
+        ></app-valid-messages-form>
+      </div>
+    </c-col>
+    <c-col [md]="4">
+      <div cFormFloating class="mb-3">
+        <input
+          cFormControl
+          id="emailInput"
+          placeholder="email"
+          type="text"
+          formControlName="email"
+          [ngClass]="{
+            'is-invalid':
+              getControl('email').invalid && getControl('email').touched,
+            'is-valid': getControl('email').valid
+          }"
+          appOnlyEmailCharacters
+        />
+        <label cLabel for="emailInput">Email</label>
+        <app-valid-messages-form
+          [errors]="getControlError('email')"
+          [messages]="UsuarioCrudErrorMessages['email']"
+        ></app-valid-messages-form>
+      </div>
+    </c-col>
+    <c-col [md]="4">
+      <div cFormFloating>
+        <select
+          cSelect
+          id="rolInput"
+          formControlName="rol_id"
+          [ngClass]="{
+            'is-invalid':
+              getControl('rol_id').invalid && getControl('rol_id').touched,
+            'is-valid': getControl('rol_id').valid
+          }"
+        >
+          <option value="">Seleccione un rol</option>
+          <option *ngFor="let rol of Roles; let i = index" [value]="rol.id">
+            {{ rol.name | titlecase }}
+          </option>
+        </select>
+        <label cLabel for="rolInput">Rol</label>
+      </div>
+      <app-valid-messages-form
+        [errors]="getControlError('rol_id')"
+        [messages]="UsuarioCrudErrorMessages['rol_id']"
+      ></app-valid-messages-form>
+    </c-col>
+
+    <c-col
+      [md]="12"
+      formGroupName="passwords"
+      class=""
+      *ngIf="!UsuarioCrudForm.controls.passwords.disabled"
+    >
+      <c-row class="mb-4 flex-wrap my-2">
+        <c-col [md]="4">
+          <div cFormFloating class="mb-3">
+            <input
+              cFormControl
+              id="passwordInput"
+              placeholder="password"
+              type="text"
+              formControlName="password"
+              [ngClass]="{
+                'is-invalid':
+                  (getControlPasswordForm('password').invalid &&
+                    getControlPasswordForm('password').touched) ||
+                  (UsuarioCrudForm.controls.passwords.hasError(
+                    'passwordsMismatch'
+                  ) &&
+                    UsuarioCrudForm.controls.passwords.touched),
+                'is-valid': getControlPasswordForm('password').valid
+              }"
+              appOnlyAlphanumeric
+            />
+            <label cLabel for="passwordInput">Contraseña</label>
+            <app-valid-messages-form
+              [errors]="getControlPasswordErrorForm('password')"
+              [messages]="UsuarioCrudErrorMessages['password']"
+            ></app-valid-messages-form>
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                UsuarioCrudForm.controls.passwords.hasError(
+                  'passwordsMismatch'
+                ) && UsuarioCrudForm.controls.passwords.touched
+              "
+            >
+              Las contraseñas no coinciden.
+            </div>
+          </div>
+        </c-col>
+        <c-col [md]="4">
+          <div cFormFloating class="mb-3">
+            <input
+              cFormControl
+              id="password_repeatInput"
+              placeholder="password_repeat"
+              type="text"
+              formControlName="password_repeat"
+              [ngClass]="{
+                'is-invalid':
+                  (getControlPasswordForm('password_repeat').invalid &&
+                    getControlPasswordForm('password_repeat').touched) ||
+                  (UsuarioCrudForm.controls.passwords.hasError(
+                    'passwordsMismatch'
+                  ) &&
+                    UsuarioCrudForm.controls.passwords.touched),
+                'is-valid': getControlPasswordForm('password_repeat').valid
+              }"
+              appOnlyAlphanumeric
+            />
+            <label cLabel for="password_repeatInput"
+              >Confirmar contraseña</label
+            >
+            <app-valid-messages-form
+              [errors]="getControlPasswordErrorForm('password_repeat')"
+              [messages]="UsuarioCrudErrorMessages['password_repeat']"
+            ></app-valid-messages-form>
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                UsuarioCrudForm.controls.passwords.hasError(
+                  'passwordsMismatch'
+                ) && UsuarioCrudForm.controls.passwords.touched
+              "
+            >
+              Las contraseñas no coinciden.
+            </div>
+          </div>
+        </c-col>
+      </c-row>
+    </c-col>
+  </c-row>
+  <c-row class="mb-4">
+    <c-col class="text-center">
+      @if (Usuario) {
+      <button
+        cButton
+        color="info"
+        [disabled]="!UsuarioCrudForm.valid"
+        (click)="sendValueFom()"
+      >
+        Editar
+      </button>
+      } @else {
+      <button cButton color="info" (click)="sendValueFom()">Agregar</button>
+      }
+    </c-col>
+  </c-row>
+</form>
