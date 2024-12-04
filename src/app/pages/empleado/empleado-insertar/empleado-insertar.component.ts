@@ -7,7 +7,7 @@ import logger from 'src/app/shared/utils/logger';
 
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
-import { EmpleadoCrudFormComponent } from '../../../shared/components/forms/empleado-crud-form/Empleado-crud-form.component';
+import { EmpleadoCrudFormComponent } from '../../../shared/components/forms/empleado-crud-form/empleado-crud-form.component';
 
 @Component({
   selector: 'app-empleado-insertar',

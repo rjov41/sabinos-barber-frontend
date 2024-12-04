@@ -56,6 +56,7 @@ export class DefaultLayoutComponent {
   public navItems = environment.production
     ? [...navItemsProject]
     : [...navItemsProject, ...navItems];
+  // :  [...navItemsProject];
 
   onScrollbarUpdate($event: any) {
     // if ($event.verticalUsed) {

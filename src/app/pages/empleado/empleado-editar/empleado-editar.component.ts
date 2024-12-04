@@ -1,4 +1,4 @@
-import { EmpleadoCrudFormComponent } from 'src/app/shared/components/forms/empleado-crud-form/Empleado-crud-form.component';
+import { EmpleadoCrudFormComponent } from 'src/app/shared/components/forms/empleado-crud-form/empleado-crud-form.component';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CardModule, ColorModeService, GridModule } from '@coreui/angular';

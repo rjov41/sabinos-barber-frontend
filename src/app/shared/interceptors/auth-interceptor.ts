@@ -1,5 +1,9 @@
 import { HttpHeaders, HttpInterceptorFn } from '@angular/common/http';
 import { AppHeaders } from '../../models/DefaultHeaders';
+import { inject } from '@angular/core';
+import { LocalStorageService } from '@coreui/angular';
+import { environment } from '../../../environments/environment';
+import { Auth } from '../../models/Auth';
 
 const defaultHeaders: AppHeaders = {
   'Content-Type': 'application/json',
@@ -23,8 +27,15 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 const headersConstructor = (reqHeaders: HttpHeaders): AppHeaders => {
   const keys = reqHeaders.keys();
 
+  const _Storage = inject(LocalStorageService);
+  const KEY_STORAGE = environment.SabinosStorage;
+  const Auth = _Storage.getItem(KEY_STORAGE) as Auth | null;
+
   // Crear una copia inicial de los encabezados predeterminados
-  const headers = { ...defaultHeaders };
+  const headers: any = {
+    ...defaultHeaders,
+    Authorization: `Bearer ${Auth?.token}`,
+  };
 
   // Sobrescribir los valores del encabezado predeterminado con los valores de la solicitud
   keys.forEach((key) => {
