@@ -12,8 +12,8 @@ export const routes: Routes = [
       {
         path: '',
         loadComponent: () =>
-          import('./empleado-listado/empleado-listado.component').then(
-            (m) => m.EmpleadoListadoComponent
+          import('./factura-listado/factura-listado.component').then(
+            (m) => m.FacturaListadoComponent
           ),
         data: {
           title: 'Listado',
@@ -23,8 +23,8 @@ export const routes: Routes = [
         // Ruta de edición con el parámetro dinámico :id
         path: 'editar/:id',
         loadComponent: () =>
-          import('./empleado-editar/empleado-editar.component').then(
-            (m) => m.EmpleadoEditarComponent
+          import('./factura-editar/factura-editar.component').then(
+            (m) => m.FacturaEditarComponent
           ),
         data: {
           title: 'Editar',
@@ -33,8 +33,8 @@ export const routes: Routes = [
       {
         path: 'insertar',
         loadComponent: () =>
-          import('./empleado-insertar/empleado-insertar.component').then(
-            (m) => m.EmpleadoInsertarComponent
+          import('./factura-insertar/factura-insertar.component').then(
+            (m) => m.FacturaInsertarComponent
           ),
         data: {
           title: 'Agregar',

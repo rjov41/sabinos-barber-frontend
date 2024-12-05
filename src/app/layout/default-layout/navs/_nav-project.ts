@@ -32,6 +32,11 @@ export const navItemsProject: INavData[] = [
     iconComponent: { name: 'cil-user' },
   },
   {
+    name: 'Facturas',
+    url: '/facturas',
+    iconComponent: { name: 'faFileInvoiceDollar' },
+  },
+  {
     title: true,
     name: 'Theme',
   },

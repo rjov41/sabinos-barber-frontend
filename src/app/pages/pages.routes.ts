@@ -12,7 +12,7 @@ export const routesPages: Routes = [
       {
         path: 'productos',
         loadChildren: () =>
-          import('./producto/productos.routes').then((m) => m.routesProducto),
+          import('./producto/productos.routes').then((m) => m.routes),
         data: {
           title: 'Productos',
         },
@@ -30,7 +30,7 @@ export const routesPages: Routes = [
       {
         path: 'clientes',
         loadChildren: () =>
-          import('./cliente/clientes.routes').then((m) => m.routesCliente),
+          import('./cliente/clientes.routes').then((m) => m.routes),
         data: {
           title: 'Clientes',
         },
@@ -48,7 +48,7 @@ export const routesPages: Routes = [
       {
         path: 'locales',
         loadChildren: () =>
-          import('./local/local.routes').then((m) => m.routesLocal),
+          import('./local/local.routes').then((m) => m.routes),
         data: {
           title: 'Locales',
         },
@@ -65,8 +65,7 @@ export const routesPages: Routes = [
       },
       {
         path: 'roles',
-        loadChildren: () =>
-          import('./rol/local.routes').then((m) => m.routesRol),
+        loadChildren: () => import('./rol/local.routes').then((m) => m.routes),
         data: {
           title: 'Roles',
         },
@@ -84,7 +83,7 @@ export const routesPages: Routes = [
       {
         path: 'usuarios',
         loadChildren: () =>
-          import('./usuario/usuario.routes').then((m) => m.routesUsuario),
+          import('./usuario/usuario.routes').then((m) => m.routes),
         data: {
           title: 'Usuarios',
         },
@@ -102,9 +101,27 @@ export const routesPages: Routes = [
       {
         path: 'empleados',
         loadChildren: () =>
-          import('./empleado/empleado.routes').then((m) => m.routesEmpleado),
+          import('./empleado/empleado.routes').then((m) => m.routes),
         data: {
           title: 'Empleados',
+        },
+      },
+    ],
+  },
+  {
+    path: '',
+    children: [
+      {
+        path: '',
+        redirectTo: '',
+        pathMatch: 'full',
+      },
+      {
+        path: 'facturas',
+        loadChildren: () =>
+          import('./factura/productos.routes').then((m) => m.routes),
+        data: {
+          title: 'Facturas',
         },
       },
     ],

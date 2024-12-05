@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-export const routesRol: Routes = [
+export const routes: Routes = [
   {
     path: '',
     children: [
