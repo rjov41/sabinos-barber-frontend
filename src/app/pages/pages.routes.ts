@@ -119,7 +119,7 @@ export const routesPages: Routes = [
       {
         path: 'facturas',
         loadChildren: () =>
-          import('./factura/productos.routes').then((m) => m.routes),
+          import('./factura/facturas.routes').then((m) => m.routes),
         data: {
           title: 'Facturas',
         },

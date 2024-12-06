@@ -67,8 +67,8 @@ export class AppComponent implements OnInit {
   }
 
   async loadIcons() {
-    logger.log('CUSTOM_ICONS', CUSTOM_ICONS);
-    logger.log('this.#iconSetService.icons', this.#iconSetService.icons);
+    // logger.log('CUSTOM_ICONS', CUSTOM_ICONS);
+    // logger.log('this.#iconSetService.icons', this.#iconSetService.icons);
     this.#iconSetService.icons = {
       ...this.#iconSetService.icons,
       ...CUSTOM_ICONS,

@@ -1,1 +1,209 @@
-<p>factura-insertar works!</p>
+<c-card class="my-4 carrito-compra">
+  <c-card-body class="pt-4">
+    <c-row class="mb-4">
+      <c-col lg="8">
+        <div class="title px-3">
+          <c-row class="mb-3 justify-content-between">
+            <c-col>
+              <h4 class=""><b>Tus Productos</b></h4>
+              <div class="text-left agregar-items link-primary pointer">
+                <svg cIcon height="18" name="cil-plus"></svg> Agregar
+              </div>
+            </c-col>
+            <c-col class="col text-end text-muted itemCount">
+              <span class="">3 items</span>
+            </c-col>
+          </c-row>
+        </div>
+        <hr />
+
+        <c-container [fluid]="true" class="items px-3">
+          <c-row class="mb-4 border-bottom align-items-center">
+            <c-col class="pt-3 item detalles" md="4">
+              <p class="text-muted mb-1 marca">Corte</p>
+              <p class="descripcion">Descripción</p>
+            </c-col>
+            <c-col class="item cantidad">
+              <div class="d-flex justify-content-center">
+                <span class="me-2 pointer link-primary">-</span>
+                <span class="">(4)</span>
+                <span class="ms-2 pointer link-primary">+</span>
+              </div>
+            </c-col>
+            <c-col class="text-center item precio">
+              <span class="price">{{ 44.0 | currency : "ARS" }}</span>
+            </c-col>
+            <c-col class="text-end item acciones">
+              <div class="px-3">
+                <svg cIcon height="18" name="cil-trash"></svg>
+              </div>
+            </c-col>
+          </c-row>
+          <c-row class="mb-4 border-bottom align-items-center">
+            <c-col class="pt-3 item detalles" md="4">
+              <p class="text-muted mb-1 marca">Corte</p>
+              <p class="descripcion">Descripción</p>
+            </c-col>
+            <c-col class="item cantidad">
+              <div class="d-flex justify-content-center">
+                <span class="me-2 pointer link-primary">-</span>
+                <span class="">(4)</span>
+                <span class="ms-2 pointer link-primary">+</span>
+              </div>
+            </c-col>
+            <c-col class="text-center item precio">
+              <span class="price">{{ 44.0 | currency : "ARS" }}</span>
+            </c-col>
+            <c-col class="text-end item acciones">
+              <div class="px-3">
+                <svg cIcon height="18" name="cil-trash"></svg>
+              </div>
+            </c-col>
+          </c-row>
+          <c-row class="mb-4 border-bottom align-items-center">
+            <c-col class="pt-3 item detalles" md="4">
+              <p class="text-muted mb-1 marca">Corte</p>
+              <p class="descripcion">Descripción</p>
+            </c-col>
+            <c-col class="item cantidad">
+              <div class="d-flex justify-content-center">
+                <span class="me-2 pointer link-primary">-</span>
+                <span class="">(4)</span>
+                <span class="ms-2 pointer link-primary">+</span>
+              </div>
+            </c-col>
+            <c-col class="text-center item precio">
+              <span class="price">{{ 44.0 | currency : "ARS" }}</span>
+            </c-col>
+            <c-col class="text-end item acciones">
+              <div class="px-3">
+                <svg cIcon height="18" name="cil-trash"></svg>
+              </div>
+            </c-col>
+          </c-row>
+          <c-row class="mb-4 border-bottom align-items-center">
+            <c-col class="pt-3 item detalles" md="4">
+              <p class="text-muted mb-1 marca">Corte</p>
+              <p class="descripcion">Descripción</p>
+            </c-col>
+            <c-col class="item cantidad">
+              <div class="d-flex justify-content-center">
+                <span class="me-2 pointer link-primary">-</span>
+                <span class="">(4)</span>
+                <span class="ms-2 pointer link-primary">+</span>
+              </div>
+            </c-col>
+            <c-col class="text-center item precio">
+              <span class="price">{{ 44.0 | currency : "ARS" }}</span>
+            </c-col>
+            <c-col class="text-end item acciones">
+              <div class="px-3">
+                <svg cIcon height="18" name="cil-trash"></svg>
+              </div>
+            </c-col>
+          </c-row>
+          <c-row class="mb-4 border-bottom align-items-center">
+            <c-col class="pt-3 item detalles" md="4">
+              <p class="text-muted mb-1 marca">Corte</p>
+              <p class="descripcion">Descripción</p>
+            </c-col>
+            <c-col class="item cantidad">
+              <div class="d-flex justify-content-center">
+                <span class="me-2 pointer link-primary">-</span>
+                <span class="">(4)</span>
+                <span class="ms-2 pointer link-primary">+</span>
+              </div>
+            </c-col>
+            <c-col class="text-center item precio">
+              <span class="price">{{ 44.0 | currency : "ARS" }}</span>
+            </c-col>
+            <c-col class="text-end item acciones">
+              <div class="px-3">
+                <svg cIcon height="18" name="cil-trash"></svg>
+              </div>
+            </c-col>
+          </c-row>
+          <c-row class="mb-4 border-bottom align-items-center">
+            <c-col class="pt-3 item detalles" md="4">
+              <p class="text-muted mb-1 marca">Corte</p>
+              <p class="descripcion">Descripción</p>
+            </c-col>
+            <c-col class="item cantidad">
+              <div class="d-flex justify-content-center">
+                <span class="me-2 pointer link-primary">-</span>
+                <span class="">(4)</span>
+                <span class="ms-2 pointer link-primary">+</span>
+              </div>
+            </c-col>
+            <c-col class="text-center item precio">
+              <span class="price">{{ 44.0 | currency : "ARS" }}</span>
+            </c-col>
+            <c-col class="text-end item acciones">
+              <div class="px-3">
+                <svg cIcon height="18" name="cil-trash"></svg>
+              </div>
+            </c-col>
+          </c-row>
+        </c-container>
+      </c-col>
+      <c-col lg="4" class="resumen px-3">
+        <div class="title px-3">
+          <c-row class="mb-3 justify-content-between">
+            <c-col>
+              <h4 class="mb-0"><b>Detalle</b></h4>
+            </c-col>
+          </c-row>
+        </div>
+        <hr />
+        <c-row class="mb-4 px-3">
+          <c-col class="empleado">
+            <div class="">
+              <label cLabel for="empleadoInput" class="mb-3">Empleado</label>
+              <input
+                cFormControl
+                id="empleadoInput"
+                placeholder=""
+                type="text"
+              />
+            </div>
+          </c-col>
+        </c-row>
+        <c-row class="mb-4 px-3">
+          <c-col class="cliente">
+            <div class="">
+              <label cLabel for="clienteInput" class="mb-3">Cliente</label>
+              <input
+                cFormControl
+                id="clienteInput"
+                placeholder=""
+                type="text"
+              />
+            </div>
+          </c-col>
+        </c-row>
+        <c-row class="mb-4 px-3">
+          <c-col class="metodo-pago">
+            <div class="">
+              <label cLabel for="MetodoInput" class="mb-3">Medio de pago</label>
+              <select cSelect id="MetodoInput">
+                <option>Seleccione un metodo de pago</option>
+                <option>Efectivo</option>
+              </select>
+            </div>
+          </c-col>
+        </c-row>
+        <c-row class="mb-4 px-3">
+          <c-col class="total d-flex justify-content-between">
+            <span class="title">Total</span>
+            <span class="price">{{ 44.0 | currency : "ARS" }}</span>
+          </c-col>
+        </c-row>
+        <c-row class="mb-4 px-3">
+          <c-col class="boton-facturar d-grid gap-2">
+            <button cButton color="primary">Facturar</button>
+          </c-col>
+        </c-row>
+      </c-col>
+    </c-row>
+  </c-card-body>
+</c-card>

@@ -33,20 +33,6 @@ import { ColorModeService } from '@coreui/angular';
 import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
 
-interface IUser {
-  name: string;
-  state: string;
-  registered: string;
-  country: string;
-  usage: number;
-  period: string;
-  payment: string;
-  activity: string;
-  avatar: string;
-  status: string;
-  color: string;
-}
-
 @Component({
   selector: 'app-producto-list',
   templateUrl: './producto-list.component.html',
