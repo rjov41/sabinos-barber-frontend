@@ -1,0 +1,53 @@
+<form cForm [formGroup]="PedidoForm" class="form-Pedido-crud">
+  <c-row class="mb-4 flex-wrap justify-content-center">
+    <c-col [md]="6">
+      <div cFormFloating class="mb-3">
+        <input
+          cFormControl
+          id="cantidadInput"
+          placeholder="cantidad"
+          type="number"
+          formControlName="cantidad"
+          [ngClass]="{
+            'is-invalid':
+              getControl('cantidad').invalid && getControl('cantidad').touched,
+            'is-valid': getControl('cantidad').valid
+          }"
+          appOnlyNumbers
+        />
+        <label cLabel for="cantidadInput">Cantidad</label>
+        <app-valid-messages-form
+          [errors]="getControlError('cantidad')"
+          [messages]="PedidoCrudErrorMessages['cantidad']"
+        ></app-valid-messages-form>
+      </div>
+    </c-col>
+    <c-col [md]="6">
+      <div cFormFloating class="mb-3">
+        <input
+          cFormControl
+          id="precioInput"
+          placeholder="precio"
+          type="number"
+          formControlName="precio"
+          [ngClass]="{
+            'is-invalid':
+              getControl('precio').invalid && getControl('precio').touched,
+            'is-valid': getControl('precio').valid
+          }"
+          appOnlyNumberAndPoint
+        />
+        <label cLabel for="precioInput">Precio</label>
+        <app-valid-messages-form
+          [errors]="getControlError('precio')"
+          [messages]="PedidoCrudErrorMessages['precio']"
+        ></app-valid-messages-form>
+      </div>
+    </c-col>
+  </c-row>
+  <c-row class="mb-4">
+    <c-col class="text-center">
+      <button cButton color="info" (click)="sendValueFom()">Agregar</button>
+    </c-col>
+  </c-row>
+</form>

@@ -6,144 +6,69 @@
           <c-row class="mb-3 justify-content-between">
             <c-col>
               <h4 class=""><b>Tus Productos</b></h4>
-              <div class="text-left agregar-items link-primary pointer">
+              <div
+                class="text-left agregar-items link-primary pointer"
+                (click)="modalStatusById('listadoProductos', true)"
+              >
                 <svg cIcon height="18" name="cil-plus"></svg> Agregar
               </div>
             </c-col>
             <c-col class="col text-end text-muted itemCount">
-              <span class="">3 items</span>
+              <span class="">{{ Productos.length }} items</span>
             </c-col>
           </c-row>
         </div>
         <hr />
 
         <c-container [fluid]="true" class="items px-3">
-          <c-row class="mb-4 border-bottom align-items-center">
-            <c-col class="pt-3 item detalles" md="4">
-              <p class="text-muted mb-1 marca">Corte</p>
-              <p class="descripcion">Descripción</p>
+          <c-row class="mb-4 border-bottom align-items-center pb-3 pt-2">
+            <c-col class="item detalles" md="4">
+              <div class="d-flex justify-content-start">
+                <span class="fw-bold">Descripción </span>
+              </div>
             </c-col>
             <c-col class="item cantidad">
               <div class="d-flex justify-content-center">
-                <span class="me-2 pointer link-primary">-</span>
-                <span class="">(4)</span>
-                <span class="ms-2 pointer link-primary">+</span>
+                <span class="">Cantidad </span>
               </div>
             </c-col>
             <c-col class="text-center item precio">
-              <span class="price">{{ 44.0 | currency : "ARS" }}</span>
+              <span class="price">Precio</span>
             </c-col>
             <c-col class="text-end item acciones">
-              <div class="px-3">
-                <svg cIcon height="18" name="cil-trash"></svg>
-              </div>
+              <div class="px-3"></div>
             </c-col>
           </c-row>
+          @for (producto of Productos; track producto.id; let i = $index) {
           <c-row class="mb-4 border-bottom align-items-center">
-            <c-col class="pt-3 item detalles" md="4">
-              <p class="text-muted mb-1 marca">Corte</p>
-              <p class="descripcion">Descripción</p>
+            <c-col class="pt-2 pb-3 item detalles" md="4">
+              <p class="text-muted mb-1 marca">{{ producto.marca }}</p>
+              <p class="descripcion">{{ producto.descripcion }}</p>
             </c-col>
             <c-col class="item cantidad">
               <div class="d-flex justify-content-center">
-                <span class="me-2 pointer link-primary">-</span>
-                <span class="">(4)</span>
-                <span class="ms-2 pointer link-primary">+</span>
+                <!-- <span class="me-2 pointer link-primary fw-bold">-</span> -->
+                <span class="">{{ producto.cantidad }}</span>
+                <!-- <span class="ms-2 pointer link-primary fw-bold">+</span> -->
               </div>
             </c-col>
             <c-col class="text-center item precio">
-              <span class="price">{{ 44.0 | currency : "ARS" }}</span>
+              <span class="price">{{
+                producto.precio | currency : "ARS"
+              }}</span>
             </c-col>
             <c-col class="text-end item acciones">
               <div class="px-3">
-                <svg cIcon height="18" name="cil-trash"></svg>
+                <span
+                  class="pointer d-inline-block"
+                  (click)="eliminarProductoCarrito(producto)"
+                >
+                  <svg cIcon height="18" name="cil-trash"></svg>
+                </span>
               </div>
             </c-col>
           </c-row>
-          <c-row class="mb-4 border-bottom align-items-center">
-            <c-col class="pt-3 item detalles" md="4">
-              <p class="text-muted mb-1 marca">Corte</p>
-              <p class="descripcion">Descripción</p>
-            </c-col>
-            <c-col class="item cantidad">
-              <div class="d-flex justify-content-center">
-                <span class="me-2 pointer link-primary">-</span>
-                <span class="">(4)</span>
-                <span class="ms-2 pointer link-primary">+</span>
-              </div>
-            </c-col>
-            <c-col class="text-center item precio">
-              <span class="price">{{ 44.0 | currency : "ARS" }}</span>
-            </c-col>
-            <c-col class="text-end item acciones">
-              <div class="px-3">
-                <svg cIcon height="18" name="cil-trash"></svg>
-              </div>
-            </c-col>
-          </c-row>
-          <c-row class="mb-4 border-bottom align-items-center">
-            <c-col class="pt-3 item detalles" md="4">
-              <p class="text-muted mb-1 marca">Corte</p>
-              <p class="descripcion">Descripción</p>
-            </c-col>
-            <c-col class="item cantidad">
-              <div class="d-flex justify-content-center">
-                <span class="me-2 pointer link-primary">-</span>
-                <span class="">(4)</span>
-                <span class="ms-2 pointer link-primary">+</span>
-              </div>
-            </c-col>
-            <c-col class="text-center item precio">
-              <span class="price">{{ 44.0 | currency : "ARS" }}</span>
-            </c-col>
-            <c-col class="text-end item acciones">
-              <div class="px-3">
-                <svg cIcon height="18" name="cil-trash"></svg>
-              </div>
-            </c-col>
-          </c-row>
-          <c-row class="mb-4 border-bottom align-items-center">
-            <c-col class="pt-3 item detalles" md="4">
-              <p class="text-muted mb-1 marca">Corte</p>
-              <p class="descripcion">Descripción</p>
-            </c-col>
-            <c-col class="item cantidad">
-              <div class="d-flex justify-content-center">
-                <span class="me-2 pointer link-primary">-</span>
-                <span class="">(4)</span>
-                <span class="ms-2 pointer link-primary">+</span>
-              </div>
-            </c-col>
-            <c-col class="text-center item precio">
-              <span class="price">{{ 44.0 | currency : "ARS" }}</span>
-            </c-col>
-            <c-col class="text-end item acciones">
-              <div class="px-3">
-                <svg cIcon height="18" name="cil-trash"></svg>
-              </div>
-            </c-col>
-          </c-row>
-          <c-row class="mb-4 border-bottom align-items-center">
-            <c-col class="pt-3 item detalles" md="4">
-              <p class="text-muted mb-1 marca">Corte</p>
-              <p class="descripcion">Descripción</p>
-            </c-col>
-            <c-col class="item cantidad">
-              <div class="d-flex justify-content-center">
-                <span class="me-2 pointer link-primary">-</span>
-                <span class="">(4)</span>
-                <span class="ms-2 pointer link-primary">+</span>
-              </div>
-            </c-col>
-            <c-col class="text-center item precio">
-              <span class="price">{{ 44.0 | currency : "ARS" }}</span>
-            </c-col>
-            <c-col class="text-end item acciones">
-              <div class="px-3">
-                <svg cIcon height="18" name="cil-trash"></svg>
-              </div>
-            </c-col>
-          </c-row>
+          }
         </c-container>
       </c-col>
       <c-col lg="4" class="resumen px-3">
@@ -158,25 +83,41 @@
         <c-row class="mb-4 px-3">
           <c-col class="empleado">
             <div class="">
-              <label cLabel for="empleadoInput" class="mb-3">Empleado</label>
-              <input
-                cFormControl
-                id="empleadoInput"
-                placeholder=""
-                type="text"
-              />
+              <label cLabel for="empleadoSelect" class="mb-3"
+                >Empleados
+                <c-spinner size="sm" *ngIf="loadingEmpleados" />
+              </label>
+              <select
+                aria-label="empleadoSelect"
+                cSelect
+                class=""
+                id="empleadoSelect"
+              >
+                <option selected hidden>Seleccione un empleado</option>
+                <option *ngFor="let empleado of Empleados">
+                  {{ empleado.nombre_completo }}
+                </option>
+              </select>
             </div>
           </c-col>
         </c-row>
         <c-row class="mb-4 px-3">
           <c-col class="cliente">
             <div class="">
-              <label cLabel for="clienteInput" class="mb-3">Cliente</label>
+              <label cLabel for="clienteInput" class="mb-3"
+                >Cliente
+                <c-spinner size="sm" *ngIf="LoadingSearchClient" />
+              </label>
               <input
                 cFormControl
                 id="clienteInput"
                 placeholder=""
                 type="text"
+                [(ngModel)]="clienteModel"
+                [ngbTypeahead]="searchClient"
+                [resultTemplate]="CLientTypeaHead"
+                [inputFormatter]="formatterValue"
+                (selectItem)="eventInputTypeHead($event)"
               />
             </div>
           </c-col>
@@ -207,3 +148,30 @@
     </c-row>
   </c-card-body>
 </c-card>
+
+<ng-template #CLientTypeaHead let-resultado="result" let-resaltado="term">
+  <ngb-highlight [result]="resultado.id" [term]="resaltado.id"></ngb-highlight>
+  -
+  <ngb-highlight
+    [result]="resultado.nombre"
+    [term]="resaltado.nombre"
+  ></ngb-highlight>
+  &nbsp;
+  <ngb-highlight
+    [result]="resultado.apellido"
+    [term]="resaltado.apellido"
+  ></ngb-highlight>
+</ng-template>
+
+<c-modal id="listadoProductos" aria-hidden="false" size="xl">
+  <c-modal-header>
+    <h5 cModalTitle>
+      <svg cIcon height="18" name="cil-playlist-add"></svg> Listado de productos
+    </h5>
+    <button
+      (click)="modalStatusById('listadoProductos', false)"
+      cButtonClose
+    ></button>
+  </c-modal-header>
+  <c-modal-body> </c-modal-body>
+</c-modal>

@@ -3,8 +3,6 @@
   "version": "5.2.22",
   "copyright": "Copyright 2024",
   "license": "MIT",
-  "author": "The CoreUI Team (https://github.com/orgs/coreui/people) and contributors",
-  "homepage": "https://coreui.io/angular",
   "config": {
     "theme": "default",
     "coreui_library_short_version": "5.2",
@@ -37,6 +35,9 @@
     "@coreui/icons-angular": "~5.2.22",
     "@coreui/utils": "^2.0.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.1",
+    "@ng-bootstrap/ng-bootstrap": "^17.0.1",
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.2",
     "chart.js": "^4.4.6",
     "dayjs": "^1.11.13",
     "lodash-es": "^4.17.21",

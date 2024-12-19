@@ -40,6 +40,16 @@ export const routes: Routes = [
           title: 'Agregar',
         },
       },
+      {
+        path: 'pedido',
+        loadComponent: () =>
+          import('./factura-pedido/factura-pedido.component').then(
+            (m) => m.FacturaPedidoComponent
+          ),
+        data: {
+          title: 'pedido',
+        },
+      },
     ],
   },
 ];
