@@ -2,12 +2,20 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { PedidoCrudValidators } from './validations';
 
 export interface PedidoCrudForm {
-  cantidad: FormControl<number | null>;
-  precio: FormControl<number | null>;
+  cantidadPedido: FormControl<number | null>;
+  precioUnitario: FormControl<number | null>;
+  precioTotal: FormControl<number | null>;
 }
 
 export const PedidoCrudFormBuilder = () =>
   new FormGroup<PedidoCrudForm>({
-    cantidad: new FormControl(null, [...PedidoCrudValidators['cantidad']]),
-    precio: new FormControl(null, [...PedidoCrudValidators['precio']]),
+    cantidadPedido: new FormControl(null, [
+      ...PedidoCrudValidators['cantidadPedido'],
+    ]),
+    precioUnitario: new FormControl(null, [
+      ...PedidoCrudValidators['precioUnitario'],
+    ]),
+    precioTotal: new FormControl(null, [
+      ...PedidoCrudValidators['precioTotal'],
+    ]),
   });

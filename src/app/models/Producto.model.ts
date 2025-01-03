@@ -13,3 +13,9 @@ export interface Producto {
   created_at?: Date;
   updated_at?: Date;
 }
+
+export interface ProductoPedido extends Producto {
+  precioTotal: number;
+  precioUnitario: number;
+  cantidadPedido: number;
+}

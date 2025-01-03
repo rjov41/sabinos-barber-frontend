@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import {
-  ButtonDirective,
   ButtonModule,
   CardModule,
   ColorModeService,
@@ -11,19 +10,17 @@ import {
 } from '@coreui/angular';
 import { IconDirective } from '@coreui/icons-angular';
 import { FormModule } from '@coreui/angular';
-import { Component, inject, ViewChild } from '@angular/core';
-import {
-  NgbHighlight,
-  NgbTypeahead,
-  NgbTypeaheadModule,
-} from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subject, merge, OperatorFunction, of } from 'rxjs';
+import { Component, inject } from '@angular/core';
+import { NgbHighlight, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, Subject, OperatorFunction, of, interval } from 'rxjs';
 import {
   catchError,
   debounceTime,
   distinctUntilChanged,
   map,
+  startWith,
   switchMap,
+  takeUntil,
   tap,
 } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
@@ -34,8 +31,7 @@ import logger from '../../../shared/utils/logger';
 import { Cliente } from '../../../models/Cliente.model';
 import { Empleado } from '../../../models/Empleado.model';
 import { IModalAction } from '@coreui/angular/lib/modal/modal.service';
-import { ProductosService } from '../../../services/productos.service';
-import { Producto } from '../../../models/Producto.model';
+import { Producto, ProductoPedido } from '../../../models/Producto.model';
 import { PedidoService } from '../../../services/pedido.service';
 import { environment } from '../../../../environments/environment';
 import Swal from 'sweetalert2';
@@ -60,7 +56,11 @@ import Swal from 'sweetalert2';
   styleUrl: './factura-insertar.component.scss',
 })
 export class FacturaInsertarComponent {
+  private destruir$: Subject<void> = new Subject<void>();
   clienteModel: any;
+  clienteId!: number;
+  empleadoModel: number = 0;
+  MedioPagoModel: number = 0;
 
   LoadingSearchClient: boolean = false;
   loadingEmpleados: boolean = false;
@@ -73,11 +73,13 @@ export class FacturaInsertarComponent {
   #colorModeService = inject(ColorModeService);
 
   Empleados: Empleado[] = [];
-  Productos: Producto[] = [];
+  Productos: ProductoPedido[] = [];
+  PrecioTotal: number = 0;
 
   ngOnInit(): void {
     this.getEmpleados();
-    this.getProductos();
+    // this.getProductos();
+    this.refrescarListado();
   }
 
   formatterValue = (x: { nombre_completo: string } | string) =>
@@ -116,6 +118,7 @@ export class FacturaInsertarComponent {
     setTimeout(() => {
       logger.log('item', item);
       this.clienteModel = `${item.nombre} ${item.apellido}`;
+      this.clienteId = Number(item.id);
       // const controlInversion = this.getControlFormArray();
       // const patchValue = {
       //   codigo: item.id,
@@ -126,6 +129,22 @@ export class FacturaInsertarComponent {
 
       // controlInversion[i].patchValue(patchValue);
     }, 10);
+  }
+
+  refrescarListado() {
+    interval(3000)
+      .pipe(
+        startWith(0), // Emite inmediatamente al suscribirse
+        takeUntil(this.destruir$), // Desuscribe automáticamente en ngOnDestroy
+        map((x) => {
+          // logger.log('llamando a la api', x);
+          this.getProductos();
+          return x;
+        })
+      )
+      .subscribe((result) => {
+        // Puedes manejar el resultado aquí si es necesario
+      });
   }
 
   getEmpleados() {
@@ -146,6 +165,9 @@ export class FacturaInsertarComponent {
   getProductos() {
     // this.loadingProductos = true;
     this.Productos = this._PedidoService.obtenerListado();
+    this.PrecioTotal = this.Productos.reduce((prod_anterior, prod_actual) => {
+      return prod_anterior + prod_actual.precioTotal;
+    }, 0);
   }
 
   eliminarProductoCarrito(producto: Producto) {
@@ -189,5 +211,22 @@ export class FacturaInsertarComponent {
   modalStatusById(id: string, show: boolean) {
     const action: IModalAction = { show, id };
     this._ModalService.toggle(action);
+  }
+
+  facturar() {
+    let factura = {
+      cliente: this.clienteId,
+      empleado: this.empleadoModel,
+      productos: this.Productos,
+      medio_pago: this.MedioPagoModel,
+      total: this.PrecioTotal,
+    };
+    logger.log('factura', factura);
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }

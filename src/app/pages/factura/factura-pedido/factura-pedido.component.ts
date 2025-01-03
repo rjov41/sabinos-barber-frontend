@@ -71,7 +71,7 @@ export class FacturaPedidoComponent {
     estado: 1,
     link: null,
     disablePaginate: '0',
-    local_model: '1',
+    local_model: '0',
     dateIni: dayjs().startOf('month').format('YYYY-MM-DD'),
     dateFin: dayjs().endOf('month').format('YYYY-MM-DD'),
   };

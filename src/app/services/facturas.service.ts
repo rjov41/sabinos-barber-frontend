@@ -8,7 +8,7 @@ import { HelpersService } from './helpers.service';
 import { ParametersUrl } from '../models/Parameter.model';
 import logger from '../shared/utils/logger';
 
-const URL_Factura = `${environment.apiUrl}Factura`;
+const URL_Factura = `${environment.apiUrl}facturas`;
 export type FacturaResponse = Factura[] | Listado<Factura>;
 
 @Injectable({

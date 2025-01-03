@@ -33,7 +33,10 @@
               </div>
             </c-col>
             <c-col class="text-center item precio">
-              <span class="price">Precio</span>
+              <span class="price">Precio U.</span>
+            </c-col>
+            <c-col class="text-center item precio">
+              <span class="price">Precio T.</span>
             </c-col>
             <c-col class="text-end item acciones">
               <div class="px-3"></div>
@@ -48,13 +51,18 @@
             <c-col class="item cantidad">
               <div class="d-flex justify-content-center">
                 <!-- <span class="me-2 pointer link-primary fw-bold">-</span> -->
-                <span class="">{{ producto.cantidad }}</span>
+                <span class="">{{ producto.cantidadPedido }}</span>
                 <!-- <span class="ms-2 pointer link-primary fw-bold">+</span> -->
               </div>
             </c-col>
             <c-col class="text-center item precio">
               <span class="price">{{
-                producto.precio | currency : "ARS"
+                producto.precioUnitario | currency : "ARS"
+              }}</span>
+            </c-col>
+            <c-col class="text-center item precio">
+              <span class="price">{{
+                producto.precioTotal | currency : "ARS"
               }}</span>
             </c-col>
             <c-col class="text-end item acciones">
@@ -92,9 +100,15 @@
                 cSelect
                 class=""
                 id="empleadoSelect"
+                [(ngModel)]="empleadoModel"
               >
-                <option selected hidden>Seleccione un empleado</option>
-                <option *ngFor="let empleado of Empleados">
+                <option selected hidden value="0">
+                  Seleccione un empleado
+                </option>
+                <option
+                  *ngFor="let empleado of Empleados"
+                  [ngValue]="empleado.id"
+                >
                   {{ empleado.nombre_completo }}
                 </option>
               </select>
@@ -126,9 +140,9 @@
           <c-col class="metodo-pago">
             <div class="">
               <label cLabel for="MetodoInput" class="mb-3">Medio de pago</label>
-              <select cSelect id="MetodoInput">
-                <option>Seleccione un metodo de pago</option>
-                <option>Efectivo</option>
+              <select cSelect id="MetodoInput" [(ngModel)]="MedioPagoModel">
+                <option hidden value="0">Seleccione un método de pago</option>
+                <option value="2">Efectivo</option>
               </select>
             </div>
           </c-col>
@@ -136,12 +150,14 @@
         <c-row class="mb-4 px-3">
           <c-col class="total d-flex justify-content-between">
             <span class="title">Total</span>
-            <span class="price">{{ 44.0 | currency : "ARS" }}</span>
+            <span class="price">{{ PrecioTotal | currency : "ARS" }}</span>
           </c-col>
         </c-row>
         <c-row class="mb-4 px-3">
           <c-col class="boton-facturar d-grid gap-2">
-            <button cButton color="primary">Facturar</button>
+            <button cButton color="primary" (click)="facturar()">
+              Facturar
+            </button>
           </c-col>
         </c-row>
       </c-col>

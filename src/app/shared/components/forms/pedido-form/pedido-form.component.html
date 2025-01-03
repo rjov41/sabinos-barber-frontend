@@ -5,20 +5,21 @@
         <input
           cFormControl
           id="cantidadInput"
-          placeholder="cantidad"
+          placeholder="cantidadPedido"
           type="number"
-          formControlName="cantidad"
+          formControlName="cantidadPedido"
           [ngClass]="{
             'is-invalid':
-              getControl('cantidad').invalid && getControl('cantidad').touched,
-            'is-valid': getControl('cantidad').valid
+              getControl('cantidadPedido').invalid &&
+              getControl('cantidadPedido').touched,
+            'is-valid': getControl('cantidadPedido').valid
           }"
           appOnlyNumbers
         />
         <label cLabel for="cantidadInput">Cantidad</label>
         <app-valid-messages-form
-          [errors]="getControlError('cantidad')"
-          [messages]="PedidoCrudErrorMessages['cantidad']"
+          [errors]="getControlError('cantidadPedido')"
+          [messages]="PedidoCrudErrorMessages['cantidadPedido']"
         ></app-valid-messages-form>
       </div>
     </c-col>
@@ -26,28 +27,63 @@
       <div cFormFloating class="mb-3">
         <input
           cFormControl
+          id="precioUnitarioInput"
+          placeholder="precioUnitario"
+          type="number"
+          formControlName="precioUnitario"
+          [readOnly]="true"
+          appOnlyNumberAndPoint
+        />
+        <!-- <input
+          cFormControl
           id="precioInput"
           placeholder="precio"
           type="number"
           formControlName="precio"
+          [readOnly]="true"
           [ngClass]="{
             'is-invalid':
               getControl('precio').invalid && getControl('precio').touched,
             'is-valid': getControl('precio').valid
           }"
           appOnlyNumberAndPoint
-        />
-        <label cLabel for="precioInput">Precio</label>
+        /> -->
+        <label cLabel for="precioUnitarioInput">Precio por unidad</label>
         <app-valid-messages-form
-          [errors]="getControlError('precio')"
-          [messages]="PedidoCrudErrorMessages['precio']"
+          [errors]="getControlError('precioUnitario')"
+          [messages]="PedidoCrudErrorMessages['precioUnitario']"
+        ></app-valid-messages-form>
+      </div>
+    </c-col>
+    <c-col [md]="6" [offset]="{ md: 6 }">
+      <div cFormFloating class="mb-3">
+        <input
+          cFormControl
+          id="precioTotalInput"
+          placeholder="precioTotal"
+          type="number"
+          formControlName="precioTotal"
+          [readOnly]="true"
+          appOnlyNumberAndPoint
+        />
+        <label cLabel for="precioTotalInput">Precio Total</label>
+        <app-valid-messages-form
+          [errors]="getControlError('precioTotal')"
+          [messages]="PedidoCrudErrorMessages['precioTotal']"
         ></app-valid-messages-form>
       </div>
     </c-col>
   </c-row>
   <c-row class="mb-4">
     <c-col class="text-center">
-      <button cButton color="info" (click)="sendValueFom()">Agregar</button>
+      <button
+        cButton
+        color="info"
+        [disabled]="!PedidoForm.valid"
+        (click)="sendValueFom()"
+      >
+        Agregar
+      </button>
     </c-col>
   </c-row>
 </form>

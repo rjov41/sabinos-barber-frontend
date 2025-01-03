@@ -3,6 +3,7 @@ import {
   FormControl,
   ReactiveFormsModule,
   ValidationErrors,
+  Validators,
 } from '@angular/forms';
 import {
   ButtonDirective,
@@ -23,7 +24,7 @@ import logger from 'src/app/shared/utils/logger';
 import { environment } from 'src/environments/environment';
 import { DirectivesModule } from '../../../directivas/directives.module';
 import { PedidoService } from '../../../../services/pedido.service';
-import { Producto } from 'src/app/models/Producto.model';
+import { Producto, ProductoPedido } from 'src/app/models/Producto.model';
 
 @Component({
   selector: 'app-pedido-form',
@@ -53,8 +54,11 @@ export class PedidoFormComponent {
   @Input() Producto!: Producto;
 
   ngOnChanges(): void {
-    if (this.Producto) this.setFormValues();
-    console.log(this.Producto);
+    if (this.Producto) {
+      this.setFormValues();
+      this.validarCantidadMaxima();
+      this.validarPrecioTotal();
+    }
 
     this.PedidoForm.valueChanges.subscribe(() => {
       console.log(this.PedidoForm);
@@ -73,22 +77,45 @@ export class PedidoFormComponent {
     return this.PedidoForm.get(name) as FormControl;
   }
 
+  validarPrecioTotal() {
+    this.PedidoForm.controls.cantidadPedido.valueChanges.subscribe((value) => {
+      logger.log('value', value);
+      this.PedidoForm.controls.precioTotal.setValue(
+        Number(value) * this.Producto.precio
+      );
+    });
+  }
+
+  validarCantidadMaxima() {
+    // logger.log(
+    //   'this.PedidoForm.controls.cantidad',
+    //   this.PedidoForm.controls.cantidad
+    // );
+
+    this.PedidoForm.controls.cantidadPedido.addValidators([
+      Validators.max(this.Producto.cantidad),
+    ]);
+  }
+
   setFormValues() {
     logger.log(this.Producto);
 
-    this.PedidoForm.setValue({
-      cantidad: this.Producto.cantidad,
-      precio: this.Producto.precio,
+    this.PedidoForm.patchValue({
+      // cantidad: this.Producto.cantidad,
+      precioUnitario: this.Producto.precio,
     });
   }
 
   sendValueFom() {
     if (this.PedidoForm.valid) {
-      const PRODUT = {
+      const PRODUT: ProductoPedido = {
         ...this.Producto,
-        ...this.PedidoForm.value,
+        precioTotal: Number(this.PedidoForm.controls.precioTotal.value),
+        precioUnitario: Number(this.PedidoForm.controls.precioUnitario.value),
+        cantidadPedido: Number(this.PedidoForm.controls.cantidadPedido.value),
       };
-      this._PedidoService.agregarProducto(PRODUT as Producto);
+      // logger.log('darda', PRODUT);
+      this._PedidoService.agregarProducto(PRODUT);
       Swal.mixin({
         customClass: {
           container: this.#colorModeService.getStoredTheme(

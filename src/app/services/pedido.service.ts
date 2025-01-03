@@ -6,7 +6,7 @@ import { Listado } from '../models/Listados.model';
 import { HelpersService } from './helpers.service';
 import { ParametersUrl } from '../models/Parameter.model';
 import logger from '../shared/utils/logger';
-import { Producto } from '../models/Producto.model';
+import { Producto, ProductoPedido } from '../models/Producto.model';
 import { LocalStorageService } from '@coreui/angular';
 import { environment } from '../../environments/environment';
 
@@ -23,10 +23,10 @@ export class PedidoService {
   /**
    * Obtener el listado de productos del local storage.
    */
-  private getProductos(): Producto[] {
+  private getProductos(): ProductoPedido[] {
     // const productos = localStorage.getItem(this.storageKey);
     const PRODUCTOS = this._Storage.getItem(this.KEY_STORAGE) as
-      | Producto[]
+      | ProductoPedido[]
       | null;
 
     return PRODUCTOS && PRODUCTOS.length > 0 ? PRODUCTOS : [];
@@ -36,7 +36,7 @@ export class PedidoService {
    * Guardar el listado de productos en el local storage.
    * @param productos Listado de productos.
    */
-  private setProductos(productos: Producto[]): void {
+  private setProductos(productos: ProductoPedido[]): void {
     this._Storage.setItem(this.KEY_STORAGE, productos);
   }
 
@@ -45,7 +45,7 @@ export class PedidoService {
    * Si el producto ya existe, suma la cantidad y actualiza el precio.
    * @param producto Producto a agregar.
    */
-  agregarProducto(producto: Producto): void {
+  agregarProducto(producto: ProductoPedido): void {
     const productos = this.getProductos();
 
     const index = productos.findIndex(
@@ -54,8 +54,10 @@ export class PedidoService {
 
     if (index !== -1) {
       // Producto ya existe, actualizamos la cantidad y el precio
-      productos[index].cantidad += producto.cantidad;
-      productos[index].precio = producto.precio;
+      productos[index].cantidadPedido += producto.cantidadPedido;
+      productos[index].precioUnitario = producto.precioUnitario;
+      productos[index].precioTotal =
+        productos[index].cantidadPedido * productos[index].precio;
     } else {
       // Producto nuevo, lo agregamos al listado
       productos.push(producto);
@@ -67,7 +69,7 @@ export class PedidoService {
   /**
    * Obtener el listado de productos actuales.
    */
-  obtenerListado(): Producto[] {
+  obtenerListado(): ProductoPedido[] {
     return this.getProductos();
   }
 
