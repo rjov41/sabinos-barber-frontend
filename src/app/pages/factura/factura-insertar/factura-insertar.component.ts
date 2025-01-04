@@ -213,6 +213,16 @@ export class FacturaInsertarComponent {
     this._ModalService.toggle(action);
   }
 
+  validarFactura(): boolean {
+    return this.clienteId !== 0 &&
+      this.clienteModel !== '' &&
+      this.empleadoModel != 0 &&
+      this.Productos.length > 0 &&
+      this.MedioPagoModel != 0
+      ? true
+      : false;
+  }
+
   facturar() {
     let factura = {
       cliente: this.clienteId,
@@ -222,6 +232,21 @@ export class FacturaInsertarComponent {
       total: this.PrecioTotal,
     };
     logger.log('factura', factura);
+    // if (!this.validarFactura()) {
+    Swal.mixin({
+      customClass: {
+        container: this.#colorModeService.getStoredTheme(
+          environment.SabinosTheme
+        ),
+      },
+    }).fire({
+      icon: 'info',
+      title: 'Atención',
+      text: 'Debes completar todos los campos',
+    });
+    // }
+
+    logger.log('validarFactura', this.validarFactura());
   }
 
   ngOnDestroy(): void {
