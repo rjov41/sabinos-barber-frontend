@@ -156,6 +156,7 @@ export class FacturaInsertarComponent {
         link: null,
       })
       // .pipe(delay(3000))
+      .pipe(takeUntil(this.destruir$))
       .subscribe((data: Empleado[]) => {
         this.loadingEmpleados = false;
         this.Empleados = [...data];

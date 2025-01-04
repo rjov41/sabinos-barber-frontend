@@ -26,6 +26,7 @@ import { UsuarioesService } from 'src/app/services/usuarios.service';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { RolesService } from '../../../../services/role.service';
 import { Role } from '../../../../models/Role.model';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-usuario-crud-form',
@@ -46,6 +47,7 @@ import { Role } from '../../../../models/Role.model';
   styleUrl: './usuario-crud-form.component.scss',
 })
 export class UsuarioCrudFormComponent {
+  private destruir$: Subject<void> = new Subject<void>();
   readonly UsuarioCrudErrorMessages = UsuarioCrudErrorMessages;
   UsuarioCrudForm = UsuarioCrudFormBuilder();
   #colorModeService = inject(ColorModeService);
@@ -72,6 +74,7 @@ export class UsuarioCrudFormComponent {
   getRoles() {
     this._RolesService
       .getRoles({ link: null, disablePaginate: '1' })
+      .pipe(takeUntil(this.destruir$))
       .subscribe((roles) => {
         // logger.log('Roles', roles);
         this.Roles = roles;
@@ -136,5 +139,11 @@ export class UsuarioCrudFormComponent {
         icon: 'warning',
       });
     }
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }

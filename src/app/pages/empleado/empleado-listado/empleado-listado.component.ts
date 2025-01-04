@@ -32,6 +32,7 @@ import { ColorModeService } from '@coreui/angular';
 import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
 import { EmpleadosService } from '../../../services/empleados.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-empleado-listado',
@@ -59,6 +60,8 @@ import { EmpleadosService } from '../../../services/empleados.service';
   styleUrl: './empleado-listado.component.scss',
 })
 export class EmpleadoListadoComponent {
+  private destruir$: Subject<void> = new Subject<void>();
+
   private _EmpleadosService = inject(EmpleadosService);
   private _ModalService = inject(ModalService);
   private _HelpersService = inject(HelpersService);
@@ -84,7 +87,7 @@ export class EmpleadoListadoComponent {
 
     this._EmpleadosService
       .getEmpleadoes(this.ParametrosURL)
-      // .pipe(delay(3000))
+      .pipe(takeUntil(this.destruir$))
       .subscribe((data: Listado<Empleado>) => {
         this.loaderTable = false;
         this.EmpleadoList = { ...data };
@@ -171,6 +174,7 @@ export class EmpleadoListadoComponent {
           // });
           this._EmpleadosService
             .deleteEmpleado(Number(Empleado.id))
+            .pipe(takeUntil(this.destruir$))
             .subscribe((data) => {
               this.EmpleadoList.data = this.EmpleadoList.data.filter(
                 (Empleado) => Empleado.id != Empleado.id
@@ -189,5 +193,11 @@ export class EmpleadoListadoComponent {
             });
         }
       });
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }

@@ -26,6 +26,7 @@ import { DirectivesModule } from '../../../directivas/directives.module';
 import { Cliente } from 'src/app/models/Cliente.model';
 import { LocalesService } from 'src/app/services/locales.service';
 import { Local } from 'src/app/models/Local.model';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-cliente-crud-form',
@@ -47,6 +48,8 @@ import { Local } from 'src/app/models/Local.model';
   styleUrl: './cliente-crud-form.component.scss',
 })
 export class ClienteCrudFormComponent {
+  private destruir$: Subject<void> = new Subject<void>();
+
   readonly ClienteCrudErrorMessages = ClienteCrudErrorMessages;
   ClienteCrudForm = ClienteCrudFormBuilder();
   #colorModeService = inject(ColorModeService);
@@ -66,6 +69,7 @@ export class ClienteCrudFormComponent {
   getLocales() {
     this._LocalesServices
       .getLocales({ disablePaginate: '1', link: null })
+      .pipe(takeUntil(this.destruir$))
       .subscribe((locales: Local[]) => {
         this.Locales = locales;
       });
@@ -110,5 +114,11 @@ export class ClienteCrudFormComponent {
         icon: 'warning',
       });
     }
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }

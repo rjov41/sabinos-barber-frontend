@@ -8,6 +8,7 @@ import logger from 'src/app/shared/utils/logger';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
 import { RolCrudFormComponent } from '../../../shared/components/forms/rol-crud-form/rol-crud-form.component';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-rol-insertar',
@@ -17,6 +18,7 @@ import { RolCrudFormComponent } from '../../../shared/components/forms/rol-crud-
   styleUrl: './rol-insertar.component.scss',
 })
 export class RolInsertarComponent {
+  private destruir$: Subject<void> = new Subject<void>();
   #colorModeService = inject(ColorModeService);
   private _RolesService = inject(RolesService);
   private _Router = inject(Router);
@@ -44,23 +46,32 @@ export class RolInsertarComponent {
         Swal.showLoading();
       },
     });
-    this._RolesService.createRol(Rol).subscribe((data) => {
-      this.loader = false;
-      console.log(data);
-      Swal.mixin({
-        customClass: {
-          container: this.#colorModeService.getStoredTheme(
-            environment.SabinosTheme
-          ),
-        },
-      })
-        .fire({
-          text: 'Rol agregado con éxito',
-          icon: 'success',
+    this._RolesService
+      .createRol(Rol)
+      .pipe(takeUntil(this.destruir$))
+      .subscribe((data) => {
+        this.loader = false;
+        console.log(data);
+        Swal.mixin({
+          customClass: {
+            container: this.#colorModeService.getStoredTheme(
+              environment.SabinosTheme
+            ),
+          },
         })
-        .then((result) => {
-          this._Router.navigateByUrl(`/roles/editar/${data.Rol.id}`);
-        });
-    });
+          .fire({
+            text: 'Rol agregado con éxito',
+            icon: 'success',
+          })
+          .then((result) => {
+            this._Router.navigateByUrl(`/roles/editar/${data.Rol.id}`);
+          });
+      });
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }

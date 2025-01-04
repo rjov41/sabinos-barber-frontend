@@ -7,6 +7,7 @@ import logger from 'src/app/shared/utils/logger';
 import { ClienteCrudFormComponent } from '../../../shared/components/forms/cliente-crud-form/cliente-crud-form.component';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-cliente-editar',
@@ -16,6 +17,8 @@ import { environment } from 'src/environments/environment';
   imports: [CardModule, GridModule, ClienteCrudFormComponent],
 })
 export class ClienteEditarComponent {
+  private destruir$: Subject<void> = new Subject<void>();
+
   #colorModeService = inject(ColorModeService);
   private _ClientesService = inject(ClientesService);
   private _ActivatedRoute = inject(ActivatedRoute);
@@ -75,10 +78,19 @@ export class ClienteEditarComponent {
   }
 
   getClienteById() {
-    this._ClientesService.getClienteById(this.Id).subscribe((data: Cliente) => {
-      this.loader = false;
-      this.Cliente = { ...data };
-      console.log(data);
-    });
+    this._ClientesService
+      .getClienteById(this.Id)
+      .pipe(takeUntil(this.destruir$))
+      .subscribe((data: Cliente) => {
+        this.loader = false;
+        this.Cliente = { ...data };
+        console.log(data);
+      });
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }

@@ -25,6 +25,7 @@ import { environment } from 'src/environments/environment';
 import { DirectivesModule } from '../../../directivas/directives.module';
 import { PedidoService } from '../../../../services/pedido.service';
 import { Producto, ProductoPedido } from 'src/app/models/Producto.model';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-pedido-form',
@@ -45,6 +46,8 @@ import { Producto, ProductoPedido } from 'src/app/models/Producto.model';
   styleUrl: './pedido-form.component.scss',
 })
 export class PedidoFormComponent {
+  private destruir$: Subject<void> = new Subject<void>();
+
   readonly PedidoCrudErrorMessages = PedidoCrudErrorMessages;
   PedidoForm = PedidoCrudFormBuilder();
   #colorModeService = inject(ColorModeService);
@@ -60,9 +63,11 @@ export class PedidoFormComponent {
       this.validarPrecioTotal();
     }
 
-    this.PedidoForm.valueChanges.subscribe(() => {
-      console.log(this.PedidoForm);
-    });
+    this.PedidoForm.valueChanges
+      .pipe(takeUntil(this.destruir$))
+      .subscribe(() => {
+        console.log(this.PedidoForm);
+      });
   }
 
   getControlError(name: string): ValidationErrors | null {
@@ -141,5 +146,11 @@ export class PedidoFormComponent {
         icon: 'warning',
       });
     }
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }

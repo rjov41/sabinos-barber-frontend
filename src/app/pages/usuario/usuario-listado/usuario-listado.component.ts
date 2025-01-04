@@ -32,6 +32,7 @@ import { ColorModeService } from '@coreui/angular';
 import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
 import { UsuarioesService } from '../../../services/usuarios.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-usuario-listado',
@@ -59,6 +60,8 @@ import { UsuarioesService } from '../../../services/usuarios.service';
   styleUrl: './usuario-listado.component.scss',
 })
 export class UsuarioListadoComponent {
+  private destruir$: Subject<void> = new Subject<void>();
+
   private _UsuarioService = inject(UsuarioesService);
   private _ModalService = inject(ModalService);
   private _HelpersService = inject(HelpersService);
@@ -85,6 +88,7 @@ export class UsuarioListadoComponent {
     this._UsuarioService
       .getUsuarioes(this.ParametrosURL)
       // .pipe(delay(3000))
+      .pipe(takeUntil(this.destruir$))
       .subscribe((data: Listado<Usuario>) => {
         this.loaderTable = false;
         this.UsuarioList = { ...data };
@@ -170,6 +174,7 @@ export class UsuarioListadoComponent {
           // });
           this._UsuarioService
             .deleteUsuario(Number(Usuario.id))
+            .pipe(takeUntil(this.destruir$))
             .subscribe((data) => {
               this.UsuarioList.data = this.UsuarioList.data.filter(
                 (Usuario) => Usuario.id != Usuario.id
@@ -188,5 +193,11 @@ export class UsuarioListadoComponent {
             });
         }
       });
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }

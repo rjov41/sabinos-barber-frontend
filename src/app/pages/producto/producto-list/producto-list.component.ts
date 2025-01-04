@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { delay, timer } from 'rxjs';
+import { delay, Subject, takeUntil, timer } from 'rxjs';
 import {
   ButtonDirective,
   FormControlDirective,
@@ -59,6 +59,8 @@ import { FormsModule } from '@angular/forms';
   ],
 })
 export class ProductoListComponent {
+  private destruir$: Subject<void> = new Subject<void>();
+
   private _ProductosService = inject(ProductosService);
   private _ModalService = inject(ModalService);
   private _HelpersService = inject(HelpersService);
@@ -86,6 +88,7 @@ export class ProductoListComponent {
     this._ProductosService
       .getProductos(this.ParametrosURL)
       // .pipe(delay(3000))
+      .pipe(takeUntil(this.destruir$))
       .subscribe((data: Listado<Producto>) => {
         this.loaderTable = false;
         this.ProductosList = { ...data };
@@ -172,6 +175,7 @@ export class ProductoListComponent {
           // });
           this._ProductosService
             .deleteProducto(Number(producto.id))
+            .pipe(takeUntil(this.destruir$))
             .subscribe((data) => {
               this.ProductosList.data = this.ProductosList.data.filter(
                 (product) => product.id != producto.id
@@ -190,5 +194,11 @@ export class ProductoListComponent {
             });
         }
       });
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }

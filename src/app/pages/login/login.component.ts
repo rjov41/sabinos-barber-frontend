@@ -27,7 +27,7 @@ import { LoginService } from '../../services/login.service';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
 import { Auth } from '../../models/Auth';
-import { delay, tap } from 'rxjs';
+import { delay, Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -57,6 +57,8 @@ import { delay, tap } from 'rxjs';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
+  private destruir$: Subject<void> = new Subject<void>();
+
   private _LoginService = inject(LoginService);
   private _Router = inject(Router);
   #colorModeService = inject(ColorModeService);
@@ -74,6 +76,7 @@ export class LoginComponent {
       //   }),
       //   delay(30000)
       // )
+      .pipe(takeUntil(this.destruir$))
       .subscribe((data) => {
         this.loadingFormLogin = false;
         let Auth: Auth = { ...data };
@@ -87,5 +90,11 @@ export class LoginComponent {
         // // this.loadInfo = false;
         this._Router.navigateByUrl('/');
       });
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }

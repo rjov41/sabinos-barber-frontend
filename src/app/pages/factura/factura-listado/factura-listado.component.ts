@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { delay, timer } from 'rxjs';
+import { delay, Subject, takeUntil, timer } from 'rxjs';
 import {
   ButtonDirective,
   FormControlDirective,
@@ -59,6 +59,8 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './factura-listado.component.scss',
 })
 export class FacturaListadoComponent {
+  private destruir$: Subject<void> = new Subject<void>();
+
   private _FacturasService = inject(FacturasService);
   private _ModalService = inject(ModalService);
   private _HelpersService = inject(HelpersService);
@@ -86,6 +88,7 @@ export class FacturaListadoComponent {
     this._FacturasService
       .getFacturas(this.ParametrosURL)
       // .pipe(delay(3000))
+      .pipe(takeUntil(this.destruir$))
       .subscribe((data: Listado<Producto>) => {
         this.loaderTable = false;
         this.FacturasList = { ...data };
@@ -172,6 +175,7 @@ export class FacturaListadoComponent {
           // });
           this._FacturasService
             .deleteFactura(Number(factura.id))
+            .pipe(takeUntil(this.destruir$))
             .subscribe((data) => {
               this.FacturasList.data = this.FacturasList.data.filter(
                 (factu) => factu.id != factura.id
@@ -190,5 +194,11 @@ export class FacturaListadoComponent {
             });
         }
       });
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }

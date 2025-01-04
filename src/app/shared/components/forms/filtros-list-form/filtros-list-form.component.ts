@@ -29,6 +29,7 @@ import { ParametersUrl } from 'src/app/models/Parameter.model';
 import { IniciarFiltro } from '../../../utils/constants/filtro';
 import { Filtro } from '../../../../models/Filter.model';
 import dayjs from 'dayjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-filtros-list-form',
@@ -52,6 +53,8 @@ import dayjs from 'dayjs';
   styleUrl: './filtros-list-form.component.scss',
 })
 export class FiltrosListFormComponent {
+  private destruir$: Subject<void> = new Subject<void>();
+
   @Input() showId: boolean = false;
   @Input() showMarca: boolean = false;
   @Input() showDescripcion: boolean = false;
@@ -83,6 +86,7 @@ export class FiltrosListFormComponent {
     if (this.showLocales) {
       this._LocalesServices
         .getLocales(this.ParametrosURL)
+        .pipe(takeUntil(this.destruir$))
         .subscribe((locales: Local[]) => {
           this.Locales = locales;
         });
@@ -102,5 +106,11 @@ export class FiltrosListFormComponent {
   handleDate(event: { endDate: dayjs.Dayjs; startDate: dayjs.Dayjs }) {
     logger.log('range', event);
     this.filtro.fecha = event;
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }

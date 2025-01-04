@@ -7,6 +7,7 @@ import { EmpleadosService } from 'src/app/services/empleados.service';
 import logger from 'src/app/shared/utils/logger';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-empleado-editar',
@@ -16,6 +17,8 @@ import { environment } from 'src/environments/environment';
   styleUrl: './empleado-editar.component.scss',
 })
 export class EmpleadoEditarComponent {
+  private destruir$: Subject<void> = new Subject<void>();
+
   #colorModeService = inject(ColorModeService);
   private _EmpleadosService = inject(EmpleadosService);
   private _ActivatedRoute = inject(ActivatedRoute);
@@ -55,6 +58,7 @@ export class EmpleadoEditarComponent {
 
     this._EmpleadosService
       .updateEmpleado(this.Id, Empleado)
+      .pipe(takeUntil(this.destruir$))
       .subscribe((data) => {
         this.loader = false;
         // console.log(data);
@@ -79,10 +83,17 @@ export class EmpleadoEditarComponent {
   getEmpleadoById() {
     this._EmpleadosService
       .getEmpleadoById(this.Id)
+      .pipe(takeUntil(this.destruir$))
       .subscribe((data: Empleado) => {
         this.loader = false;
         this.Empleado = { ...data };
         console.log(data);
       });
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }

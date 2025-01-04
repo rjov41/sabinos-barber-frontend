@@ -7,6 +7,7 @@ import logger from 'src/app/shared/utils/logger';
 import { ProductoCrudFormComponent } from '../../../shared/components/forms/producto-crud-form/producto-crud-form.component';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-producto-editar',
@@ -16,6 +17,8 @@ import { environment } from 'src/environments/environment';
   imports: [CardModule, GridModule, ProductoCrudFormComponent],
 })
 export class ProductoEditarComponent {
+  private destruir$: Subject<void> = new Subject<void>();
+
   #colorModeService = inject(ColorModeService);
   private _ProductosService = inject(ProductosService);
   private _ActivatedRoute = inject(ActivatedRoute);
@@ -55,6 +58,7 @@ export class ProductoEditarComponent {
 
     this._ProductosService
       .updateProducto(this.Id, producto)
+      .pipe(takeUntil(this.destruir$))
       .subscribe((data) => {
         this.loader = false;
         // console.log(data);
@@ -79,10 +83,17 @@ export class ProductoEditarComponent {
   getProductoById() {
     this._ProductosService
       .getProductoById(this.Id)
+      .pipe(takeUntil(this.destruir$))
       .subscribe((data: Producto) => {
         this.loader = false;
         this.Producto = { ...data };
         console.log(data);
       });
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }

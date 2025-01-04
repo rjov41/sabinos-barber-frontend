@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { delay, timer } from 'rxjs';
+import { delay, Subject, takeUntil, timer } from 'rxjs';
 import {
   ButtonDirective,
   FormControlDirective,
@@ -59,6 +59,8 @@ import { PedidoFormComponent } from '../../../shared/components/forms/pedido-for
   styleUrl: './factura-pedido.component.scss',
 })
 export class FacturaPedidoComponent {
+  private destruir$: Subject<void> = new Subject<void>();
+
   private _ProductosService = inject(ProductosService);
   private _ModalService = inject(ModalService);
 
@@ -85,7 +87,7 @@ export class FacturaPedidoComponent {
 
     this._ProductosService
       .getProductos(this.ParametrosURL)
-      // .pipe(delay(3000))
+      .pipe(takeUntil(this.destruir$))
       .subscribe((data: Listado<Producto>) => {
         this.loaderTable = false;
         this.ProductosList = { ...data };
@@ -112,5 +114,11 @@ export class FacturaPedidoComponent {
       this.Producto = producto;
     }
     this._ModalService.toggle(action);
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }

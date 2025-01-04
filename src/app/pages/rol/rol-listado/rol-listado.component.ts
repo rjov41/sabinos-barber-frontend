@@ -32,6 +32,7 @@ import { ColorModeService } from '@coreui/angular';
 import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
 import { RolesService } from '../../../services/role.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-rol-listado',
@@ -59,6 +60,8 @@ import { RolesService } from '../../../services/role.service';
   styleUrl: './rol-listado.component.scss',
 })
 export class RolListadoComponent {
+  private destruir$: Subject<void> = new Subject<void>();
+
   private _RolesService = inject(RolesService);
   private _ModalService = inject(ModalService);
   private _HelpersService = inject(HelpersService);
@@ -85,6 +88,7 @@ export class RolListadoComponent {
     this._RolesService
       .getRoles(this.ParametrosURL)
       // .pipe(delay(3000))
+      .pipe(takeUntil(this.destruir$))
       .subscribe((data: Listado<Role>) => {
         this.loaderTable = false;
         this.RolList = { ...data };
@@ -169,23 +173,32 @@ export class RolListadoComponent {
           //     Swal.showLoading();
           //   },
           // });
-          this._RolesService.deleteRol(Number(Rol.id)).subscribe((data) => {
-            this.RolList.data = this.RolList.data.filter(
-              (Rol) => Rol.id != Rol.id
-            );
+          this._RolesService
+            .deleteRol(Number(Rol.id))
+            .pipe(takeUntil(this.destruir$))
+            .subscribe((data) => {
+              this.RolList.data = this.RolList.data.filter(
+                (Rol) => Rol.id != Rol.id
+              );
 
-            Swal.mixin({
-              customClass: {
-                container: this.#ColorModeService.getStoredTheme(
-                  environment.SabinosTheme
-                ),
-              },
-            }).fire({
-              text: data[0],
-              icon: 'success',
+              Swal.mixin({
+                customClass: {
+                  container: this.#ColorModeService.getStoredTheme(
+                    environment.SabinosTheme
+                  ),
+                },
+              }).fire({
+                text: data[0],
+                icon: 'success',
+              });
             });
-          });
         }
       });
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }

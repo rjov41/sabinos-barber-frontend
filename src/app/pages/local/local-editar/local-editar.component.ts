@@ -7,6 +7,7 @@ import { LocalesService } from 'src/app/services/locales.service';
 import logger from 'src/app/shared/utils/logger';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-local-editar',
@@ -16,6 +17,8 @@ import { environment } from 'src/environments/environment';
   styleUrl: './local-editar.component.scss',
 })
 export class LocalEditarComponent {
+  private destruir$: Subject<void> = new Subject<void>();
+
   #colorModeService = inject(ColorModeService);
   private _LocalsService = inject(LocalesService);
   private _ActivatedRoute = inject(ActivatedRoute);
@@ -53,32 +56,44 @@ export class LocalEditarComponent {
     });
     this.loader = true;
 
-    this._LocalsService.updateLocal(this.Id, Local).subscribe((data) => {
-      this.loader = false;
-      // console.log(data);
-      this.Local = data.Local;
-      Swal.mixin({
-        customClass: {
-          container: this.#colorModeService.getStoredTheme(
-            environment.SabinosTheme
-          ),
-        },
-      })
-        .fire({
-          text: 'Local modificado con éxito',
-          icon: 'success',
+    this._LocalsService
+      .updateLocal(this.Id, Local)
+      .pipe(takeUntil(this.destruir$))
+      .subscribe((data) => {
+        this.loader = false;
+        // console.log(data);
+        this.Local = data.Local;
+        Swal.mixin({
+          customClass: {
+            container: this.#colorModeService.getStoredTheme(
+              environment.SabinosTheme
+            ),
+          },
         })
-        .then((result) => {
-          console.log(result);
-        });
-    });
+          .fire({
+            text: 'Local modificado con éxito',
+            icon: 'success',
+          })
+          .then((result) => {
+            console.log(result);
+          });
+      });
   }
 
   getLocalById() {
-    this._LocalsService.getLocalById(this.Id).subscribe((data: Local) => {
-      this.loader = false;
-      this.Local = { ...data };
-      console.log(data);
-    });
+    this._LocalsService
+      .getLocalById(this.Id)
+      .pipe(takeUntil(this.destruir$))
+      .subscribe((data: Local) => {
+        this.loader = false;
+        this.Local = { ...data };
+        console.log(data);
+      });
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }

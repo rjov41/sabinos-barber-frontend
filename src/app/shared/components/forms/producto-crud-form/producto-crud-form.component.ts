@@ -26,6 +26,7 @@ import { DirectivesModule } from '../../../directivas/directives.module';
 import { Producto } from 'src/app/models/Producto.model';
 import { LocalesService } from 'src/app/services/locales.service';
 import { Local } from 'src/app/models/Local.model';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-producto-crud-form',
@@ -47,6 +48,8 @@ import { Local } from 'src/app/models/Local.model';
   styleUrl: './producto-crud-form.component.scss',
 })
 export class ProductoCrudFormComponent {
+  private destruir$: Subject<void> = new Subject<void>();
+
   readonly ProductoCrudErrorMessages = ProductoCrudErrorMessages;
   ProductoCrudForm = ProductoCrudFormBuilder();
   #colorModeService = inject(ColorModeService);
@@ -66,6 +69,7 @@ export class ProductoCrudFormComponent {
   getLocales() {
     this._LocalesServices
       .getLocales({ disablePaginate: '1', link: null })
+      .pipe(takeUntil(this.destruir$))
       .subscribe((locales: Local[]) => {
         this.Locales = locales;
       });
@@ -112,5 +116,11 @@ export class ProductoCrudFormComponent {
         icon: 'warning',
       });
     }
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }

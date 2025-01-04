@@ -32,6 +32,7 @@ import { ColorModeService } from '@coreui/angular';
 import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
 import { LocalesService } from '../../../services/locales.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-local-listado',
@@ -59,6 +60,8 @@ import { LocalesService } from '../../../services/locales.service';
   styleUrl: './local-listado.component.scss',
 })
 export class LocalListadoComponent {
+  private destruir$: Subject<void> = new Subject<void>();
+
   private _LocalsService = inject(LocalesService);
   private _ModalService = inject(ModalService);
   private _HelpersService = inject(HelpersService);
@@ -85,6 +88,7 @@ export class LocalListadoComponent {
     this._LocalsService
       .getLocales(this.ParametrosURL)
       // .pipe(delay(3000))
+      .pipe(takeUntil(this.destruir$))
       .subscribe((data: Listado<Local>) => {
         this.loaderTable = false;
         this.LocalList = { ...data };
@@ -171,6 +175,7 @@ export class LocalListadoComponent {
           // });
           this._LocalsService
             .deleteLocal(Number(Local.id))
+            .pipe(takeUntil(this.destruir$))
             .subscribe((data) => {
               this.LocalList.data = this.LocalList.data.filter(
                 (local) => local.id != Local.id
@@ -189,5 +194,11 @@ export class LocalListadoComponent {
             });
         }
       });
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }

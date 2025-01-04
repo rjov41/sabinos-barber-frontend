@@ -8,6 +8,7 @@ import logger from 'src/app/shared/utils/logger';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
 import { EmpleadoCrudFormComponent } from '../../../shared/components/forms/empleado-crud-form/empleado-crud-form.component';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-empleado-insertar',
@@ -17,6 +18,8 @@ import { EmpleadoCrudFormComponent } from '../../../shared/components/forms/empl
   styleUrl: './empleado-insertar.component.scss',
 })
 export class EmpleadoInsertarComponent {
+  private destruir$: Subject<void> = new Subject<void>();
+
   #colorModeService = inject(ColorModeService);
   private _EmpleadosService = inject(EmpleadosService);
   private _Router = inject(Router);
@@ -44,23 +47,32 @@ export class EmpleadoInsertarComponent {
         Swal.showLoading();
       },
     });
-    this._EmpleadosService.createEmpleado(Empleado).subscribe((response) => {
-      this.loader = false;
-      console.log(response);
-      Swal.mixin({
-        customClass: {
-          container: this.#colorModeService.getStoredTheme(
-            environment.SabinosTheme
-          ),
-        },
-      })
-        .fire({
-          text: 'Empleado agregado con éxito',
-          icon: 'success',
+    this._EmpleadosService
+      .createEmpleado(Empleado)
+      .pipe(takeUntil(this.destruir$))
+      .subscribe((response) => {
+        this.loader = false;
+        console.log(response);
+        Swal.mixin({
+          customClass: {
+            container: this.#colorModeService.getStoredTheme(
+              environment.SabinosTheme
+            ),
+          },
         })
-        .then((result) => {
-          this._Router.navigateByUrl(`/empleados/editar/${response.data.id}`);
-        });
-    });
+          .fire({
+            text: 'Empleado agregado con éxito',
+            icon: 'success',
+          })
+          .then((result) => {
+            this._Router.navigateByUrl(`/empleados/editar/${response.data.id}`);
+          });
+      });
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }

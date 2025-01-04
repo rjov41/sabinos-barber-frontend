@@ -8,6 +8,7 @@ import logger from 'src/app/shared/utils/logger';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
 import { UsuarioCrudFormComponent } from '../../../shared/components/forms/usuario-crud-form/usuario-crud-form.component';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-usuario-insertar',
@@ -17,6 +18,8 @@ import { UsuarioCrudFormComponent } from '../../../shared/components/forms/usuar
   styleUrl: './usuario-insertar.component.scss',
 })
 export class UsuarioInsertarComponent {
+  private destruir$: Subject<void> = new Subject<void>();
+
   #colorModeService = inject(ColorModeService);
   private _UsuarioesService = inject(UsuarioesService);
   private _Router = inject(Router);
@@ -44,23 +47,32 @@ export class UsuarioInsertarComponent {
         Swal.showLoading();
       },
     });
-    this._UsuarioesService.createUsuario(Usuario).subscribe((data) => {
-      this.loader = false;
-      console.log(data);
-      Swal.mixin({
-        customClass: {
-          container: this.#colorModeService.getStoredTheme(
-            environment.SabinosTheme
-          ),
-        },
-      })
-        .fire({
-          text: 'Usuario agregado con éxito',
-          icon: 'success',
+    this._UsuarioesService
+      .createUsuario(Usuario)
+      .pipe(takeUntil(this.destruir$))
+      .subscribe((data) => {
+        this.loader = false;
+        console.log(data);
+        Swal.mixin({
+          customClass: {
+            container: this.#colorModeService.getStoredTheme(
+              environment.SabinosTheme
+            ),
+          },
         })
-        .then((result) => {
-          this._Router.navigateByUrl(`/usuarios/editar/${data.Usuario.id}`);
-        });
-    });
+          .fire({
+            text: 'Usuario agregado con éxito',
+            icon: 'success',
+          })
+          .then((result) => {
+            this._Router.navigateByUrl(`/usuarios/editar/${data.Usuario.id}`);
+          });
+      });
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }

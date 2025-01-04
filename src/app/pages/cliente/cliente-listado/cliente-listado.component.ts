@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { delay, timer } from 'rxjs';
+import { delay, Subject, takeUntil, timer } from 'rxjs';
 import {
   ButtonDirective,
   FormControlDirective,
@@ -65,6 +65,8 @@ export class ClienteListadoComponent {
   private _HelpersService = inject(HelpersService);
   readonly #ColorModeService = inject(ColorModeService);
 
+  private destruir$: Subject<void> = new Subject<void>();
+
   loaderTable: boolean = true;
   ParametrosURL: ParametersUrl = {
     allDates: true,
@@ -86,6 +88,7 @@ export class ClienteListadoComponent {
     this._ClientesService
       .getClientes(this.ParametrosURL)
       // .pipe(delay(3000))
+      .pipe(takeUntil(this.destruir$))
       .subscribe((data: Listado<Cliente>) => {
         this.loaderTable = false;
         this.ClientesList = { ...data };
@@ -173,6 +176,7 @@ export class ClienteListadoComponent {
 
           this._ClientesService
             .deleteCliente(Number(Cliente.id))
+            .pipe(takeUntil(this.destruir$))
             .subscribe((data) => {
               this.ClientesList.data = this.ClientesList.data.filter(
                 (product) => product.id != Cliente.id
@@ -191,5 +195,11 @@ export class ClienteListadoComponent {
             });
         }
       });
+  }
+
+  ngOnDestroy(): void {
+    // Completa el Subject para cancelar todas las suscripciones activas
+    this.destruir$.next();
+    this.destruir$.complete();
   }
 }
