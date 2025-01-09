@@ -35,6 +35,8 @@ import { Producto, ProductoPedido } from '../../../models/Producto.model';
 import { PedidoService } from '../../../services/pedido.service';
 import { environment } from '../../../../environments/environment';
 import Swal from 'sweetalert2';
+import { ProductosPedidoComponent } from './productos-pedido/productos-pedido.component';
+import { FacturaPedidoComponent } from '../factura-pedido/factura-pedido.component';
 
 @Component({
   selector: 'app-factura-insertar',
@@ -51,6 +53,8 @@ import Swal from 'sweetalert2';
     NgbHighlight,
     ModalModule,
     ButtonModule,
+    ProductosPedidoComponent,
+    FacturaPedidoComponent,
   ],
   templateUrl: './factura-insertar.component.html',
   styleUrl: './factura-insertar.component.scss',
@@ -80,6 +84,9 @@ export class FacturaInsertarComponent {
     this.getEmpleados();
     // this.getProductos();
     this.refrescarListado();
+    this._ModalService.modalState$.subscribe((data) => {
+      logger.log('modal', data);
+    });
   }
 
   formatterValue = (x: { nombre_completo: string } | string) =>

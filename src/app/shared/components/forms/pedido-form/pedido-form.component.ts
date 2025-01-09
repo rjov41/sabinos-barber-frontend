@@ -26,6 +26,7 @@ import { DirectivesModule } from '../../../directivas/directives.module';
 import { PedidoService } from '../../../../services/pedido.service';
 import { Producto, ProductoPedido } from 'src/app/models/Producto.model';
 import { Subject, takeUntil } from 'rxjs';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-pedido-form',
@@ -47,6 +48,7 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class PedidoFormComponent {
   private destruir$: Subject<void> = new Subject<void>();
+  activeModal = inject(NgbActiveModal);
 
   readonly PedidoCrudErrorMessages = PedidoCrudErrorMessages;
   PedidoForm = PedidoCrudFormBuilder();
