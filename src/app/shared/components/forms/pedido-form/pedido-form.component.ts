@@ -26,7 +26,7 @@ import { DirectivesModule } from '../../../directivas/directives.module';
 import { PedidoService } from '../../../../services/pedido.service';
 import { Producto, ProductoPedido } from 'src/app/models/Producto.model';
 import { Subject, takeUntil } from 'rxjs';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-pedido-form',
@@ -55,6 +55,7 @@ export class PedidoFormComponent {
   #colorModeService = inject(ColorModeService);
   _PedidoService = inject(PedidoService);
   _ModalService = inject(ModalService);
+  _ModalServiceNgB = inject(NgbModal);
 
   @Input() Producto!: Producto;
 
@@ -148,6 +149,7 @@ export class PedidoFormComponent {
         icon: 'warning',
       });
     }
+    this._ModalServiceNgB.dismissAll();
   }
 
   ngOnDestroy(): void {

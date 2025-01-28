@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { delay, Subject, takeUntil, timer } from 'rxjs';
+import { delay, map, Subject, takeUntil, timer } from 'rxjs';
 import {
   NgbActiveModal,
   NgbModal,
@@ -39,6 +39,7 @@ import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
 import { PedidoFormComponent } from '../../../../shared/components/forms/pedido-form/pedido-form.component';
 import { ClientesService } from '../../../../services/clientes.service';
+import { PedidoService } from '../../../../services/pedido.service';
 
 @Component({
   selector: 'app-productos-pedido',
@@ -71,9 +72,10 @@ export class ProductosPedidoComponent {
   @ViewChild('listadoProductos2') listadoProductos2!: ModalComponent;
   private destruir$: Subject<void> = new Subject<void>();
 
+  private _PedidoService = inject(PedidoService);
   private _ProductosService = inject(ProductosService);
   private _ModalService = inject(ModalService);
-  private _ModalServiceNgB = inject(NgbModal);
+  public _ModalServiceNgB = inject(NgbModal);
   activeModal = inject(NgbActiveModal);
 
   ProductosList!: Listado<Producto>;
@@ -99,12 +101,36 @@ export class ProductosPedidoComponent {
 
     this._ProductosService
       .getProductos(this.ParametrosURL)
-      .pipe(takeUntil(this.destruir$))
+      .pipe(
+        takeUntil(this.destruir$),
+        map((response) => this.restarCantidadProductosSeleccionados(response))
+      )
       .subscribe((data: Listado<Producto>) => {
         this.loaderTable = false;
         this.ProductosList = { ...data };
         console.log(data);
       });
+  }
+
+  restarCantidadProductosSeleccionados(
+    response: Listado<Producto>
+  ): Listado<Producto> {
+    const PRODUCTOS_CARRITO = this._PedidoService.obtenerListado();
+
+    const productosRestados = response.data.map((producto) => {
+      const productoExistente = PRODUCTOS_CARRITO.find(
+        (p) => p.id === producto.id
+      ); // Buscar por ID
+      if (productoExistente) {
+        return {
+          ...producto,
+          cantidad: producto.cantidad - productoExistente.cantidadPedido, // Restar la cantidad
+        };
+      }
+      return producto; // Devolver el producto sin cambios si no coincide
+    });
+
+    return { ...response, data: productosRestados };
   }
 
   buscar() {
@@ -127,19 +153,21 @@ export class ProductosPedidoComponent {
     conten: any = false
   ) {
     const action: IModalAction = { show, id };
-    logger.log('action', action);
+    // logger.log('action', action);
 
     if (producto) {
       this.Producto = producto;
     }
-    this._ModalService.toggle({
-      show: false,
-      id: 'listadoProductos2',
-      modal: this.listadoProductos2,
-    });
+    // this._ModalService.toggle({
+    //   show: false,
+    //   id: 'listadoProductos2',
+    //   modal: this.listadoProductos2,
+    // });
     // this._ModalService.toggle(action);
     // this._ModalServiceNgB.open(PedidoFormComponent, { size: 'lg' });
-    this._ModalServiceNgB.open(conten, { size: 'lg' });
+    const modalRef = this._ModalServiceNgB.open(conten, { size: 'lg' });
+    // logger.log('modalRef', modalRef);
+    // modalRef.componentInstance.name = 'World';
   }
 
   ngOnDestroy(): void {

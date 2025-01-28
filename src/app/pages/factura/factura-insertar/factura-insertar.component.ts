@@ -84,9 +84,9 @@ export class FacturaInsertarComponent {
     this.getEmpleados();
     // this.getProductos();
     this.refrescarListado();
-    this._ModalService.modalState$.subscribe((data) => {
-      logger.log('modal', data);
-    });
+    // this._ModalService.modalState$.subscribe((data) => {
+    //   // logger.log('modal', data);
+    // });
   }
 
   formatterValue = (x: { nombre_completo: string } | string) =>

@@ -163,9 +163,15 @@
 <ng-template id="ListadoProductos2" #ListadoProductos2>
   <c-modal-header>
     <h5 cModalTitle>Agregar producto a carrito</h5>
-    <button
+    <!-- <button
       (click)="modalStatusById('ListadoProductos2', false)"
       cButtonClose
+    ></button> -->
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="_ModalServiceNgB.dismissAll()"
     ></button>
   </c-modal-header>
   <c-modal-body>
