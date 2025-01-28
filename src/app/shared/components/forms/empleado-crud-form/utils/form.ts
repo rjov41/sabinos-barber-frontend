@@ -4,6 +4,7 @@ import { EmpleadoCrudValidators } from './validations';
 export interface EmpleadoCrudForm {
   nombre_completo: FormControl<string | null>;
   dni: FormControl<string | null>;
+  local_id: FormControl<number | string | null>;
 }
 
 export const EmpleadoCrudFormBuilder = () =>
@@ -12,4 +13,5 @@ export const EmpleadoCrudFormBuilder = () =>
       ...EmpleadoCrudValidators['nombre_completo'],
     ]),
     dni: new FormControl('', [...EmpleadoCrudValidators['dni']]),
+    local_id: new FormControl('', [...EmpleadoCrudValidators['local_id']]),
   });

@@ -50,11 +50,11 @@
         <select
           cSelect
           id="rolInput"
-          formControlName="rol_id"
+          formControlName="role_id"
           [ngClass]="{
             'is-invalid':
-              getControl('rol_id').invalid && getControl('rol_id').touched,
-            'is-valid': getControl('rol_id').valid
+              getControl('role_id').invalid && getControl('role_id').touched,
+            'is-valid': getControl('role_id').valid
           }"
         >
           <option value="">Seleccione un rol</option>
@@ -65,8 +65,8 @@
         <label cLabel for="rolInput">Rol</label>
       </div>
       <app-valid-messages-form
-        [errors]="getControlError('rol_id')"
-        [messages]="UsuarioCrudErrorMessages['rol_id']"
+        [errors]="getControlError('role_id')"
+        [messages]="UsuarioCrudErrorMessages['role_id']"
       ></app-valid-messages-form>
     </c-col>
 

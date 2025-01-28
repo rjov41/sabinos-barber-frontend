@@ -65,7 +65,7 @@ export class UsuarioInsertarComponent {
             icon: 'success',
           })
           .then((result) => {
-            this._Router.navigateByUrl(`/usuarios/editar/${data.Usuario.id}`);
+            this._Router.navigateByUrl(`/usuarios/editar/${data.id}`);
           });
       });
   }

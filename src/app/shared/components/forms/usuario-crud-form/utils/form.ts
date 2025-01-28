@@ -4,7 +4,7 @@ import { passwordMatchValidator, UsuarioCrudValidators } from './validations';
 export interface UsuarioCrudForm {
   nombre_completo: FormControl<string | null>;
   email: FormControl<string | null>;
-  rol_id: FormControl<string | null>;
+  role_id: FormControl<string | null>;
   passwords: FormGroup;
 }
 
@@ -19,7 +19,7 @@ export const UsuarioCrudFormBuilder = () =>
       ...UsuarioCrudValidators['nombre_completo'],
     ]),
     email: new FormControl('', [...UsuarioCrudValidators['email']]),
-    rol_id: new FormControl('', [...UsuarioCrudValidators['rol_id']]),
+    role_id: new FormControl('', [...UsuarioCrudValidators['role_id']]),
     // passwords: new FormGroup<UsuarioPasswordCrudForm>({
     //   password: new FormControl('', [...UsuarioCrudValidators['password']]),
     //   password_repeat: new FormControl('', [

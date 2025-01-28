@@ -65,7 +65,7 @@ export class LocalInsertarComponent {
             icon: 'success',
           })
           .then((result) => {
-            this._Router.navigateByUrl(`/locales/editar/${data.Local.id}`);
+            this._Router.navigateByUrl(`/locales/editar/${data.id}`);
           });
       });
   }

@@ -13,7 +13,7 @@ import { emailValidator } from '../../../../utils/validaciones';
 export const UsuarioCrudValidators: FormGroupValidators = {
   nombre_completo: [Validators.required, Validators.maxLength(160)],
   email: [Validators.required, Validators.maxLength(30), emailValidator()],
-  rol_id: [Validators.required],
+  role_id: [Validators.required],
   password: [
     Validators.required,
     Validators.maxLength(10),
@@ -27,7 +27,7 @@ export const UsuarioCrudValidators: FormGroupValidators = {
 };
 
 export const UsuarioCrudErrorMessages: FormErrorMessages = {
-  rol_id: {
+  role_id: {
     required: 'El rol es requerido',
   },
   nombre_completo: {

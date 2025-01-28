@@ -7,6 +7,7 @@ import {
 export const EmpleadoCrudValidators: FormGroupValidators = {
   nombre_completo: [Validators.required, Validators.maxLength(80)],
   dni: [Validators.required, Validators.maxLength(80)],
+  local_id: [Validators.required],
 };
 
 export const EmpleadoCrudErrorMessages: FormErrorMessages = {
@@ -17,5 +18,8 @@ export const EmpleadoCrudErrorMessages: FormErrorMessages = {
   dni: {
     required: 'El dni es requerido',
     maxlength: 'Solo se permite 80 caracteres.',
+  },
+  local_id: {
+    required: 'El local es requerido',
   },
 };

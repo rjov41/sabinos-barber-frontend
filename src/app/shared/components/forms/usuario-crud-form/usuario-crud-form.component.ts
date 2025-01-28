@@ -114,18 +114,18 @@ export class UsuarioCrudFormComponent {
     this.UsuarioCrudForm.patchValue({
       nombre_completo: this.Usuario.nombre_completo,
       email: this.Usuario.email,
-      rol_id: this.Usuario.role_id,
+      role_id: this.Usuario.role_id,
     });
   }
 
   sendValueFom() {
     if (this.UsuarioCrudForm.valid) {
-      const { email, nombre_completo, rol_id } = this.UsuarioCrudForm.value;
+      const { email, nombre_completo, role_id } = this.UsuarioCrudForm.value;
       const { password } = this.UsuarioCrudForm.controls.passwords.value;
 
       const VALUES_RESPONSE = this.Usuario
-        ? { email, nombre_completo, rol_id }
-        : { email, nombre_completo, rol_id, password };
+        ? { email, nombre_completo, role_id }
+        : { email, nombre_completo, role_id, password };
       this.FormsValues.emit(VALUES_RESPONSE);
     } else {
       Swal.mixin({

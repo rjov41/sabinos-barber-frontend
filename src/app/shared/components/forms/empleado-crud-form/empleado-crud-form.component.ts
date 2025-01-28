@@ -23,6 +23,10 @@ import { environment } from 'src/environments/environment';
 import { DirectivesModule } from '../../../directivas/directives.module';
 import { EmpleadosService } from 'src/app/services/empleados.service';
 import { Empleado } from 'src/app/models/Empleado.model';
+import { takeUntil } from 'rxjs';
+import { LocalesService } from '../../../../services/locales.service';
+import { Listado } from '../../../../models/Listados.model';
+import { Local } from '../../../../models/Local.model';
 
 @Component({
   selector: 'app-empleado-crud-form',
@@ -47,11 +51,19 @@ export class EmpleadoCrudFormComponent {
   EmpleadoCrudForm = EmpleadoCrudFormBuilder();
   #colorModeService = inject(ColorModeService);
   _EmpleadosService = inject(EmpleadosService);
+  private _LocalsService = inject(LocalesService);
 
   @Input() Empleado!: Empleado;
   @Output() FormsValues = new EventEmitter<any>();
 
   Empleadoes: Empleado[] = [];
+
+  loadingLocales = false;
+  Locales: Local[] = [];
+
+  ngOnInit(): void {
+    this.getLocales();
+  }
 
   ngOnChanges(): void {
     if (this.Empleado) this.setFormValues();
@@ -77,8 +89,26 @@ export class EmpleadoCrudFormComponent {
     this.EmpleadoCrudForm.patchValue({
       nombre_completo: this.Empleado.nombre_completo,
       dni: this.Empleado.dni,
+      local_id: this.Empleado.local_id,
       // apellido: this.Empleado.nombre,
     });
+  }
+
+  getLocales() {
+    this.loadingLocales = true;
+
+    this._LocalsService
+      .getLocales({
+        link: null,
+        disablePaginate: '1',
+      })
+      // .pipe(delay(3000))
+      // .pipe(takeUntil(this.destruir$))
+      .subscribe((data: Local[]) => {
+        this.loadingLocales = false;
+        this.Locales = [...data];
+        console.log(data);
+      });
   }
 
   sendValueFom() {

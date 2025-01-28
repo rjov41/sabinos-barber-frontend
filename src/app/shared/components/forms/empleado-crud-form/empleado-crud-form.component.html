@@ -45,6 +45,33 @@
         ></app-valid-messages-form>
       </div>
     </c-col>
+    <c-col [md]="4">
+      <div cFormFloating>
+        <select
+          cSelect
+          id="rolInput"
+          formControlName="local_id"
+          [ngClass]="{
+            'is-invalid':
+              getControl('local_id').invalid && getControl('local_id').touched,
+            'is-valid': getControl('local_id').valid
+          }"
+        >
+          <option value="">Seleccione un local</option>
+          <option
+            *ngFor="let local of Locales; let i = index"
+            [ngValue]="local.id"
+          >
+            {{ local.nombre | titlecase }}
+          </option>
+        </select>
+        <label cLabel for="rolInput">Locales</label>
+      </div>
+      <app-valid-messages-form
+        [errors]="getControlError('local_id')"
+        [messages]="EmpleadoCrudErrorMessages['local_id']"
+      ></app-valid-messages-form>
+    </c-col>
   </c-row>
   <c-row class="mb-4">
     <c-col class="text-center">
