@@ -1,0 +1,30 @@
+@if(!floatingInput){
+<!-- <label cLabel for="singleCalendarCenter" class="form-label"
+  >fecha de nacimiento</label
+> -->
+}
+<input
+  type="text"
+  id="singleCalendarCenter"
+  class="form-control"
+  style="
+    box-shadow: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  "
+  readonly
+  ngxDaterangepickerBootstrap
+  [singleDatePicker]="true"
+  [(ngModel)]="selectedDate"
+  [autoApply]="true"
+  [drops]="dropsDown"
+  [opens]="opensCenter"
+  [locale]="locale"
+  [isCustomDate]="isCustomDate"
+  [isInvalidDate]="isInvalidDate"
+  (datesUpdated)="datesUpdatedSingle($event)"
+  aria-describedby="singleCalendarCenterDesc"
+  cFormControl
+/>
+<label cLabel for="singleCalendarCenter">{{ textLabel }}</label>

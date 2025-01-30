@@ -8,6 +8,7 @@ export const ClienteCrudValidators: FormGroupValidators = {
   nombre: [Validators.required, Validators.maxLength(80)],
   apellido: [Validators.required, Validators.maxLength(80)],
   telefono: [Validators.required, Validators.maxLength(20)],
+  fecha_nacimiento: [Validators.required],
 };
 
 export const ClienteCrudErrorMessages: FormErrorMessages = {
@@ -22,5 +23,8 @@ export const ClienteCrudErrorMessages: FormErrorMessages = {
   telefono: {
     required: 'El teléfono es requerido.',
     maxlength: 'Solo se permite 20 caracteres.',
+  },
+  fecha_nacimiento: {
+    required: 'La fecha de nacimiento es requerida.',
   },
 };

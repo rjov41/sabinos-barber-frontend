@@ -54,7 +54,7 @@ export class ClienteEditarComponent {
         Swal.showLoading();
       },
     });
-    this.loader = true;
+    // this.loader = true;
 
     this._ClientesService.updateCliente(this.Id, Cliente).subscribe((data) => {
       this.loader = false;

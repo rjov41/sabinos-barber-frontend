@@ -22,6 +22,7 @@ import { authInterceptor } from './shared/interceptors/auth-interceptor';
 import { provideDaterangepickerLocale } from 'ngx-daterangepicker-bootstrap';
 import { registerLocaleData } from '@angular/common';
 import localeEsAr from '@angular/common/locales/es-AR';
+import { errorInterceptor } from './shared/interceptors/error.interceptor';
 
 registerLocaleData(localeEsAr, 'es-AR');
 
@@ -43,7 +44,7 @@ export const appConfig: ApplicationConfig = {
       withViewTransitions()
       // withHashLocation()
     ),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor, errorInterceptor])),
     importProvidersFrom(SidebarModule, DropdownModule),
     IconSetService,
     provideAnimations(),

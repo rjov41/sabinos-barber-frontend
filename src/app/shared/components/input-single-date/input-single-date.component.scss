@@ -1,0 +1,33 @@
+::ng-deep .daterangepicker.ltr .calendar .calendar-table {
+  background-color: transparent;
+  border: none;
+}
+
+::ng-deep [data-coreui-theme="dark"] .daterangepicker {
+  thead th,
+  .week-days th {
+    color: #fff !important;
+  }
+
+  th.available:hover,
+  td.available:hover {
+    color: #212631;
+  }
+
+  td {
+    &.in-range {
+      background-color: #5b5b5b !important;
+      color: #cfcece !important;
+    }
+
+    &.off {
+      background-color: #31323b !important;
+      color: #837e7e !important;
+    }
+
+    &.end-date {
+      background-color: #08c !important;
+      color: #fff !important;
+    }
+  }
+}

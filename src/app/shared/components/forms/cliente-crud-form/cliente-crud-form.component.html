@@ -45,6 +45,37 @@
       </div>
     </c-col>
     <c-col [md]="4">
+      <!-- <div cFormFloating class="mb-3">
+        <input
+          cFormControl
+          id="fecha_nacimientoInput"
+          placeholder="Descripción"
+          type="text"
+          formControlName="fecha_nacimiento"
+          [ngClass]="{
+            'is-invalid':
+              getControl('fecha_nacimiento').invalid &&
+              getControl('fecha_nacimiento').touched,
+            'is-valid': getControl('fecha_nacimiento').valid
+          }"
+          appOnlyAlphanumeric
+        />
+        <label cLabel for="fecha_nacimientoInput">Fecha de nacimiento</label>
+        <app-valid-messages-form
+          [errors]="getControlError('fecha_nacimiento')"
+          [messages]="ClienteCrudErrorMessages['fecha_nacimiento']"
+        ></app-valid-messages-form>
+      </div> -->
+      <div>
+        <app-input-single-date
+          [textLabel]="'Fecha de nacimiento'"
+          cFormFloating
+          [selectedDate]="fecha_nacimiento"
+          (selectedDateChange)="updateDate($event)"
+        />
+      </div>
+    </c-col>
+    <c-col [md]="4">
       <div cFormFloating class="mb-3">
         <input
           cFormControl

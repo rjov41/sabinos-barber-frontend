@@ -27,6 +27,13 @@ import { Cliente } from 'src/app/models/Cliente.model';
 import { LocalesService } from 'src/app/services/locales.service';
 import { Local } from 'src/app/models/Local.model';
 import { Subject, takeUntil } from 'rxjs';
+import { InputSingleDateComponent } from '../../input-single-date/input-single-date.component';
+import {
+  formatearFecha,
+  IniciarFiltro,
+  NOW,
+  obtenerRangoFecha,
+} from '../../../utils/constants/filtro';
 
 @Component({
   selector: 'app-cliente-crud-form',
@@ -37,12 +44,12 @@ import { Subject, takeUntil } from 'rxjs';
     ColComponent,
     ButtonDirective,
     FormFloatingDirective,
-    FormSelectDirective,
     FormModule,
     ReactiveFormsModule,
     ValidMessagesFormComponent,
     ModalModule,
     DirectivesModule,
+    InputSingleDateComponent,
   ],
   templateUrl: './cliente-crud-form.component.html',
   styleUrl: './cliente-crud-form.component.scss',
@@ -55,15 +62,25 @@ export class ClienteCrudFormComponent {
   #colorModeService = inject(ColorModeService);
   _LocalesServices = inject(LocalesService);
 
+  fecha_nacimiento: any = {};
+
   @Input() Cliente!: Cliente;
   @Output() FormsValues = new EventEmitter<any>();
 
   Locales: Local[] = [];
   ngOnInit(): void {
     this.getLocales();
-  }
-  ngOnChanges(): void {
     if (this.Cliente) this.setFormValues();
+
+    if (!this.Cliente) {
+      this.fecha_nacimiento = obtenerRangoFecha();
+      this.ClienteCrudForm.patchValue({
+        fecha_nacimiento: formatearFecha(
+          this.fecha_nacimiento.startDate,
+          'YYYY-MM-DD'
+        ),
+      });
+    }
   }
 
   getLocales() {
@@ -96,7 +113,9 @@ export class ClienteCrudFormComponent {
       nombre: this.Cliente.nombre,
       apellido: this.Cliente.apellido,
       telefono: this.Cliente.telefono,
+      fecha_nacimiento: this.Cliente.fecha_nacimiento,
     });
+    this.fecha_nacimiento = obtenerRangoFecha(this.Cliente.fecha_nacimiento);
   }
 
   sendValueFom() {
@@ -116,9 +135,21 @@ export class ClienteCrudFormComponent {
     }
   }
 
+  updateDate($event: any) {
+    this.ClienteCrudForm.patchValue({
+      fecha_nacimiento: $event,
+    });
+    // // this.fecha_nacimiento = $event;
+    // logger.log('event', $event);
+    // logger.log(
+    //   'this.ClienteCrudForm.controls.fecha_nacimiento',
+    //   this.ClienteCrudForm.controls.fecha_nacimiento.value
+    // );
+  }
+
   ngOnDestroy(): void {
     // Completa el Subject para cancelar todas las suscripciones activas
-    this.destruir$.next();
-    this.destruir$.complete();
+    // this.destruir$.next();
+    // this.destruir$.complete();
   }
 }
