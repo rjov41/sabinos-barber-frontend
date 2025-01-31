@@ -7,7 +7,8 @@ import logger from 'src/app/shared/utils/logger';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
 import { UsuarioCrudFormComponent } from '../../../shared/components/forms/usuario-crud-form/usuario-crud-form.component';
-import { Subject, takeUntil } from 'rxjs';
+import { catchError, Subject, takeUntil } from 'rxjs';
+import { HelpersService } from '../../../services/helpers.service';
 
 @Component({
   selector: 'app-usuario-editar',
@@ -22,6 +23,7 @@ export class UsuarioEditarComponent {
   #colorModeService = inject(ColorModeService);
   private _UsuariosService = inject(UsuarioesService);
   private _ActivatedRoute = inject(ActivatedRoute);
+  private _HelpersService = inject(HelpersService);
 
   loader: boolean = true;
   Id!: number;
@@ -35,30 +37,24 @@ export class UsuarioEditarComponent {
 
   FormsValues(Usuario: Usuario) {
     logger.log(Usuario);
-
-    Swal.mixin({
-      customClass: {
-        container: this.#colorModeService.getStoredTheme(
-          environment.SabinosTheme
-        ),
-      },
-    }).fire({
-      title: 'Actualizando Usuario',
+    this._HelpersService.loaderSweetAlert({
+      title: 'Actualizando usuario',
       text: 'Esto puede demorar un momento.',
-      timerProgressBar: true,
-      allowEscapeKey: false,
-      allowOutsideClick: false,
-      // allowEnterKey: false,
-      focusConfirm: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
     });
-    this.loader = true;
+
+    // this.loader = true;
 
     this._UsuariosService
       .updateUsuario(this.Id, Usuario)
-      .pipe(takeUntil(this.destruir$))
+      .pipe(
+        takeUntil(this.destruir$),
+        catchError((error) =>
+          this._HelpersService.handleErrorApiCrud(
+            error,
+            'No se pudo actualizar el usuario.'
+          )
+        )
+      )
       .subscribe((data) => {
         this.loader = false;
         // console.log(data);

@@ -8,6 +8,7 @@ import logger from 'src/app/shared/utils/logger';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
 import { Subject, takeUntil } from 'rxjs';
+import { HelpersService } from '../../../services/helpers.service';
 
 @Component({
   selector: 'app-rol-editar',
@@ -22,6 +23,7 @@ export class RolEditarComponent {
   #colorModeService = inject(ColorModeService);
   private _RolsService = inject(RolesService);
   private _ActivatedRoute = inject(ActivatedRoute);
+  private _HelpersService = inject(HelpersService);
 
   loader: boolean = true;
   Id!: number;
@@ -35,26 +37,12 @@ export class RolEditarComponent {
 
   FormsValues(Rol: Role) {
     logger.log(Rol);
-
-    Swal.mixin({
-      customClass: {
-        container: this.#colorModeService.getStoredTheme(
-          environment.SabinosTheme
-        ),
-      },
-    }).fire({
+    this._HelpersService.loaderSweetAlert({
       title: 'Actualizando el rol',
       text: 'Esto puede demorar un momento.',
-      timerProgressBar: true,
-      allowEscapeKey: false,
-      allowOutsideClick: false,
-      // allowEnterKey: false,
-      focusConfirm: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
     });
-    this.loader = true;
+
+    // this.loader = true;
 
     this._RolsService
       .updateRol(this.Id, Rol)

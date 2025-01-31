@@ -8,6 +8,7 @@ import logger from 'src/app/shared/utils/logger';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
 import { Subject, takeUntil } from 'rxjs';
+import { HelpersService } from '../../../services/helpers.service';
 
 @Component({
   selector: 'app-empleado-editar',
@@ -22,6 +23,7 @@ export class EmpleadoEditarComponent {
   #colorModeService = inject(ColorModeService);
   private _EmpleadosService = inject(EmpleadosService);
   private _ActivatedRoute = inject(ActivatedRoute);
+  private _HelpersService = inject(HelpersService);
 
   loader: boolean = true;
   Id!: number;
@@ -35,26 +37,12 @@ export class EmpleadoEditarComponent {
 
   FormsValues(Empleado: Empleado) {
     logger.log(Empleado);
-
-    Swal.mixin({
-      customClass: {
-        container: this.#colorModeService.getStoredTheme(
-          environment.SabinosTheme
-        ),
-      },
-    }).fire({
+    this._HelpersService.loaderSweetAlert({
       title: 'Actualizando Empleado',
       text: 'Esto puede demorar un momento.',
-      timerProgressBar: true,
-      allowEscapeKey: false,
-      allowOutsideClick: false,
-      // allowEnterKey: false,
-      focusConfirm: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
     });
-    this.loader = true;
+
+    // this.loader = true;
 
     this._EmpleadosService
       .updateEmpleado(this.Id, Empleado)

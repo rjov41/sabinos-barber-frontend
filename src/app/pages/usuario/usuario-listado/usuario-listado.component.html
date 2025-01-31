@@ -94,6 +94,19 @@
                 </td>
                 <td>
                   <div class="d-flex flex-direction">
+                    <div
+                      class="me-3"
+                      ngbTooltip="Cambiar contraseña"
+                      (click)="cambiarClave(Usuario)"
+                    >
+                      <span
+                        class="text-primary pointer"
+                        role="button"
+                        cTooltip="Cambiar contraseña"
+                      >
+                        <svg cIcon height="18" name="fa-key"></svg>
+                      </span>
+                    </div>
                     <div class="me-3" ngbTooltip="Editar">
                       <a
                         [routerLink]="['/usuarios', 'editar', Usuario.id]"

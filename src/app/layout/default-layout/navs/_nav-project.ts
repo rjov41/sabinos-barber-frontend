@@ -16,11 +16,11 @@ export const navItemsProject: INavData[] = [
     url: '/locales',
     iconComponent: { name: 'cil-factory' },
   },
-  {
-    name: 'Roles',
-    url: '/roles',
-    iconComponent: { name: 'cil-lan' },
-  },
+  // {
+  //   name: 'Roles',
+  //   url: '/roles',
+  //   iconComponent: { name: 'cil-lan' },
+  // },
   {
     name: 'Usuarios',
     url: '/usuarios',

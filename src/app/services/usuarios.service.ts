@@ -45,6 +45,19 @@ export class UsuarioesService {
     );
   }
 
+  updateContraseña(
+    Id: number,
+    data: { password: string; password_confirmation: string }
+  ): Observable<any> {
+    return this.http.put<Usuario>(
+      `${URL_Usuario}/update-password/${Id}`,
+      { ...data },
+      {
+        responseType: 'json',
+      }
+    );
+  }
+
   createUsuario(Usuario: Usuario): Observable<any> {
     return this.http.post<Usuario>(
       `${URL_Usuario}`,

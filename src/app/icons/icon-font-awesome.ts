@@ -1,6 +1,7 @@
 import {
   faFileInvoiceDollar,
   faCartPlus,
+  faKey,
 } from '@fortawesome/free-solid-svg-icons';
 
 const formatTemplate = (data: any) =>
@@ -15,4 +16,5 @@ export const CUSTOM_ICONS = {
     `${faCartPlus.icon[0]} ${faCartPlus.icon[1]}`,
     formatTemplate(faCartPlus.icon[4]),
   ],
+  faKey: [`${faKey.icon[0]} ${faKey.icon[1]}`, formatTemplate(faKey.icon[4])],
 };

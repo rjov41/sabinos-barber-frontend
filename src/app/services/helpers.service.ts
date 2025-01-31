@@ -1,10 +1,15 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpHeaders, HttpParams } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpHeaders,
+  HttpParams,
+} from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
 import { ParametersUrl } from '../models/Parameter.model';
 import { Filtro } from '../models/Filter.model';
 import { ColorModeService } from '@coreui/angular';
 import Swal from 'sweetalert2';
+import { throwError } from 'rxjs';
 
 const URL_PRODUCTO = `${environment.apiUrl}productos`;
 @Injectable({
@@ -84,5 +89,46 @@ export class HelpersService {
         Swal.showLoading();
       },
     });
+  }
+
+  handleErrorApiCrud(
+    httpErrorResponse: HttpErrorResponse,
+    mensaje = 'Hubo un error en la operación. Inténtalo de nuevo.'
+  ) {
+    let ListErrorStr: string = '';
+
+    if (httpErrorResponse.error.length > 0) {
+      let listError: any[] = [];
+      ListErrorStr += "<ul class='error-list'>";
+
+      httpErrorResponse.error.map((value: any) =>
+        listError.push(Object.values(value)[0])
+      );
+      listError.map((msjError) => (ListErrorStr += `<li>${msjError}</li>`));
+
+      ListErrorStr += '</ul>';
+    } else {
+      ListErrorStr += httpErrorResponse.error;
+    }
+
+    ListErrorStr = ListErrorStr ? ListErrorStr : mensaje;
+
+    Swal.mixin({
+      customClass: {
+        container: this.#ColorModeService.getStoredTheme(
+          environment.SabinosTheme
+        ),
+      },
+    })
+      .fire({
+        title: '¡Error!',
+        html: ListErrorStr,
+        icon: 'error',
+      })
+      .then((result) => {
+        console.log(result);
+      });
+
+    return throwError(() => httpErrorResponse);
   }
 }

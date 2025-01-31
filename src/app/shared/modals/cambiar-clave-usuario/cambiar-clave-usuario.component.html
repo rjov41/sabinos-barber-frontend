@@ -1,0 +1,79 @@
+<div class="modal-header">
+  <h4 class="modal-title">Restablecer contraseña</h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="_ActiveModal.dismiss('Cross click')"
+  ></button>
+</div>
+<div class="modal-body">
+  <form
+    cForm
+    [formGroup]="UsuarioCambioClaveForm"
+    class="form-Usuario-cambio-clave"
+  >
+    <c-row class="mb-4 flex-wrap my-2">
+      <c-col [md]="6">
+        <div cFormFloating class="mb-3">
+          <input
+            cFormControl
+            id="passwordInput"
+            placeholder="password"
+            type="password"
+            formControlName="password"
+            [ngClass]="{
+              'is-invalid':
+                getControl('password').invalid &&
+                getControl('password').touched,
+              'is-valid': getControl('password').valid
+            }"
+            appOnlyAlphanumeric
+          />
+          <label cLabel for="passwordInput">Contraseña</label>
+          <app-valid-messages-form
+            [errors]="getControlError('password')"
+            [messages]="UsuarioCrudErrorMessages['password']"
+          ></app-valid-messages-form>
+        </div>
+      </c-col>
+      <c-col [md]="6">
+        <div cFormFloating class="mb-3">
+          <input
+            cFormControl
+            id="password_repeatInput"
+            placeholder="password_repeat"
+            type="password"
+            formControlName="password_repeat"
+            [ngClass]="{
+              'is-invalid':
+                getControl('password_repeat').invalid &&
+                getControl('password_repeat').touched,
+              'is-valid': getControl('password_repeat').valid
+            }"
+            appOnlyAlphanumeric
+          />
+          <label cLabel for="password_repeatInput">Confirmar contraseña</label>
+          <app-valid-messages-form
+            [errors]="getControlError('password_repeat')"
+            [messages]="UsuarioCrudErrorMessages['password_repeat']"
+          ></app-valid-messages-form>
+        </div>
+      </c-col>
+    </c-row>
+    <c-row class="mb-4 justify-content-center">
+      <c-col class="text-center">
+        <button
+          cButton
+          color="info"
+          [disabled]="!UsuarioCambioClaveForm.valid"
+          (click)="sendValueFom()"
+        >
+          @if(loader){
+          <c-spinner aria-hidden="true" size="sm" />
+          }@else{ Cambiar }
+        </button>
+      </c-col>
+    </c-row>
+  </form>
+</div>

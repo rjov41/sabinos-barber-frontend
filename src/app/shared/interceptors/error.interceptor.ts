@@ -17,8 +17,11 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     tap({
       error: (error) => {
+        console.log(error);
+
         if (
           (error.status == 401 && error.error.message === 'Unauthorized') ||
+          (error.status == 401 && error.error.message === 'No autenticado') ||
           (error.status == 401 && error.error.message === 'Unauthenticated.')
         ) {
           console.warn('Error 401 detectado en:', req.url);

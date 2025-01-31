@@ -13,6 +13,7 @@ import { environment } from 'src/environments/environment';
 import { Producto } from '../../../models/Producto.model';
 import { ProductoCrudFormComponent } from '../../../shared/components/forms/producto-crud-form/producto-crud-form.component';
 import { Subject, takeUntil } from 'rxjs';
+import { HelpersService } from '../../../services/helpers.service';
 
 @Component({
   selector: 'app-producto-insertar',
@@ -32,30 +33,17 @@ export class ProductoInsertarComponent {
   #colorModeService = inject(ColorModeService);
   private _ProductosService = inject(ProductosService);
   private _Router = inject(Router);
+  private _HelpersService = inject(HelpersService);
 
   loader: boolean = true;
 
   FormsValues(producto: Producto) {
     logger.log(producto);
-
-    Swal.mixin({
-      customClass: {
-        container: this.#colorModeService.getStoredTheme(
-          environment.SabinosTheme
-        ),
-      },
-    }).fire({
+    this._HelpersService.loaderSweetAlert({
       title: 'Agregando producto',
       text: 'Esto puede demorar un momento.',
-      timerProgressBar: true,
-      allowEscapeKey: false,
-      allowOutsideClick: false,
-      // allowEnterKey: false,
-      focusConfirm: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
     });
+
     this._ProductosService
       .createProducto(producto)
       .pipe(takeUntil(this.destruir$))

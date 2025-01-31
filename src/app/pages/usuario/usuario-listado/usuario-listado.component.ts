@@ -33,6 +33,8 @@ import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
 import { UsuarioesService } from '../../../services/usuarios.service';
 import { Subject, takeUntil } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CambiarClaveUsuarioComponent } from '../../../shared/modals/cambiar-clave-usuario/cambiar-clave-usuario.component';
 
 @Component({
   selector: 'app-usuario-listado',
@@ -66,6 +68,7 @@ export class UsuarioListadoComponent {
   private _ModalService = inject(ModalService);
   private _HelpersService = inject(HelpersService);
   readonly #ColorModeService = inject(ColorModeService);
+  private _ModalServiceNgb = inject(NgbModal);
 
   loaderTable: boolean = true;
   ParametrosURL: ParametersUrl = {
@@ -128,6 +131,11 @@ export class UsuarioListadoComponent {
 
   buscar() {
     this.getUsuarios();
+  }
+
+  cambiarClave(usuario: Usuario) {
+    const modalRef = this._ModalServiceNgb.open(CambiarClaveUsuarioComponent);
+    modalRef.componentInstance.Usuario = usuario;
   }
 
   eliminar(Usuario: Usuario) {

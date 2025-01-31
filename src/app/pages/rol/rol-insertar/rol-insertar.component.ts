@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
 import { RolCrudFormComponent } from '../../../shared/components/forms/rol-crud-form/rol-crud-form.component';
 import { Subject, takeUntil } from 'rxjs';
+import { HelpersService } from '../../../services/helpers.service';
 
 @Component({
   selector: 'app-rol-insertar',
@@ -22,30 +23,18 @@ export class RolInsertarComponent {
   #colorModeService = inject(ColorModeService);
   private _RolesService = inject(RolesService);
   private _Router = inject(Router);
+  private _HelpersService = inject(HelpersService);
 
   loader: boolean = true;
 
   FormsValues(Rol: Role) {
     logger.log(Rol);
 
-    Swal.mixin({
-      customClass: {
-        container: this.#colorModeService.getStoredTheme(
-          environment.SabinosTheme
-        ),
-      },
-    }).fire({
+    this._HelpersService.loaderSweetAlert({
       title: 'Agregando rol',
       text: 'Esto puede demorar un momento.',
-      timerProgressBar: true,
-      allowEscapeKey: false,
-      allowOutsideClick: false,
-      // allowEnterKey: false,
-      focusConfirm: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
     });
+
     this._RolesService
       .createRol(Rol)
       .pipe(takeUntil(this.destruir$))

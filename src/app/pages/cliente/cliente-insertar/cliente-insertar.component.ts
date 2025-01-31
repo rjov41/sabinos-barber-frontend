@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
 import { ClienteCrudFormComponent } from '../../../shared/components/forms/cliente-crud-form/cliente-crud-form.component';
 import { Subject, takeUntil } from 'rxjs';
+import { HelpersService } from '../../../services/helpers.service';
 @Component({
   selector: 'app-cliente-insertar',
   standalone: true,
@@ -20,6 +21,7 @@ export class ClienteInsertarComponent {
   private destruir$: Subject<void> = new Subject<void>();
 
   #colorModeService = inject(ColorModeService);
+  private _HelpersService = inject(HelpersService);
   private _ClientesService = inject(ClientesService);
   private _Router = inject(Router);
 
@@ -28,23 +30,9 @@ export class ClienteInsertarComponent {
   FormsValues(Cliente: Cliente) {
     logger.log(Cliente);
 
-    Swal.mixin({
-      customClass: {
-        container: this.#colorModeService.getStoredTheme(
-          environment.SabinosTheme
-        ),
-      },
-    }).fire({
+    this._HelpersService.loaderSweetAlert({
       title: 'Agregando Cliente',
       text: 'Esto puede demorar un momento.',
-      timerProgressBar: true,
-      allowEscapeKey: false,
-      allowOutsideClick: false,
-      // allowEnterKey: false,
-      focusConfirm: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
     });
     this._ClientesService
       .createCliente(Cliente)

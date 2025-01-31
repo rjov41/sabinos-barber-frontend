@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
 import { EmpleadoCrudFormComponent } from '../../../shared/components/forms/empleado-crud-form/empleado-crud-form.component';
 import { Subject, takeUntil } from 'rxjs';
+import { HelpersService } from '../../../services/helpers.service';
 
 @Component({
   selector: 'app-empleado-insertar',
@@ -23,30 +24,17 @@ export class EmpleadoInsertarComponent {
   #colorModeService = inject(ColorModeService);
   private _EmpleadosService = inject(EmpleadosService);
   private _Router = inject(Router);
+  private _HelpersService = inject(HelpersService);
 
   loader: boolean = true;
 
   FormsValues(Empleado: Empleado) {
     logger.log(Empleado);
-
-    Swal.mixin({
-      customClass: {
-        container: this.#colorModeService.getStoredTheme(
-          environment.SabinosTheme
-        ),
-      },
-    }).fire({
+    this._HelpersService.loaderSweetAlert({
       title: 'Agregando empleado',
       text: 'Esto puede demorar un momento.',
-      timerProgressBar: true,
-      allowEscapeKey: false,
-      allowOutsideClick: false,
-      // allowEnterKey: false,
-      focusConfirm: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
     });
+
     this._EmpleadosService
       .createEmpleado(Empleado)
       .pipe(takeUntil(this.destruir$))

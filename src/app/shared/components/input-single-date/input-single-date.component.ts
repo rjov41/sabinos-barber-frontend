@@ -141,7 +141,9 @@ export class InputSingleDateComponent {
     // console.log('single', this.selectedDate);
     // console.log('single2', event.startDate.format('YYYY-MM-DD'));
     // if (event.startDate)
-    this.selectedDateChange.emit(event.startDate.format('YYYY-MM-DD'));
+    logger.log('event.startDate', event.startDate);
+    if (event.startDate)
+      this.selectedDateChange.emit(event.startDate.format('YYYY-MM-DD'));
     // this.selectedDateChange.emit(event);
   }
 

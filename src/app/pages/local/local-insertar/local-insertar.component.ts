@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
 import { LocalesCrudFormComponent } from '../../../shared/components/forms/locales-crud-form/locales-crud-form.component';
 import { Subject, takeUntil } from 'rxjs';
+import { HelpersService } from '../../../services/helpers.service';
 
 @Component({
   selector: 'app-local-insertar',
@@ -23,30 +24,17 @@ export class LocalInsertarComponent {
   #colorModeService = inject(ColorModeService);
   private _LocalesService = inject(LocalesService);
   private _Router = inject(Router);
+  private _HelpersService = inject(HelpersService);
 
   loader: boolean = true;
 
   FormsValues(Local: Local) {
-    logger.log(Local);
-
-    Swal.mixin({
-      customClass: {
-        container: this.#colorModeService.getStoredTheme(
-          environment.SabinosTheme
-        ),
-      },
-    }).fire({
+    // logger.log(Local);
+    this._HelpersService.loaderSweetAlert({
       title: 'Agregando Local',
       text: 'Esto puede demorar un momento.',
-      timerProgressBar: true,
-      allowEscapeKey: false,
-      allowOutsideClick: false,
-      // allowEnterKey: false,
-      focusConfirm: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
     });
+
     this._LocalesService
       .createLocal(Local)
       .pipe(takeUntil(this.destruir$))

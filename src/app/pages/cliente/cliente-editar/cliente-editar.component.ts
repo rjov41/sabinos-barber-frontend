@@ -7,7 +7,9 @@ import logger from 'src/app/shared/utils/logger';
 import { ClienteCrudFormComponent } from '../../../shared/components/forms/cliente-crud-form/cliente-crud-form.component';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
-import { Subject, takeUntil } from 'rxjs';
+import { catchError, pipe, Subject, takeUntil, throwError } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { HelpersService } from '../../../services/helpers.service';
 
 @Component({
   selector: 'app-cliente-editar',
@@ -22,6 +24,7 @@ export class ClienteEditarComponent {
   #colorModeService = inject(ColorModeService);
   private _ClientesService = inject(ClientesService);
   private _ActivatedRoute = inject(ActivatedRoute);
+  private _HelpersService = inject(HelpersService);
 
   loader: boolean = true;
   Id!: number;
@@ -36,45 +39,40 @@ export class ClienteEditarComponent {
   FormsValues(Cliente: Cliente) {
     logger.log(Cliente);
 
-    Swal.mixin({
-      customClass: {
-        container: this.#colorModeService.getStoredTheme(
-          environment.SabinosTheme
-        ),
-      },
-    }).fire({
+    // this.loader = true;
+    this._HelpersService.loaderSweetAlert({
       title: 'Actualizando Cliente',
       text: 'Esto puede demorar un momento.',
-      timerProgressBar: true,
-      allowEscapeKey: false,
-      allowOutsideClick: false,
-      // allowEnterKey: false,
-      focusConfirm: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
     });
-    // this.loader = true;
-
-    this._ClientesService.updateCliente(this.Id, Cliente).subscribe((data) => {
-      this.loader = false;
-      // console.log(data);
-      this.Cliente = data.Cliente;
-      Swal.mixin({
-        customClass: {
-          container: this.#colorModeService.getStoredTheme(
-            environment.SabinosTheme
-          ),
-        },
-      })
-        .fire({
-          text: 'Cliente modificado con éxito',
-          icon: 'success',
+    this._ClientesService
+      .updateCliente(this.Id, Cliente)
+      .pipe(
+        catchError((error) =>
+          this._HelpersService.handleErrorApiCrud(
+            error,
+            'No se pudo actualizar el cliente.'
+          )
+        )
+      )
+      .subscribe((data) => {
+        this.loader = false;
+        // console.log(data);
+        this.Cliente = data.Cliente;
+        Swal.mixin({
+          customClass: {
+            container: this.#colorModeService.getStoredTheme(
+              environment.SabinosTheme
+            ),
+          },
         })
-        .then((result) => {
-          console.log(result);
-        });
-    });
+          .fire({
+            text: 'Cliente modificado con éxito',
+            icon: 'success',
+          })
+          .then((result) => {
+            console.log(result);
+          });
+      });
   }
 
   getClienteById() {
