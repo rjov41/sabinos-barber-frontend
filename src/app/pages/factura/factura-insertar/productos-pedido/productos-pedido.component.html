@@ -167,12 +167,12 @@
       (click)="modalStatusById('ListadoProductos2', false)"
       cButtonClose
     ></button> -->
-    <button
+    <span
       type="button"
       class="btn-close"
       aria-label="Close"
-      (click)="_ModalServiceNgB.dismissAll()"
-    ></button>
+      (click)="modalRef.close()"
+    ></span>
   </c-modal-header>
   <c-modal-body>
     <app-pedido-form [Producto]="Producto" />

@@ -11,7 +11,12 @@ import {
 import { IconDirective } from '@coreui/icons-angular';
 import { FormModule } from '@coreui/angular';
 import { Component, inject } from '@angular/core';
-import { NgbHighlight, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbHighlight,
+  NgbModal,
+  NgbModalRef,
+  NgbTypeaheadModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subject, OperatorFunction, of, interval } from 'rxjs';
 import {
   catchError,
@@ -37,6 +42,10 @@ import { environment } from '../../../../environments/environment';
 import Swal from 'sweetalert2';
 import { ProductosPedidoComponent } from './productos-pedido/productos-pedido.component';
 import { FacturaPedidoComponent } from '../factura-pedido/factura-pedido.component';
+import { MetodoPagoService } from '../../../services/metodos_pago.service';
+import { MetodoPago } from '../../../models/MetodoPago.model';
+import { FacturasService } from '../../../services/facturas.service';
+import { Factura } from '../../../models/Factura.model';
 
 @Component({
   selector: 'app-factura-insertar',
@@ -54,34 +63,42 @@ import { FacturaPedidoComponent } from '../factura-pedido/factura-pedido.compone
     ModalModule,
     ButtonModule,
     ProductosPedidoComponent,
-    FacturaPedidoComponent,
   ],
   templateUrl: './factura-insertar.component.html',
   styleUrl: './factura-insertar.component.scss',
 })
 export class FacturaInsertarComponent {
   private destruir$: Subject<void> = new Subject<void>();
-  clienteModel: any;
   clienteId!: number;
+
+  clienteModel: any;
   empleadoModel: number = 0;
   MedioPagoModel: number = 0;
 
   LoadingSearchClient: boolean = false;
   loadingEmpleados: boolean = false;
   loadingProductos: boolean = false;
+  loadingMetodosPagos: boolean = false;
 
   private _ClientesService = inject(ClientesService);
   private _EmpleadosService = inject(EmpleadosService);
-  private _ModalService = inject(ModalService);
+  // private _ModalService = inject(ModalService);
   private _PedidoService = inject(PedidoService);
   #colorModeService = inject(ColorModeService);
+  public _ModalServiceNgB = inject(NgbModal);
+  public _MetodoPagoService = inject(MetodoPagoService);
+  public _FacturasService = inject(FacturasService);
 
+  modalRef!: NgbModalRef;
+
+  MetodosPagos: MetodoPago[] = [];
   Empleados: Empleado[] = [];
   Productos: ProductoPedido[] = [];
   PrecioTotal: number = 0;
 
   ngOnInit(): void {
     this.getEmpleados();
+    this.getMetodosPagos();
     // this.getProductos();
     this.refrescarListado();
     // this._ModalService.modalState$.subscribe((data) => {
@@ -170,6 +187,22 @@ export class FacturaInsertarComponent {
       });
   }
 
+  getMetodosPagos() {
+    this.loadingMetodosPagos = true;
+    this._MetodoPagoService
+      .getMetodoPago({
+        estado: 1,
+        disablePaginate: '1',
+        link: null,
+      })
+      // .pipe(delay(3000))
+      .pipe(takeUntil(this.destruir$))
+      .subscribe((data: MetodoPago[]) => {
+        this.loadingMetodosPagos = false;
+        this.MetodosPagos = [...data];
+      });
+  }
+
   getProductos() {
     // this.loadingProductos = true;
     this.Productos = this._PedidoService.obtenerListado();
@@ -216,9 +249,14 @@ export class FacturaInsertarComponent {
       });
   }
 
-  modalStatusById(id: string, show: boolean) {
-    const action: IModalAction = { show, id };
-    this._ModalService.toggle(action);
+  modalStatusById(id: any, show: boolean) {
+    // const action: IModalAction = { show, id };
+    // this._ModalService.toggle(action);
+    // this._ModalServiceNgB.activeInstances.subscribe((data) => {
+    //   logger.log('data', data);
+    // });
+    this.modalRef = this._ModalServiceNgB.open(id, { size: 'xl' });
+    // modalRef.componentInstance = 'alejandro';
   }
 
   validarFactura(): boolean {
@@ -232,28 +270,33 @@ export class FacturaInsertarComponent {
   }
 
   facturar() {
-    let factura = {
-      cliente: this.clienteId,
-      empleado: this.empleadoModel,
+    let factura: Factura = {
+      cliente_id: this.clienteId,
+      empleado_id: this.empleadoModel,
       productos: this.Productos,
-      medio_pago: this.MedioPagoModel,
+      metodo_pago_id: this.MedioPagoModel,
       total: this.PrecioTotal,
+      descuento: '5',
+      descripcion: 'test',
     };
     logger.log('factura', factura);
-    // if (!this.validarFactura()) {
-    Swal.mixin({
-      customClass: {
-        container: this.#colorModeService.getStoredTheme(
-          environment.SabinosTheme
-        ),
-      },
-    }).fire({
-      icon: 'info',
-      title: 'Atención',
-      text: 'Debes completar todos los campos',
-    });
-    // }
+    if (!this.validarFactura()) {
+      Swal.mixin({
+        customClass: {
+          container: this.#colorModeService.getStoredTheme(
+            environment.SabinosTheme
+          ),
+        },
+      }).fire({
+        icon: 'info',
+        title: 'Atención',
+        text: 'Debes completar todos los campos',
+      });
+    }
 
+    this._FacturasService.createFactura(factura).subscribe((data) => {
+      logger.log('data', data);
+    });
     logger.log('validarFactura', this.validarFactura());
   }
 

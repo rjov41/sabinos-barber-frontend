@@ -87,9 +87,10 @@ export class PedidoFormComponent {
 
   validarPrecioTotal() {
     this.PedidoForm.controls.cantidadPedido.valueChanges.subscribe((value) => {
-      logger.log('value', value);
+      // logger.log('value', value);
+      const precioTotal = Number(value) * this.Producto.precio;
       this.PedidoForm.controls.precioTotal.setValue(
-        Number(value) * this.Producto.precio
+        parseFloat(precioTotal.toFixed(2)) // Limita a 2 decimales
       );
     });
   }

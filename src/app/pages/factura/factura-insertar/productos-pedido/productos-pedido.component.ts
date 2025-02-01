@@ -4,6 +4,7 @@ import { delay, map, Subject, takeUntil, timer } from 'rxjs';
 import {
   NgbActiveModal,
   NgbModal,
+  NgbModalRef,
   NgbModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -77,6 +78,8 @@ export class ProductosPedidoComponent {
   private _ModalService = inject(ModalService);
   public _ModalServiceNgB = inject(NgbModal);
   activeModal = inject(NgbActiveModal);
+
+  modalRef!: NgbModalRef;
 
   ProductosList!: Listado<Producto>;
   Producto!: Producto;
@@ -165,7 +168,8 @@ export class ProductosPedidoComponent {
     // });
     // this._ModalService.toggle(action);
     // this._ModalServiceNgB.open(PedidoFormComponent, { size: 'lg' });
-    const modalRef = this._ModalServiceNgB.open(conten, { size: 'lg' });
+    this.modalRef = this._ModalServiceNgB.open(conten, { size: 'lg' });
+    // [0]._contentRef.nodes[0][1]
     // logger.log('modalRef', modalRef);
     // modalRef.componentInstance.name = 'World';
   }

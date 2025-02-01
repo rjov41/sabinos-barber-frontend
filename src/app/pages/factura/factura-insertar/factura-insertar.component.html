@@ -8,7 +8,7 @@
               <h4 class=""><b>Tus Productos</b></h4>
               <div
                 class="text-left agregar-items link-primary pointer"
-                (click)="modalStatusById('listadoProductos', true)"
+                (click)="modalStatusById(listadoProductos, true)"
               >
                 <svg cIcon height="18" name="cil-plus"></svg> Agregar
               </div>
@@ -139,10 +139,18 @@
         <c-row class="mb-4 px-3">
           <c-col class="metodo-pago">
             <div class="">
-              <label cLabel for="MetodoInput" class="mb-3">Medio de pago</label>
+              <label cLabel for="MetodoInput" class="mb-3"
+                >Medio de pago
+                <c-spinner size="sm" *ngIf="loadingMetodosPagos" />
+              </label>
               <select cSelect id="MetodoInput" [(ngModel)]="MedioPagoModel">
                 <option hidden value="0">Seleccione un método de pago</option>
-                <option value="2">Efectivo</option>
+                <option
+                  *ngFor="let MetodosPago of MetodosPagos"
+                  [ngValue]="MetodosPago.id"
+                >
+                  {{ MetodosPago.tipo | uppercase }}
+                </option>
               </select>
             </div>
           </c-col>
@@ -184,7 +192,7 @@
   ></ngb-highlight>
 </ng-template>
 
-<c-modal id="listadoProductos" size="xl">
+<!-- <c-modal id="listadoProductos" size="xl">
   <c-modal-header>
     <h5 cModalTitle>
       <svg cIcon height="18" name="cil-playlist-add"></svg> Listado de productos
@@ -197,4 +205,15 @@
   <c-modal-body>
     <app-productos-pedido></app-productos-pedido>
   </c-modal-body>
-</c-modal>
+</c-modal> -->
+<ng-template #listadoProductos size="xl" id="listadoProductos-template">
+  <c-modal-header>
+    <h5 cModalTitle>
+      <svg cIcon height="18" name="cil-playlist-add"></svg> Listado de productos
+    </h5>
+    <button (click)="modalRef.close()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body id="listadoProductos-body">
+    <app-productos-pedido></app-productos-pedido>
+  </c-modal-body>
+</ng-template>
