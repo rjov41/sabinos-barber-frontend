@@ -71,11 +71,12 @@
             <thead class="text-nowrap text-truncate">
               <tr>
                 <th class="bg-body-tertiary">#</th>
-                <th class="bg-body-tertiary">Marca</th>
+                <th class="bg-body-tertiary">Cliente</th>
+                <th class="bg-body-tertiary">Empleado</th>
+                <th class="bg-body-tertiary">Método de pago</th>
                 <th class="bg-body-tertiary">Descripción</th>
-                <th class="bg-body-tertiary">Local</th>
-                <th class="bg-body-tertiary">Precio</th>
-                <th class="bg-body-tertiary">Cantidad</th>
+                <th class="bg-body-tertiary">Valor</th>
+                <th class="bg-body-tertiary">Descuento</th>
                 <th class="bg-body-tertiary"></th>
               </tr>
             </thead>
@@ -90,32 +91,34 @@
                     </div> -->
                 </td>
                 <td>
-                  <span>{{ Factura.marca }}</span>
+                  <span>{{ Factura.cliente_id }}</span>
+                </td>
+                <td>
+                  <span>{{ Factura.empleado_id }}</span>
+                </td>
+                111
+                <td>
+                  <span>{{ Factura.metodo_pago_id }}</span>
                 </td>
                 <td>
                   <span>{{ Factura.descripcion }}</span>
                 </td>
                 <td>
-                  <span>{{ Factura.local.nombre }}</span>
+                  <span>{{ Factura.total | currency : "ARS" }}</span>
                 </td>
                 <td>
-                  <span>{{
-                    Factura.precio | currency : "ARS" : "symbol"
-                  }}</span>
-                </td>
-                <td>
-                  <span>{{ Factura.cantidad }} unidades</span>
+                  <span>{{ Factura.descuento }}</span>
                 </td>
                 <td>
                   <div class="d-flex flex-direction">
-                    <div class="me-3" ngbTooltip="Editar">
+                    <!-- <div class="me-3" ngbTooltip="Editar">
                       <a
                         [routerLink]="['/Facturas', 'editar', Factura.id]"
                         cTooltip="Editar"
                       >
                         <svg cIcon height="18" name="cil-pencil"></svg>
                       </a>
-                    </div>
+                    </div> -->
                     <div
                       class=""
                       ngbTooltip="Eliminar"

@@ -32,6 +32,7 @@ import Swal from 'sweetalert2';
 import { ColorModeService } from '@coreui/angular';
 import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
+import { Factura } from '../../../models/Factura.model';
 
 @Component({
   selector: 'app-factura-listado',
@@ -72,11 +73,11 @@ export class FacturaListadoComponent {
     estado: 1,
     link: null,
     disablePaginate: '0',
-    local_model: '1',
+    // local_model: '1',
     dateIni: dayjs().startOf('month').format('YYYY-MM-DD'),
     dateFin: dayjs().endOf('month').format('YYYY-MM-DD'),
   };
-  FacturasList!: Listado<Producto>;
+  FacturasList!: Listado<Factura>;
 
   ngOnInit(): void {
     this.getFacturas();
@@ -89,7 +90,7 @@ export class FacturaListadoComponent {
       .getFacturas(this.ParametrosURL)
       // .pipe(delay(3000))
       .pipe(takeUntil(this.destruir$))
-      .subscribe((data: Listado<Producto>) => {
+      .subscribe((data: Listado<Factura>) => {
         this.loaderTable = false;
         this.FacturasList = { ...data };
         console.log(data);
@@ -131,7 +132,7 @@ export class FacturaListadoComponent {
     this.getFacturas();
   }
 
-  eliminar(factura: Producto) {
+  eliminar(factura: Factura) {
     Swal.mixin({
       customClass: {
         container: this.#ColorModeService.getStoredTheme(
@@ -141,7 +142,7 @@ export class FacturaListadoComponent {
     })
       .fire({
         title: '¿Estás seguro?',
-        text: 'Este producto se eliminará y no podrás recuperarlo.',
+        text: 'Esta factura se eliminará y no podrás recuperarlo. Pero quedara registrada esta acción',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#51cbce',
@@ -152,7 +153,7 @@ export class FacturaListadoComponent {
       .then((result) => {
         if (result.isConfirmed) {
           this._HelpersService.loaderSweetAlert({
-            title: 'Eliminando producto',
+            title: 'Eliminando factura',
             text: 'Esto puede demorar un momento.',
           });
           // Swal.mixin({
