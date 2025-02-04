@@ -46,6 +46,8 @@ import { MetodoPagoService } from '../../../services/metodos_pago.service';
 import { MetodoPago } from '../../../models/MetodoPago.model';
 import { FacturasService } from '../../../services/facturas.service';
 import { Factura } from '../../../models/Factura.model';
+import { DirectivesModule } from '../../../shared/directivas/directives.module';
+import { HelpersService } from '../../../services/helpers.service';
 
 @Component({
   selector: 'app-factura-insertar',
@@ -63,6 +65,7 @@ import { Factura } from '../../../models/Factura.model';
     ModalModule,
     ButtonModule,
     ProductosPedidoComponent,
+    DirectivesModule,
   ],
   templateUrl: './factura-insertar.component.html',
   styleUrl: './factura-insertar.component.scss',
@@ -74,6 +77,10 @@ export class FacturaInsertarComponent {
   clienteModel: any;
   empleadoModel: number = 0;
   MedioPagoModel: number = 0;
+  DescuentoModel: number = 0;
+  DescripcionModel!: string;
+  PrecioTotal: number = 0; // precio sin descuento
+  PrecioFinal: number = 0; // precio con descuento
 
   LoadingSearchClient: boolean = false;
   loadingEmpleados: boolean = false;
@@ -88,13 +95,13 @@ export class FacturaInsertarComponent {
   public _ModalServiceNgB = inject(NgbModal);
   public _MetodoPagoService = inject(MetodoPagoService);
   public _FacturasService = inject(FacturasService);
+  public _HelpersService = inject(HelpersService);
 
   modalRef!: NgbModalRef;
 
   MetodosPagos: MetodoPago[] = [];
   Empleados: Empleado[] = [];
   Productos: ProductoPedido[] = [];
-  PrecioTotal: number = 0;
 
   ngOnInit(): void {
     this.getEmpleados();
@@ -209,6 +216,8 @@ export class FacturaInsertarComponent {
     this.PrecioTotal = this.Productos.reduce((prod_anterior, prod_actual) => {
       return prod_anterior + prod_actual.precioTotal;
     }, 0);
+
+    this.changeDescuento(this.DescuentoModel);
   }
 
   eliminarProductoCarrito(producto: Producto) {
@@ -269,6 +278,40 @@ export class FacturaInsertarComponent {
       : false;
   }
 
+  changeDescuento(event: any) {
+    // logger.log('changeDescuento', event);
+
+    // Convierte el valor del descuento a número
+    const descuento = parseFloat(event);
+
+    // Verifica si el descuento es un número válido
+    if (!isNaN(descuento)) {
+      // Calcula el precio con descuento
+      const precioConDescuento =
+        this.PrecioTotal - this.PrecioTotal * (descuento / 100);
+
+      // Asegura que el precio final no tenga más de dos decimales
+      this.PrecioFinal = parseFloat(precioConDescuento.toFixed(2));
+    } else {
+      // Si no es un número válido, asigna el precio total sin descuento
+      this.PrecioFinal = this.PrecioTotal;
+    }
+    // logger.log('PrecioTotal', this.PrecioTotal);
+    // logger.log('PrecioFinal', this.PrecioFinal);
+  }
+
+  resetForm() {
+    this._PedidoService.limpiarListado();
+    this.clienteModel = null;
+    this.clienteId = 0;
+    this.empleadoModel = 0;
+    this.MedioPagoModel = 0;
+    this.DescuentoModel = 0;
+    this.DescripcionModel = '';
+    this.PrecioTotal = 0; // precio sin descuento
+    this.PrecioFinal = 0; // precio con descuento
+  }
+
   facturar() {
     let factura: Factura = {
       cliente_id: this.clienteId,
@@ -276,8 +319,8 @@ export class FacturaInsertarComponent {
       productos: this.Productos,
       metodo_pago_id: this.MedioPagoModel,
       total: this.PrecioTotal,
-      descuento: '5',
-      descripcion: 'test',
+      descuento: String(this.DescuentoModel),
+      descripcion: this.DescripcionModel,
     };
     logger.log('factura', factura);
     if (!this.validarFactura()) {
@@ -292,11 +335,29 @@ export class FacturaInsertarComponent {
         title: 'Atención',
         text: 'Debes completar todos los campos',
       });
-    }
+    } else {
+      this._HelpersService.loaderSweetAlert({
+        title: 'Agregando factura',
+        text: 'Esto puede demorar un momento.',
+      });
 
-    this._FacturasService.createFactura(factura).subscribe((data) => {
-      logger.log('data', data);
-    });
+      this._FacturasService.createFactura(factura).subscribe((data) => {
+        logger.log('data', data);
+
+        Swal.mixin({
+          customClass: {
+            container: this.#colorModeService.getStoredTheme(
+              environment.SabinosTheme
+            ),
+          },
+        }).fire({
+          text: 'Factura creada correctamente',
+          icon: 'success',
+        });
+
+        this.resetForm();
+      });
+    }
     logger.log('validarFactura', this.validarFactura());
   }
 

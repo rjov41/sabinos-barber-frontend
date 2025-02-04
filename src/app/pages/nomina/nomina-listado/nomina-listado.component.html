@@ -32,7 +32,7 @@
       <c-row class="mb-4">
         <c-col>
           <div class="small text-body-secondary mt-3">
-            <span class=""> Facturas: {{ FacturasList.total }}</span>
+            <span class=""> Nominas: {{ ProductosList.total }}</span>
           </div>
         </c-col>
         <c-col class="d-flex justify-content-end" md="4">
@@ -58,7 +58,7 @@
           </c-input-group>
         </c-col>
       </c-row>
-      @if(FacturasList.data.length > 0){
+      @if(ProductosList.data.length > 0){
       <c-row class="mb-4">
         <c-col>
           <table
@@ -71,57 +71,55 @@
             <thead class="text-nowrap text-truncate">
               <tr>
                 <th class="bg-body-tertiary">#</th>
-                <th class="bg-body-tertiary">Cliente</th>
-                <th class="bg-body-tertiary">Empleado</th>
-                <th class="bg-body-tertiary">Método de pago</th>
+                <th class="bg-body-tertiary">Marca</th>
                 <th class="bg-body-tertiary">Descripción</th>
-                <th class="bg-body-tertiary">Valor</th>
-                <th class="bg-body-tertiary">Descuento</th>
+                <th class="bg-body-tertiary">Local</th>
+                <th class="bg-body-tertiary">Precio</th>
+                <th class="bg-body-tertiary">Cantidad</th>
                 <th class="bg-body-tertiary"></th>
               </tr>
             </thead>
             <tbody>
-              @for (Factura of FacturasList.data; track Factura.id; let i =
+              @for (producto of ProductosList.data; track producto.id; let i =
               $index) {
               <tr>
                 <td>
-                  <span>{{ Factura.id }}</span>
+                  <span>{{ producto.id }}</span>
                   <!-- <div class="small text-body-secondary text-nowrap">
                       <span> Registered: </span>
                     </div> -->
                 </td>
                 <td>
-                  <span>{{ Factura.cliente_id }}</span>
+                  <span>{{ producto.marca }}</span>
                 </td>
                 <td>
-                  <span>{{ Factura.empleado_id }}</span>
+                  <span>{{ producto.descripcion }}</span>
                 </td>
                 <td>
-                  <span>{{ Factura.metodo_pago_id }}</span>
+                  <span>{{ producto.local.nombre }}</span>
                 </td>
                 <td>
-                  <span>{{ Factura.descripcion }}</span>
+                  <span>{{
+                    producto.precio | currency : "ARS" : "symbol"
+                  }}</span>
                 </td>
                 <td>
-                  <span>{{ Factura.total | currency : "ARS" }}</span>
-                </td>
-                <td>
-                  <span>{{ Factura.descuento }}</span>
+                  <span>{{ producto.cantidad }} unidades</span>
                 </td>
                 <td>
                   <div class="d-flex flex-direction">
-                    <!-- <div class="me-3" ngbTooltip="Editar">
+                    <div class="me-3" ngbTooltip="Editar">
                       <a
-                        [routerLink]="['/Facturas', 'editar', Factura.id]"
+                        [routerLink]="['/productos', 'editar', producto.id]"
                         cTooltip="Editar"
                       >
                         <svg cIcon height="18" name="cil-pencil"></svg>
                       </a>
-                    </div> -->
+                    </div>
                     <div
                       class=""
                       ngbTooltip="Eliminar"
-                      (click)="eliminar(Factura)"
+                      (click)="eliminar(producto)"
                     >
                       <span
                         class="text-primary pointer"
@@ -148,7 +146,7 @@
               }" -->
             <li
               cPageItem
-              *ngFor="let listado of FacturasList.links"
+              *ngFor="let listado of ProductosList.links"
               [active]="listado.active ? true : false"
               [disabled]="listado.url ? false : true"
               (click)="newPage(listado)"
@@ -163,7 +161,7 @@
       <c-row>
         <c-col>
           <c-container [fluid]="true">
-            <h4 class="text-center py-5">No se encontraron Facturas</h4>
+            <h4 class="text-center py-5">No se encontraron nominas</h4>
           </c-container>
         </c-col>
       </c-row>
@@ -177,7 +175,7 @@
       <c-row class="mb-4">
         <c-col>
           <div class="small text-body-secondary mt-3">
-            <span class="h4"> Cargando facturas...</span>
+            <span class="h4"> Cargando nominas...</span>
           </div>
         </c-col>
       </c-row>

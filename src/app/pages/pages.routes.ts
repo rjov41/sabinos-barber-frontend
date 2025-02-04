@@ -126,4 +126,40 @@ export const routesPages: Routes = [
       },
     ],
   },
+  {
+    path: '',
+    children: [
+      {
+        path: '',
+        redirectTo: '',
+        pathMatch: 'full',
+      },
+      {
+        path: 'nominas',
+        loadChildren: () =>
+          import('./nomina/nominas.routes').then((m) => m.routes),
+        data: {
+          title: 'Nominas',
+        },
+      },
+    ],
+  },
+  {
+    path: '',
+    children: [
+      {
+        path: '',
+        redirectTo: '',
+        pathMatch: 'full',
+      },
+      {
+        path: 'gastos',
+        loadChildren: () =>
+          import('./gasto/nominas.routes').then((m) => m.routes),
+        data: {
+          title: 'Gastos',
+        },
+      },
+    ],
+  },
 ];

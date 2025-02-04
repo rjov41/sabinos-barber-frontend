@@ -37,6 +37,16 @@ export const navItemsProject: INavData[] = [
     iconComponent: { name: 'faFileInvoiceDollar' },
   },
   {
+    name: 'Nominas',
+    url: '/nominas',
+    iconComponent: { name: 'faPersonCircleCheck' },
+  },
+  {
+    name: 'Gastos',
+    url: '/gastos',
+    iconComponent: { name: 'faHandHoldingDollar' },
+  },
+  {
     title: true,
     name: 'Theme',
   },

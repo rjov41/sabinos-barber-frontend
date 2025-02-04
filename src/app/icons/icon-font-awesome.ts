@@ -2,6 +2,8 @@ import {
   faFileInvoiceDollar,
   faCartPlus,
   faKey,
+  faHandHoldingDollar,
+  faPersonCircleCheck,
 } from '@fortawesome/free-solid-svg-icons';
 
 const formatTemplate = (data: any) =>
@@ -17,4 +19,12 @@ export const CUSTOM_ICONS = {
     formatTemplate(faCartPlus.icon[4]),
   ],
   faKey: [`${faKey.icon[0]} ${faKey.icon[1]}`, formatTemplate(faKey.icon[4])],
+  faPersonCircleCheck: [
+    `${faPersonCircleCheck.icon[0]} ${faPersonCircleCheck.icon[1]}`,
+    formatTemplate(faPersonCircleCheck.icon[4]),
+  ],
+  faHandHoldingDollar: [
+    `${faHandHoldingDollar.icon[0]} ${faHandHoldingDollar.icon[1]}`,
+    formatTemplate(faHandHoldingDollar.icon[4]),
+  ],
 };

@@ -156,9 +156,48 @@
           </c-col>
         </c-row>
         <c-row class="mb-4 px-3">
+          <c-col class="descripcion-factura">
+            <div class="">
+              <label cLabel for="descuentoFactura">Descuento</label>
+              <c-input-group class="mb-3">
+                <input
+                  aria-describedby="descuentoFactura"
+                  aria-label="descuentoFactura"
+                  cFormControl
+                  placeholder="Descuento"
+                  [(ngModel)]="DescuentoModel"
+                  (ngModelChange)="changeDescuento($event)"
+                  type="text"
+                  appOnlyNumberAndPoint
+                />
+                <span cInputGroupText id="descuentoFactura">%</span>
+              </c-input-group>
+            </div>
+          </c-col>
+        </c-row>
+        <c-row class="mb-4 px-3">
+          <c-col class="descripcion-factura">
+            <div class="">
+              <label cLabel for="descripcionFactura">Descripción</label>
+              <textarea
+                cFormControl
+                id="descripcionFactura"
+                rows="3"
+                [(ngModel)]="DescripcionModel"
+              ></textarea>
+            </div>
+          </c-col>
+        </c-row>
+        <c-row class="mb-4 px-3">
           <c-col class="total d-flex justify-content-between">
-            <span class="title">Total</span>
+            <span class="title">Valor Total</span>
             <span class="price">{{ PrecioTotal | currency : "ARS" }}</span>
+          </c-col>
+        </c-row>
+        <c-row class="mb-4 px-3">
+          <c-col class="total d-flex justify-content-between">
+            <span class="title">Valor Final</span>
+            <span class="price">{{ PrecioFinal | currency : "ARS" }}</span>
           </c-col>
         </c-row>
         <c-row class="mb-4 px-3">
