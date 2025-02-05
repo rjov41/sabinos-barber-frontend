@@ -32,7 +32,7 @@
       <c-row class="mb-4">
         <c-col>
           <div class="small text-body-secondary mt-3">
-            <span class=""> Nominas: {{ ProductosList.total }}</span>
+            <span class=""> Nominas: {{ NominaList.total }}</span>
           </div>
         </c-col>
         <c-col class="d-flex justify-content-end" md="4">
@@ -58,7 +58,7 @@
           </c-input-group>
         </c-col>
       </c-row>
-      @if(ProductosList.data.length > 0){
+      @if(NominaList.data.length > 0){
       <c-row class="mb-4">
         <c-col>
           <table
@@ -71,46 +71,50 @@
             <thead class="text-nowrap text-truncate">
               <tr>
                 <th class="bg-body-tertiary">#</th>
-                <th class="bg-body-tertiary">Marca</th>
-                <th class="bg-body-tertiary">Descripción</th>
-                <th class="bg-body-tertiary">Local</th>
-                <th class="bg-body-tertiary">Precio</th>
-                <th class="bg-body-tertiary">Cantidad</th>
+                <th class="bg-body-tertiary">Empleado</th>
+                <th class="bg-body-tertiary">Nombre</th>
+                <th class="bg-body-tertiary">Monto</th>
+                <th class="bg-body-tertiary">Adicional</th>
+                <th class="bg-body-tertiary">Porcentaje</th>
+                <th class="bg-body-tertiary">Total</th>
                 <th class="bg-body-tertiary"></th>
               </tr>
             </thead>
             <tbody>
-              @for (producto of ProductosList.data; track producto.id; let i =
-              $index) {
+              @for (nomina of NominaList.data; track nomina.id; let i = $index)
+              {
               <tr>
                 <td>
-                  <span>{{ producto.id }}</span>
+                  <span>{{ nomina.id }}</span>
                   <!-- <div class="small text-body-secondary text-nowrap">
                       <span> Registered: </span>
                     </div> -->
                 </td>
                 <td>
-                  <span>{{ producto.marca }}</span>
+                  <span>{{ nomina.empleado_id }}</span>
                 </td>
                 <td>
-                  <span>{{ producto.descripcion }}</span>
-                </td>
-                <td>
-                  <span>{{ producto.local.nombre }}</span>
+                  <span>{{ nomina.nombre }}</span>
                 </td>
                 <td>
                   <span>{{
-                    producto.precio | currency : "ARS" : "symbol"
+                    nomina.monto_facturado | currency : "ARS" : "symbol"
                   }}</span>
                 </td>
                 <td>
-                  <span>{{ producto.cantidad }} unidades</span>
+                  <span>{{ nomina.adicional }}</span>
+                </td>
+                <td>
+                  <span>{{ nomina.porcentaje_adicional }}%</span>
+                </td>
+                <td>
+                  <span>{{ nomina.total | currency : "ARS" : "symbol" }} </span>
                 </td>
                 <td>
                   <div class="d-flex flex-direction">
                     <div class="me-3" ngbTooltip="Editar">
                       <a
-                        [routerLink]="['/productos', 'editar', producto.id]"
+                        [routerLink]="['/nominas', 'editar', nomina.id]"
                         cTooltip="Editar"
                       >
                         <svg cIcon height="18" name="cil-pencil"></svg>
@@ -119,7 +123,7 @@
                     <div
                       class=""
                       ngbTooltip="Eliminar"
-                      (click)="eliminar(producto)"
+                      (click)="eliminar(nomina)"
                     >
                       <span
                         class="text-primary pointer"
@@ -146,7 +150,7 @@
               }" -->
             <li
               cPageItem
-              *ngFor="let listado of ProductosList.links"
+              *ngFor="let listado of NominaList.links"
               [active]="listado.active ? true : false"
               [disabled]="listado.url ? false : true"
               (click)="newPage(listado)"

@@ -33,6 +33,7 @@ import { ColorModeService } from '@coreui/angular';
 import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
 import { NominaService } from '../../../services/nomina.service';
+import { Nomina } from '../../../models/Nomina.model';
 
 @Component({
   selector: 'app-nomina-listado',
@@ -77,7 +78,7 @@ export class NominaListadoComponent {
     dateIni: dayjs().startOf('month').format('YYYY-MM-DD'),
     dateFin: dayjs().endOf('month').format('YYYY-MM-DD'),
   };
-  ProductosList!: Listado<Producto>;
+  NominaList!: Listado<Nomina>;
 
   ngOnInit(): void {
     this.getNominas();
@@ -90,9 +91,9 @@ export class NominaListadoComponent {
       .getNominas(this.ParametrosURL)
       // .pipe(delay(3000))
       .pipe(takeUntil(this.destruir$))
-      .subscribe((data: Listado<Producto>) => {
+      .subscribe((data: Listado<Nomina>) => {
         this.loaderTable = false;
-        this.ProductosList = { ...data };
+        this.NominaList = { ...data };
         console.log(data);
       });
   }
@@ -132,7 +133,7 @@ export class NominaListadoComponent {
     this.getNominas();
   }
 
-  eliminar(producto: Producto) {
+  eliminar(nomina: Nomina) {
     Swal.mixin({
       customClass: {
         container: this.#ColorModeService.getStoredTheme(
@@ -142,7 +143,7 @@ export class NominaListadoComponent {
     })
       .fire({
         title: '¿Estás seguro?',
-        text: 'Este producto se eliminará y no podrás recuperarlo.',
+        text: 'Esta nomina se eliminará y no podrás recuperarla.',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#51cbce',
@@ -153,46 +154,29 @@ export class NominaListadoComponent {
       .then((result) => {
         if (result.isConfirmed) {
           this._HelpersService.loaderSweetAlert({
-            title: 'Eliminando producto',
+            title: 'Eliminando nomina',
             text: 'Esto puede demorar un momento.',
           });
-          // Swal.mixin({
-          //   customClass: {
-          //     container: this.#ColorModeService.getStoredTheme(
-          //       environment.SabinosTheme
-          //     ),
-          //   },
-          // }).fire({
-          //   title: 'Eliminando producto',
-          //   text: 'Esto puede demorar un momento.',
-          //   timerProgressBar: true,
-          //   allowEscapeKey: false,
-          //   allowOutsideClick: false,
-          //   // allowEnterKey: false,
-          //   focusConfirm: false,
-          //   didOpen: () => {
-          //     Swal.showLoading();
-          //   },
-          // });
-          // this._ProductosService
-          //   .deleteProducto(Number(producto.id))
-          //   .pipe(takeUntil(this.destruir$))
-          //   .subscribe((data) => {
-          //     this.ProductosList.data = this.ProductosList.data.filter(
-          //       (product) => product.id != producto.id
-          //     );
 
-          //     Swal.mixin({
-          //       customClass: {
-          //         container: this.#ColorModeService.getStoredTheme(
-          //           environment.SabinosTheme
-          //         ),
-          //       },
-          //     }).fire({
-          //       text: data[0],
-          //       icon: 'success',
-          //     });
-          //   });
+          this._NominaService
+            .deleteNomina(Number(nomina.id))
+            .pipe(takeUntil(this.destruir$))
+            .subscribe((data) => {
+              this.NominaList.data = this.NominaList.data.filter(
+                (nomin) => nomin.id != nomina.id
+              );
+
+              Swal.mixin({
+                customClass: {
+                  container: this.#ColorModeService.getStoredTheme(
+                    environment.SabinosTheme
+                  ),
+                },
+              }).fire({
+                text: data[0],
+                icon: 'success',
+              });
+            });
         }
       });
   }

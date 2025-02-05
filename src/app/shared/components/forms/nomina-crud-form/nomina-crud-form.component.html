@@ -1,0 +1,162 @@
+<form cForm [formGroup]="NominaCrudForm" class="form-Empleado-crud">
+  <c-row class="mb-4">
+    <c-col [md]="4">
+      <div cFormFloating>
+        <select
+          cSelect
+          id="empleado_idlInput"
+          formControlName="empleado_id"
+          [ngClass]="{
+            'is-invalid':
+              getControl('empleado_id').invalid &&
+              getControl('empleado_id').touched,
+            'is-valid': getControl('empleado_id').valid
+          }"
+        >
+          <option value="0">Seleccione un empleado</option>
+          <option
+            *ngFor="let empleado of Empleados; let i = index"
+            [ngValue]="empleado.id"
+          >
+            {{ empleado.nombre_completo | titlecase }}
+          </option>
+        </select>
+        <label cLabel for="empleado_idlInput"
+          >Empleados <c-spinner size="sm" *ngIf="loadingEmpleados"
+        /></label>
+      </div>
+      <app-valid-messages-form
+        [errors]="getControlError('empleado_id')"
+        [messages]="NominaCrudErrorMessages['empleado_id']"
+      ></app-valid-messages-form>
+    </c-col>
+    <c-col [md]="4">
+      <div cFormFloating class="mb-3">
+        <input
+          cFormControl
+          id="nombreInput"
+          placeholder="nombre"
+          type="text"
+          formControlName="nombre"
+          [ngClass]="{
+            'is-invalid':
+              getControl('nombre').invalid && getControl('nombre').touched,
+            'is-valid': getControl('nombre').valid
+          }"
+          appOnlyAlphanumeric
+        />
+        <label cLabel for="nombreInput">Nombre</label>
+        <app-valid-messages-form
+          [errors]="getControlError('nombre')"
+          [messages]="NominaCrudErrorMessages['nombre']"
+        ></app-valid-messages-form>
+      </div>
+    </c-col>
+    <c-col [md]="4">
+      <div cFormFloating class="mb-3">
+        <input
+          cFormControl
+          id="monto_facturadoInput"
+          placeholder="monto_facturado"
+          type="text"
+          formControlName="monto_facturado"
+          [ngClass]="{
+            'is-invalid':
+              getControl('monto_facturado').invalid &&
+              getControl('monto_facturado').touched,
+            'is-valid': getControl('monto_facturado').valid
+          }"
+          appOnlyAlphanumeric
+        />
+        <label cLabel for="monto_facturadoInput">Monto</label>
+        <app-valid-messages-form
+          [errors]="getControlError('monto_facturado')"
+          [messages]="NominaCrudErrorMessages['monto_facturado']"
+        ></app-valid-messages-form>
+      </div>
+    </c-col>
+    <c-col [md]="4">
+      <div cFormFloating class="mb-3">
+        <input
+          cFormControl
+          id="totalInput"
+          placeholder="total"
+          type="text"
+          formControlName="total"
+          [ngClass]="{
+            'is-invalid':
+              getControl('total').invalid && getControl('total').touched,
+            'is-valid': getControl('total').valid
+          }"
+          appOnlyAlphanumeric
+        />
+        <label cLabel for="totalInput">Total</label>
+        <app-valid-messages-form
+          [errors]="getControlError('total')"
+          [messages]="NominaCrudErrorMessages['total']"
+        ></app-valid-messages-form>
+      </div>
+    </c-col>
+    <c-col [md]="4">
+      <div cFormFloating class="mb-3">
+        <c-form-check switch sizing="lg">
+          <input cFormCheckInput type="checkbox" formControlName="adicional" />
+          <label cFormCheckLabel>¿Agregar adicional?</label>
+        </c-form-check>
+        <!-- <input
+          cFormControl
+          id="monto_facturadoInput"
+          placeholder="monto_facturado"
+          type="text"
+          formControlName="monto_facturado"
+          [ngClass]="{
+            'is-invalid':
+              getControl('monto_facturado').invalid &&
+              getControl('monto_facturado').touched,
+            'is-valid': getControl('monto_facturado').valid
+          }"
+          appOnlyAlphanumeric
+        />
+        <label cLabel for="monto_facturadoInput">Monto</label>
+        <app-valid-messages-form
+          [errors]="getControlError('monto_facturado')"
+          [messages]="NominaCrudErrorMessages['monto_facturado']"
+        ></app-valid-messages-form> -->
+      </div>
+    </c-col>
+    <c-col [md]="4" *ngIf="getControl('adicional').value">
+      <div cFormFloating class="mb-3">
+        <input
+          cFormControl
+          id="porcentaje_adicionalInput"
+          placeholder="porcentaje_adicional"
+          type="text"
+          formControlName="porcentaje_adicional"
+          [ngClass]="{
+            'is-invalid':
+              getControl('porcentaje_adicional').invalid &&
+              getControl('porcentaje_adicional').touched,
+            'is-valid': getControl('porcentaje_adicional').valid
+          }"
+          appOnlyAlphanumeric
+        />
+        <label cLabel for="porcentaje_adicionalInput"
+          >Porcentaje adicional</label
+        >
+        <app-valid-messages-form
+          [errors]="getControlError('porcentaje_adicional')"
+          [messages]="NominaCrudErrorMessages['porcentaje_adicional']"
+        ></app-valid-messages-form>
+      </div>
+    </c-col>
+  </c-row>
+  <c-row class="mb-4">
+    <c-col class="text-center">
+      @if (Nomina) {
+      <button cButton color="info" (click)="sendValueFom()">Editar</button>
+      } @else {
+      <button cButton color="info" (click)="sendValueFom()">Agregar</button>
+      }
+    </c-col>
+  </c-row>
+</form>
