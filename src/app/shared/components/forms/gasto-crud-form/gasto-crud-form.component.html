@@ -1,0 +1,203 @@
+<form cForm [formGroup]="GastoCrudForm" class="form-gasto-crud">
+  <!-- Campos principales -->
+  <c-row class="mb-4">
+    <c-col [md]="4">
+      <div cFormFloating>
+        <select
+          cSelect
+          id="user_idlInput"
+          formControlName="user_id"
+          [ngClass]="{
+            'is-invalid':
+              getControl('user_id').invalid && getControl('user_id').touched,
+            'is-valid': getControl('user_id').valid
+          }"
+        >
+          <option value="0">Seleccione un Usuario</option>
+          <option
+            *ngFor="let usuario of Usuarios; let i = index"
+            [ngValue]="usuario.id"
+          >
+            {{ usuario.nombre_completo | titlecase }}
+          </option>
+        </select>
+        <label cLabel for="user_idlInput"
+          >Usuario
+          <c-spinner size="sm" *ngIf="loadingUsuarios" />
+        </label>
+      </div>
+      <app-valid-messages-form
+        [errors]="getControlError('user_id')"
+        [messages]="GastoCrudErrorMessages['user_id']"
+      ></app-valid-messages-form>
+    </c-col>
+    <c-col [md]="4">
+      <div cFormFloating>
+        <select
+          cSelect
+          id="empleado_idlInput"
+          formControlName="empleado_id"
+          [ngClass]="{
+            'is-invalid':
+              getControl('empleado_id').invalid &&
+              getControl('empleado_id').touched,
+            'is-valid': getControl('empleado_id').valid
+          }"
+        >
+          <option value="0">Seleccione un empleado</option>
+          <option
+            *ngFor="let empleado of Empleados; let i = index"
+            [ngValue]="empleado.id"
+          >
+            {{ empleado.nombre_completo | titlecase }}
+          </option>
+        </select>
+        <label cLabel for="empleado_idlInput"
+          >Empleado <c-spinner size="sm" *ngIf="loadingEmpleados"
+        /></label>
+      </div>
+      <app-valid-messages-form
+        [errors]="getControlError('empleado_id')"
+        [messages]="GastoCrudErrorMessages['empleado_id']"
+      ></app-valid-messages-form>
+    </c-col>
+  </c-row>
+
+  <!-- Sección de gastos -->
+  <div formArrayName="gastos">
+    <div
+      *ngFor="let gasto of gastos.controls; let i = index"
+      [formGroupName]="i"
+      class="mb-4 border p-3 position-relative"
+    >
+      <c-row class="form-gasto">
+        <h6 class="mb-3">Gasto Nro. {{ i + 1 }}</h6>
+        <c-col [md]="11">
+          <c-row>
+            <c-col [md]="3">
+              <div cFormFloating>
+                <input
+                  cFormControl
+                  id="producto_id_{{ i }}"
+                  formControlName="producto_id"
+                  type="text"
+                  placeholder="Producto ID"
+                />
+                <label cLabel for="producto_id_{{ i }}">Producto ID</label>
+              </div>
+              <app-valid-messages-form
+                [errors]="getGastoControlError(i, 'producto_id')"
+                [messages]="GastoCrudErrorMessages['producto_id']"
+              ></app-valid-messages-form>
+            </c-col>
+            <c-col [md]="3">
+              <div cFormFloating>
+                <input
+                  cFormControl
+                  id="cantidad_{{ i }}"
+                  formControlName="cantidad"
+                  type="text"
+                  placeholder="Cantidad"
+                />
+                <label cLabel for="cantidad_{{ i }}">Cantidad</label>
+              </div>
+              <app-valid-messages-form
+                [errors]="getGastoControlError(i, 'cantidad')"
+                [messages]="GastoCrudErrorMessages['cantidad']"
+              ></app-valid-messages-form>
+            </c-col>
+            <c-col [md]="3">
+              <div cFormFloating>
+                <input
+                  cFormControl
+                  id="precio_unitario_{{ i }}"
+                  formControlName="precio_unitario"
+                  type="text"
+                  placeholder="Precio Unitario"
+                />
+                <label cLabel for="precio_unitario_{{ i }}"
+                  >Precio Unitario</label
+                >
+              </div>
+              <app-valid-messages-form
+                [errors]="getGastoControlError(i, 'precio_unitario')"
+                [messages]="GastoCrudErrorMessages['precio_unitario']"
+              ></app-valid-messages-form>
+            </c-col>
+            <c-col [md]="3">
+              <div cFormFloating>
+                <input
+                  cFormControl
+                  id="precio_{{ i }}"
+                  formControlName="precio"
+                  type="text"
+                  placeholder="precio"
+                />
+                <label cLabel for="precio_{{ i }}">Total</label>
+              </div>
+              <app-valid-messages-form
+                [errors]="getGastoControlError(i, 'precio')"
+                [messages]="GastoCrudErrorMessages['precio']"
+              ></app-valid-messages-form>
+            </c-col>
+            <c-col [md]="3">
+              <div cFormFloating>
+                <input
+                  cFormControl
+                  id="tipo_gasto_{{ i }}"
+                  formControlName="tipo_gasto"
+                  type="text"
+                  placeholder="Tipo Gasto"
+                />
+                <label cLabel for="tipo_gasto_{{ i }}">Tipo Gasto</label>
+              </div>
+              <app-valid-messages-form
+                [errors]="getGastoControlError(i, 'tipo_gasto')"
+                [messages]="GastoCrudErrorMessages['tipo_gasto']"
+              ></app-valid-messages-form>
+            </c-col>
+          </c-row>
+        </c-col>
+
+        <c-col [md]="1" class="align-content-center">
+          <button
+            cButton
+            color="danger"
+            (click)="eliminarGasto(i)"
+            [disabled]="gastos.controls.length == 0"
+          >
+            <svg cIcon height="18" name="cil-trash"></svg>
+          </button>
+        </c-col>
+      </c-row>
+    </div>
+    <button cButton color="primary" type="button" (click)="agregarNuevoGasto()">
+      <svg cIcon height="18" name="cil-plus"></svg>
+    </button>
+  </div>
+
+  <!-- Botón para enviar el formulario -->
+  <c-row class="mb-4">
+    <c-col class="text-center">
+      @if (Nomina) {
+      <button
+        cButton
+        color="info"
+        [disabled]="!ValidarBtnForm()"
+        (click)="sendValueFom()"
+      >
+        Editar
+      </button>
+      } @else {
+      <button
+        cButton
+        color="info"
+        [disabled]="!ValidarBtnForm()"
+        (click)="sendValueFom()"
+      >
+        Agregar
+      </button>
+      }
+    </c-col>
+  </c-row>
+</form>

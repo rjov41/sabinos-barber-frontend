@@ -74,7 +74,7 @@
                 <th class="bg-body-tertiary">Empleado</th>
                 <th class="bg-body-tertiary">Nombre</th>
                 <th class="bg-body-tertiary">Monto</th>
-                <th class="bg-body-tertiary">Adicional</th>
+                <!-- <th class="bg-body-tertiary">Adicional</th> -->
                 <th class="bg-body-tertiary">Porcentaje</th>
                 <th class="bg-body-tertiary">Total</th>
                 <th class="bg-body-tertiary"></th>
@@ -91,7 +91,7 @@
                     </div> -->
                 </td>
                 <td>
-                  <span>{{ nomina.empleado_id }}</span>
+                  <span>{{ nomina.empleado?.nombre_completo }}</span>
                 </td>
                 <td>
                   <span>{{ nomina.nombre }}</span>
@@ -101,9 +101,9 @@
                     nomina.monto_facturado | currency : "ARS" : "symbol"
                   }}</span>
                 </td>
-                <td>
+                <!-- <td>
                   <span>{{ nomina.adicional }}</span>
-                </td>
+                </td> -->
                 <td>
                   <span>{{ nomina.porcentaje_adicional }}%</span>
                 </td>

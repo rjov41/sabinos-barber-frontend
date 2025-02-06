@@ -73,7 +73,9 @@ export class FacturaListadoComponent {
     estado: 1,
     link: null,
     disablePaginate: '0',
-    // local_model: '1',
+    cliente_model: '1',
+    empleado_model: '1',
+    metodo_pago_model: '1',
     dateIni: dayjs().startOf('month').format('YYYY-MM-DD'),
     dateFin: dayjs().endOf('month').format('YYYY-MM-DD'),
   };

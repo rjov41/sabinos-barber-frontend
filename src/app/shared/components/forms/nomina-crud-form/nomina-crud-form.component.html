@@ -66,7 +66,7 @@
               getControl('monto_facturado').touched,
             'is-valid': getControl('monto_facturado').valid
           }"
-          appOnlyAlphanumeric
+          appOnlyNumberAndPoint
         />
         <label cLabel for="monto_facturadoInput">Monto</label>
         <app-valid-messages-form
@@ -88,7 +88,6 @@
               getControl('total').invalid && getControl('total').touched,
             'is-valid': getControl('total').valid
           }"
-          appOnlyAlphanumeric
         />
         <label cLabel for="totalInput">Total</label>
         <app-valid-messages-form
@@ -100,8 +99,16 @@
     <c-col [md]="4">
       <div cFormFloating class="mb-3">
         <c-form-check switch sizing="lg">
-          <input cFormCheckInput type="checkbox" formControlName="adicional" />
-          <label cFormCheckLabel>¿Agregar adicional?</label>
+          <input
+            cFormCheckInput
+            type="checkbox"
+            formControlName="adicional"
+            id="adicionalId"
+            class="pointer"
+          />
+          <label cFormCheckLabel class="pointer" for="adicionalId"
+            >¿Agregar porcentaje adicional?</label
+          >
         </c-form-check>
         <!-- <input
           cFormControl
@@ -124,8 +131,32 @@
         ></app-valid-messages-form> -->
       </div>
     </c-col>
-    <c-col [md]="4" *ngIf="getControl('adicional').value">
-      <div cFormFloating class="mb-3">
+    <c-col [md]="2" *ngIf="getControl('adicional').value">
+      <c-input-group class="mb-3">
+        <input
+          aria-describedby="basic-addon2"
+          aria-label="Porcentaje adicional"
+          cFormControl
+          id="porcentaje_adicionalInput"
+          placeholder="Porcentaje adicional"
+          type="text"
+          formControlName="porcentaje_adicional"
+          [ngClass]="{
+            'is-invalid':
+              getControl('porcentaje_adicional').invalid &&
+              getControl('porcentaje_adicional').touched,
+            'is-valid': getControl('porcentaje_adicional').valid
+          }"
+          appOnlyNumberAndPoint
+        />
+        <span cInputGroupText id="basic-addon2">%</span>
+        <!-- <label cLabel for="porcentaje_adicionalInput">Porcentaje adicional</label> -->
+      </c-input-group>
+      <app-valid-messages-form
+        [errors]="getControlError('porcentaje_adicional')"
+        [messages]="NominaCrudErrorMessages['porcentaje_adicional']"
+      ></app-valid-messages-form>
+      <!-- <div >
         <input
           cFormControl
           id="porcentaje_adicionalInput"
@@ -147,7 +178,7 @@
           [errors]="getControlError('porcentaje_adicional')"
           [messages]="NominaCrudErrorMessages['porcentaje_adicional']"
         ></app-valid-messages-form>
-      </div>
+      </div> -->
     </c-col>
   </c-row>
   <c-row class="mb-4">

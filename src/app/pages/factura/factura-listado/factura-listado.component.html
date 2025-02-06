@@ -91,13 +91,16 @@
                     </div> -->
                 </td>
                 <td>
-                  <span>{{ Factura.cliente_id }}</span>
+                  <span
+                    >{{ Factura.cliente?.nombre }}
+                    {{ Factura.cliente?.apellido }}</span
+                  >
                 </td>
                 <td>
-                  <span>{{ Factura.empleado_id }}</span>
+                  <span>{{ Factura.empleado?.nombre_completo }}</span>
                 </td>
                 <td>
-                  <span>{{ Factura.metodo_pago_id }}</span>
+                  <span>{{ Factura.metodo_pago?.tipo }}</span>
                 </td>
                 <td>
                   <span>{{ Factura.descripcion }}</span>

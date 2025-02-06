@@ -77,6 +77,7 @@ export class NominaListadoComponent {
     local_model: '1',
     dateIni: dayjs().startOf('month').format('YYYY-MM-DD'),
     dateFin: dayjs().endOf('month').format('YYYY-MM-DD'),
+    empleado_model: '1',
   };
   NominaList!: Listado<Nomina>;
 

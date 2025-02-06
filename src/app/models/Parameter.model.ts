@@ -1,4 +1,6 @@
-export interface ParametersUrl {
+import { Relaciones } from './Relaciones.model';
+
+export interface ParametersUrl extends Relaciones {
   link: null | string;
   page?: string | number;
   filter?: string;
@@ -9,5 +11,4 @@ export interface ParametersUrl {
   disablePaginate?: string;
 
   local?: string | number;
-  local_model?: string;
 }

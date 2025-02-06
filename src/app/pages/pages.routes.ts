@@ -155,7 +155,7 @@ export const routesPages: Routes = [
       {
         path: 'gastos',
         loadChildren: () =>
-          import('./gasto/nominas.routes').then((m) => m.routes),
+          import('./gasto/gasto.routes').then((m) => m.routes),
         data: {
           title: 'Gastos',
         },
