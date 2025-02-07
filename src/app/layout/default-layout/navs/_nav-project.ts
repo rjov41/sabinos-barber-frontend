@@ -51,8 +51,13 @@ export const navItemsProject: INavData[] = [
     iconComponent: { name: 'cil-settings' },
     children: [
       {
-        name: 'Metodo de pago',
+        name: 'Método de pago',
         url: '/ajustes/metodo-pago',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Tipo de gasto',
+        url: '/ajustes/tipos-gasto',
         icon: 'nav-icon-bullet',
       },
     ],

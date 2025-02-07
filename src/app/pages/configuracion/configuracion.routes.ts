@@ -27,6 +27,24 @@ export const routes: Routes = [
         redirectTo: '',
         pathMatch: 'full',
       },
+      {
+        path: 'tipos-gasto',
+        loadChildren: () =>
+          import('./tipo-gasto/tipo-gasto.routes').then((m) => m.routes),
+        data: {
+          title: 'Tipos de gastos',
+        },
+      },
+    ],
+  },
+  {
+    path: '',
+    children: [
+      {
+        path: '',
+        redirectTo: '',
+        pathMatch: 'full',
+      },
     ],
   },
 ];

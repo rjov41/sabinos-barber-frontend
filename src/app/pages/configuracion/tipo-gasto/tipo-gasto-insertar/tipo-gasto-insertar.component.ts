@@ -1,8 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CardModule, ColorModeService, GridModule } from '@coreui/angular';
-import { Empleado } from 'src/app/models/Empleado.model';
-import { EmpleadosService } from 'src/app/services/empleados.service';
 import logger from 'src/app/shared/utils/logger';
 
 import Swal from 'sweetalert2';
@@ -12,34 +10,36 @@ import { Subject, takeUntil } from 'rxjs';
 import { HelpersService } from '../../../../services/helpers.service';
 import { MetodoPago } from '../../../../models/MetodoPago.model';
 import { MetodoPagoService } from '../../../../services/metodos_pago.service';
-import { MetodoPagoCrudFormComponent } from '../../../../shared/components/forms/metodo-pago-crud-form/metodo-pago-crud-form.component';
+import { TipoGastoCrudFormComponent } from '../../../../shared/components/forms/tipo-gasto-crud-form/tipo-gasto-crud-form.component';
+import { TipoGastoService } from '../../../../services/tipo_gasto.service';
+import { TipoGasto } from '../../../../models/TipoGasto.model';
 
 @Component({
-  selector: 'app-metodo-pago-insertar',
+  selector: 'app-tipo-gasto-insertar',
   standalone: true,
-  imports: [CardModule, GridModule, MetodoPagoCrudFormComponent],
-  templateUrl: './metodo-pago-insertar.component.html',
-  styleUrl: './metodo-pago-insertar.component.scss',
+  imports: [CardModule, GridModule, TipoGastoCrudFormComponent],
+  templateUrl: './tipo-gasto-insertar.component.html',
+  styleUrl: './tipo-gasto-insertar.component.scss',
 })
-export class MetodoPagoInsertarComponent {
+export class TipoGastoInsertarComponent {
   private destruir$: Subject<void> = new Subject<void>();
 
   #colorModeService = inject(ColorModeService);
-  private _MetodoPagoService = inject(MetodoPagoService);
+  private _TipoGastoService = inject(TipoGastoService);
   private _Router = inject(Router);
   private _HelpersService = inject(HelpersService);
 
   loader: boolean = true;
 
-  FormsValues(MetodoPago: MetodoPago) {
-    logger.log(MetodoPago);
+  FormsValues(tipoGasto: TipoGasto) {
+    logger.log(tipoGasto);
     this._HelpersService.loaderSweetAlert({
-      title: 'Agregando método pago',
+      title: 'Agregando tipo de gasto',
       text: 'Esto puede demorar un momento.',
     });
 
-    this._MetodoPagoService
-      .createMetodoPago(MetodoPago)
+    this._TipoGastoService
+      .createTipoGasto(tipoGasto)
       .pipe(takeUntil(this.destruir$))
       .subscribe((response) => {
         this.loader = false;
@@ -52,12 +52,12 @@ export class MetodoPagoInsertarComponent {
           },
         })
           .fire({
-            text: 'Método de pago agregado con éxito',
+            text: 'Tipo de gasto agregado con éxito',
             icon: 'success',
           })
           .then((result) => {
             this._Router.navigateByUrl(
-              `/metodo_pago/editar/${response.data.id}`
+              `/ajustes/tipos-gasto/editar/${response.id}`
             );
           });
       });

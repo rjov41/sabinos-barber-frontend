@@ -22,12 +22,8 @@ import Swal from 'sweetalert2';
 import logger from 'src/app/shared/utils/logger';
 import { environment } from 'src/environments/environment';
 import { DirectivesModule } from '../../../directivas/directives.module';
-import { EmpleadosService } from 'src/app/services/empleados.service';
 import { Empleado } from 'src/app/models/Empleado.model';
-import { LocalesService } from '../../../../services/locales.service';
-import { Local } from '../../../../models/Local.model';
 import { Subject, takeUntil } from 'rxjs';
-import { Nomina } from '../../../../models/Nomina.model';
 import { MetodoPago } from '../../../../models/MetodoPago.model';
 
 @Component({
