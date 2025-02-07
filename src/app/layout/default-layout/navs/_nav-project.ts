@@ -47,6 +47,17 @@ export const navItemsProject: INavData[] = [
     iconComponent: { name: 'faHandHoldingDollar' },
   },
   {
+    name: 'Ajustes',
+    iconComponent: { name: 'cil-settings' },
+    children: [
+      {
+        name: 'Metodo de pago',
+        url: '/ajustes/metodo-pago',
+        icon: 'nav-icon-bullet',
+      },
+    ],
+  },
+  {
     title: true,
     name: 'Theme',
   },

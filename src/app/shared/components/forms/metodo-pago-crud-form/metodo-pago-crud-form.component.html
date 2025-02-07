@@ -1,0 +1,58 @@
+<form cForm [formGroup]="MetodoPagoCrudForm" class="form-Empleado-crud">
+  <c-row class="mb-4">
+    <c-col [md]="4">
+      <div cFormFloating class="mb-3">
+        <input
+          cFormControl
+          id="tipoInput"
+          placeholder="tipo"
+          type="text"
+          formControlName="tipo"
+          [ngClass]="{
+            'is-invalid':
+              getControl('tipo').invalid && getControl('tipo').touched,
+            'is-valid': getControl('tipo').valid
+          }"
+          appOnlyAlphanumeric
+        />
+        <label cLabel for="tipo">Tipo</label>
+        <app-valid-messages-form
+          [errors]="getControlError('tipo')"
+          [messages]="MetodoPagoCrudErrorMessages['tipo']"
+        ></app-valid-messages-form>
+      </div>
+    </c-col>
+    <c-col [md]="4">
+      <div cFormFloating class="mb-3">
+        <input
+          cFormControl
+          id="descripcionInput"
+          placeholder="descripcion"
+          type="text"
+          formControlName="descripcion"
+          [ngClass]="{
+            'is-invalid':
+              getControl('descripcion').invalid &&
+              getControl('descripcion').touched,
+            'is-valid': getControl('descripcion').valid
+          }"
+          appOnlyAlphanumeric
+        />
+        <label cLabel for="descripcion">Descripción</label>
+        <app-valid-messages-form
+          [errors]="getControlError('descripcion')"
+          [messages]="MetodoPagoCrudErrorMessages['descripcion']"
+        ></app-valid-messages-form>
+      </div>
+    </c-col>
+  </c-row>
+  <c-row class="mb-4">
+    <c-col class="text-center">
+      @if (MetodoPago) {
+      <button cButton color="info" (click)="sendValueFom()">Editar</button>
+      } @else {
+      <button cButton color="info" (click)="sendValueFom()">Agregar</button>
+      }
+    </c-col>
+  </c-row>
+</form>

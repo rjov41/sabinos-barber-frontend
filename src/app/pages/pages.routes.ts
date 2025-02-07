@@ -162,4 +162,22 @@ export const routesPages: Routes = [
       },
     ],
   },
+  {
+    path: '',
+    children: [
+      {
+        path: '',
+        redirectTo: '',
+        pathMatch: 'full',
+      },
+      {
+        path: 'ajustes',
+        loadChildren: () =>
+          import('./configuracion/configuracion.routes').then((m) => m.routes),
+        data: {
+          title: 'Ajustes',
+        },
+      },
+    ],
+  },
 ];
