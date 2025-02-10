@@ -2,8 +2,8 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/es'; // Cambia 'es' al idioma que necesites
 dayjs.locale('es'); // Configura el idioma global
 
-const START_DATE = dayjs().startOf('month');
-const END_DATE = dayjs().endOf('month');
+export const START_DATE = dayjs().startOf('month');
+export const END_DATE = dayjs().endOf('month');
 export const NOW = dayjs();
 
 export const IniciarFiltro = {

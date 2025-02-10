@@ -10,8 +10,8 @@ export interface Filtro {
   };
   estado: number | string;
   local_id: number | string;
-  dateIni?: string;
-  dateFin?: string;
+  fecha_inicio?: string;
+  fecha_fin?: string;
 }
 
 export type FiltroKeys = keyof Filtro;

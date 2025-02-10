@@ -14,7 +14,7 @@ export const NominaCrudFormBuilder = () =>
   new FormGroup<NominaCrudForm>({
     empleado_id: new FormControl(0, [...NominaCrudValidators['empleado_id']]),
     nombre: new FormControl('', [...NominaCrudValidators['nombre']]),
-    monto_facturado: new FormControl(0, [
+    monto_facturado: new FormControl({ value: 0, disabled: true }, [
       ...NominaCrudValidators['monto_facturado'],
     ]),
     adicional: new FormControl(false, [...NominaCrudValidators['adicional']]),

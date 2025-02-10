@@ -53,6 +53,35 @@
       </div>
     </c-col>
     <c-col [md]="4">
+      <div class="mb-3">
+        <app-date-range-picker
+          [selectedRangeCalendar]="Fecha"
+          (handleDate)="handleDate($event)"
+          [floatingInput]="true"
+          cFormFloating
+        />
+        <!-- <input
+          cFormControl
+          id="nombreInput"
+          placeholder="nombre"
+          type="text"
+          formControlName="nombre"
+          [ngClass]="{
+            'is-invalid':
+              getControl('nombre').invalid && getControl('nombre').touched,
+            'is-valid': getControl('nombre').valid
+          }"
+          appOnlyAlphanumeric
+        />
+        <label cLabel for="nombreInput">Nombre</label> -->
+        <!-- <app-valid-messages-form
+          [errors]="getControlError('nombre')"
+          [messages]="NominaCrudErrorMessages['nombre']"
+        ></app-valid-messages-form> -->
+      </div>
+    </c-col>
+
+    <c-col [md]="4">
       <div cFormFloating class="mb-3">
         <input
           cFormControl
@@ -68,7 +97,9 @@
           }"
           appOnlyNumberAndPoint
         />
-        <label cLabel for="monto_facturadoInput">Monto</label>
+        <label cLabel for="monto_facturadoInput"
+          >Monto <c-spinner size="sm" *ngIf="loadingFacturas"
+        /></label>
         <app-valid-messages-form
           [errors]="getControlError('monto_facturado')"
           [messages]="NominaCrudErrorMessages['monto_facturado']"
@@ -89,7 +120,9 @@
             'is-valid': getControl('total').valid
           }"
         />
-        <label cLabel for="totalInput">Total</label>
+        <label cLabel for="totalInput"
+          >Total <c-spinner size="sm" *ngIf="loadingFacturas"
+        /></label>
         <app-valid-messages-form
           [errors]="getControlError('total')"
           [messages]="NominaCrudErrorMessages['total']"

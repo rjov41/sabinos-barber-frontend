@@ -74,8 +74,8 @@ export class FacturaPedidoComponent {
     link: null,
     disablePaginate: '0',
     local_model: '0',
-    dateIni: dayjs().startOf('month').format('YYYY-MM-DD'),
-    dateFin: dayjs().endOf('month').format('YYYY-MM-DD'),
+    fecha_inicio: dayjs().startOf('month').format('YYYY-MM-DD'),
+    fecha_fin: dayjs().endOf('month').format('YYYY-MM-DD'),
   };
 
   ngOnInit(): void {

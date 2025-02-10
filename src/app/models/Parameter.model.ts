@@ -5,8 +5,8 @@ export interface ParametersUrl extends Relaciones {
   page?: string | number;
   filter?: string;
   estado?: string | number;
-  dateIni?: string;
-  dateFin?: string;
+  fecha_inicio?: string;
+  fecha_fin?: string;
   allDates?: boolean;
   disablePaginate?: string;
 

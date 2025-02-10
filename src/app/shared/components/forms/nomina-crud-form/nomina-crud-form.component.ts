@@ -28,6 +28,15 @@ import { LocalesService } from '../../../../services/locales.service';
 import { Local } from '../../../../models/Local.model';
 import { Subject, takeUntil } from 'rxjs';
 import { Nomina } from '../../../../models/Nomina.model';
+import { DateRangePickerComponent } from '../../date-range-picker/date-range-picker.component';
+import {
+  END_DATE,
+  formatearFecha,
+  START_DATE,
+} from '../../../utils/constants/filtro';
+import dayjs from 'dayjs';
+import { FacturasService } from '../../../../services/facturas.service';
+import { Factura } from '../../../../models/Factura.model';
 
 @Component({
   selector: 'app-nomina-crud-form',
@@ -44,6 +53,7 @@ import { Nomina } from '../../../../models/Nomina.model';
     ModalModule,
     DirectivesModule,
     SpinnerModule,
+    DateRangePickerComponent,
   ],
   templateUrl: './nomina-crud-form.component.html',
   styleUrl: './nomina-crud-form.component.scss',
@@ -54,24 +64,30 @@ export class NominaCrudFormComponent {
 
   private destruir$: Subject<void> = new Subject<void>();
 
+  Fecha = {
+    startDate: START_DATE, // Inicio del día de la fecha dada
+    endDate: END_DATE, // Fin del día de la fecha dada
+  };
   loadingEmpleados: boolean = false;
   Empleados: Empleado[] = [];
 
   #colorModeService = inject(ColorModeService);
   private _EmpleadosService = inject(EmpleadosService);
-  private _LocalsService = inject(LocalesService);
+  private _FacturasService = inject(FacturasService);
 
   @Input() Nomina!: Nomina;
   @Output() FormsValues = new EventEmitter<any>();
 
   Empleadoes: Empleado[] = [];
 
+  loadingFacturas: boolean = false;
   loadingLocales = false;
   Locales: Local[] = [];
 
   ngOnInit(): void {
     this.getEmpleados();
     this.changeTotalAndPorcentaje();
+    this.changeEmpleado();
   }
 
   ngOnChanges(): void {
@@ -118,6 +134,15 @@ export class NominaCrudFormComponent {
     });
   }
 
+  changeEmpleado() {
+    this.getControl('empleado_id').valueChanges.subscribe((data) => {
+      this.loadingFacturas = true;
+      logger.log('data', data);
+
+      this.getFacturas(data);
+    });
+  }
+
   validPorcentaje(total: number) {
     if (this.getControl('adicional').value) {
       const porcentajeAdicional = this.getControl('porcentaje_adicional').value;
@@ -161,6 +186,34 @@ export class NominaCrudFormComponent {
       });
   }
 
+  getFacturas(empleado_id: number) {
+    // this.loadingEmpleados = true;
+    this._FacturasService
+      .getFacturas({
+        estado: 1,
+        disablePaginate: '1',
+        empleado_id,
+        link: null,
+        fecha_inicio: formatearFecha(this.Fecha.startDate, 'YYYY-MM-DD'),
+        fecha_fin: formatearFecha(this.Fecha.endDate, 'YYYY-MM-DD'),
+      })
+      // .pipe(delay(3000))
+      .pipe(takeUntil(this.destruir$))
+      .subscribe((facturas: Factura[]) => {
+        logger.log('data nomina', facturas);
+        this.loadingFacturas = false;
+        const sumaTotal = facturas.reduce(
+          (acumulador, item) => acumulador + item.total,
+          0
+        );
+
+        console.log(sumaTotal);
+        this.NominaCrudForm.patchValue({
+          monto_facturado: sumaTotal,
+        });
+      });
+  }
+
   sendValueFom() {
     if (this.NominaCrudForm.valid) {
       const NOMINA = {
@@ -183,6 +236,11 @@ export class NominaCrudFormComponent {
         icon: 'warning',
       });
     }
+  }
+
+  handleDate(event: { endDate: dayjs.Dayjs; startDate: dayjs.Dayjs }) {
+    logger.log('range', event);
+    this.Fecha = event;
   }
 
   ngOnDestroy(): void {

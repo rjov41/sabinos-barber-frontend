@@ -79,8 +79,8 @@ export class MetodoPagoListadoComponent {
     link: null,
     disablePaginate: '0',
     local_model: '1',
-    dateIni: dayjs().startOf('month').format('YYYY-MM-DD'),
-    dateFin: dayjs().endOf('month').format('YYYY-MM-DD'),
+    fecha_inicio: dayjs().startOf('month').format('YYYY-MM-DD'),
+    fecha_fin: dayjs().endOf('month').format('YYYY-MM-DD'),
     empleado_model: '1',
   };
   MetodoPagoList!: Listado<MetodoPago>;
@@ -120,14 +120,14 @@ export class MetodoPagoListadoComponent {
   filtroEvent(filtros: Filtro) {
     logger.log('filtros', filtros);
 
-    filtros.dateIni = dayjs(filtros.fecha.startDate).format('YYYY-MM-DD');
-    filtros.dateFin = dayjs(filtros.fecha.endDate).format('YYYY-MM-DD');
+    filtros.fecha_inicio = dayjs(filtros.fecha.startDate).format('YYYY-MM-DD');
+    filtros.fecha_fin = dayjs(filtros.fecha.endDate).format('YYYY-MM-DD');
     const FILTROS_SANETIZE = this._HelpersService.filterData(filtros);
 
     this.ParametrosURL = {
       ...this.ParametrosURL,
       ...FILTROS_SANETIZE,
-      dateIni: FILTROS_SANETIZE.dateIni,
+      fecha_inicio: FILTROS_SANETIZE.fecha_inicio,
     };
     logger.log('this.ParametrosURL', this.ParametrosURL);
 
