@@ -104,7 +104,7 @@ export class CambiarClaveUsuarioComponent {
         )
         .subscribe((data) => {
           this.loader = false;
-          console.log(data);
+          // console.log(data);
           Swal.mixin({
             customClass: {
               container: this.#colorModeService.getStoredTheme(

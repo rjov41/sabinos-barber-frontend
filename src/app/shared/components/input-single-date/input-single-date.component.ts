@@ -148,6 +148,6 @@ export class InputSingleDateComponent {
   }
 
   datesUpdatedInline($event: Object) {
-    console.log('inline', $event);
+    // console.log('inline', $event);
   }
 }

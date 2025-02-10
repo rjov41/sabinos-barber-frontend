@@ -92,7 +92,7 @@ export class ProductoListComponent {
       .subscribe((data: Listado<Producto>) => {
         this.loaderTable = false;
         this.ProductosList = { ...data };
-        console.log(data);
+        logger.log(data);
       });
   }
 

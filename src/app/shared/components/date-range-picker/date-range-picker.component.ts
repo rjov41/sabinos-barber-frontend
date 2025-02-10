@@ -126,10 +126,10 @@ export class DateRangePickerComponent {
   }
 
   datesUpdatedSingle($event: any) {
-    console.log('single', $event);
+    logger.log('single', $event);
   }
 
   datesUpdatedInline($event: Object) {
-    console.log('inline', $event);
+    logger.log('inline', $event);
   }
 }

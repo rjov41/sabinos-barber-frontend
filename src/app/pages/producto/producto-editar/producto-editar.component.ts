@@ -64,7 +64,7 @@ export class ProductoEditarComponent {
             icon: 'success',
           })
           .then((result) => {
-            console.log(result);
+            logger.log(result);
           });
       });
   }
@@ -76,7 +76,7 @@ export class ProductoEditarComponent {
       .subscribe((data: Producto) => {
         this.loader = false;
         this.Producto = { ...data };
-        console.log(data);
+        logger.log(data);
       });
   }
 

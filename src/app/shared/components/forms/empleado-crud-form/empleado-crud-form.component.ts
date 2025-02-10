@@ -107,7 +107,7 @@ export class EmpleadoCrudFormComponent {
       .subscribe((data: Local[]) => {
         this.loadingLocales = false;
         this.Locales = [...data];
-        console.log(data);
+        logger.log(data);
       });
   }
 

@@ -95,7 +95,7 @@ export class NominaListadoComponent {
       .subscribe((data: Listado<Nomina>) => {
         this.loaderTable = false;
         this.NominaList = { ...data };
-        console.log(data);
+        logger.log(data);
       });
   }
 
