@@ -99,7 +99,7 @@ export class MetodoPagoListadoComponent {
       .subscribe((data: Listado<MetodoPago>) => {
         this.loaderTable = false;
         this.MetodoPagoList = { ...data };
-        console.log(data);
+        logger.log(data);
       });
   }
 

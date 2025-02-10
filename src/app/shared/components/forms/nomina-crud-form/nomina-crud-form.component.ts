@@ -207,7 +207,7 @@ export class NominaCrudFormComponent {
           0
         );
 
-        console.log(sumaTotal);
+        logger.log(sumaTotal);
         this.NominaCrudForm.patchValue({
           monto_facturado: sumaTotal,
         });
@@ -221,7 +221,7 @@ export class NominaCrudFormComponent {
         total: this.getControl('total').value,
         adicional: this.NominaCrudForm.value.adicional ? '1' : '0',
       };
-      console.log(NOMINA);
+      logger.log(NOMINA);
 
       this.FormsValues.emit(NOMINA);
     } else {

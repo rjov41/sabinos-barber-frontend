@@ -66,7 +66,7 @@ export class NominaEditarComponent {
             icon: 'success',
           })
           .then((result) => {
-            console.log(result);
+            logger.log(result);
           });
       });
   }
@@ -78,7 +78,7 @@ export class NominaEditarComponent {
       .subscribe((data: Nomina) => {
         this.loader = false;
         this.Nomina = { ...data };
-        console.log(data);
+        logger.log(data);
       });
   }
 

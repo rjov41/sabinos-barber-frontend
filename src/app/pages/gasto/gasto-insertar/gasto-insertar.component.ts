@@ -44,7 +44,7 @@ export class GastoInsertarComponent {
       .pipe(takeUntil(this.destruir$))
       .subscribe((response) => {
         this.loader = false;
-        console.log(response);
+        logger.log(response);
         Swal.mixin({
           customClass: {
             container: this.#colorModeService.getStoredTheme(

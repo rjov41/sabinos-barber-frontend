@@ -92,7 +92,7 @@ export class RolListadoComponent {
       .subscribe((data: Listado<Role>) => {
         this.loaderTable = false;
         this.RolList = { ...data };
-        console.log(data);
+        logger.log(data);
       });
   }
 

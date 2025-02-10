@@ -95,7 +95,7 @@ export class FacturaListadoComponent {
       .subscribe((data: Listado<Factura>) => {
         this.loaderTable = false;
         this.FacturasList = { ...data };
-        console.log(data);
+        logger.log(data);
       });
   }
 

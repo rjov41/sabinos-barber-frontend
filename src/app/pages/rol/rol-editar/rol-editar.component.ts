@@ -63,7 +63,7 @@ export class RolEditarComponent {
             icon: 'success',
           })
           .then((result) => {
-            console.log(result);
+            logger.log(result);
           });
       });
   }
@@ -75,7 +75,7 @@ export class RolEditarComponent {
       .subscribe((data: Role) => {
         this.loader = false;
         this.Rol = { ...data };
-        console.log(data);
+        logger.log(data);
       });
   }
 

@@ -56,7 +56,7 @@ export class ClienteEditarComponent {
       )
       .subscribe((data) => {
         this.loader = false;
-        // console.log(data);
+        // logger.log(data);
         this.Cliente = data.Cliente;
         Swal.mixin({
           customClass: {
@@ -70,7 +70,7 @@ export class ClienteEditarComponent {
             icon: 'success',
           })
           .then((result) => {
-            console.log(result);
+            logger.log(result);
           });
       });
   }
@@ -82,7 +82,7 @@ export class ClienteEditarComponent {
       .subscribe((data: Cliente) => {
         this.loader = false;
         this.Cliente = { ...data };
-        console.log(data);
+        logger.log(data);
       });
   }
 

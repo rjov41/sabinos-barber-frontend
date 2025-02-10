@@ -92,7 +92,7 @@ export class LocalListadoComponent {
       .subscribe((data: Listado<Local>) => {
         this.loaderTable = false;
         this.LocalList = { ...data };
-        console.log(data);
+        logger.log(data);
       });
   }
 

@@ -74,7 +74,7 @@ export class TipoGastoEditarComponent {
             icon: 'success',
           })
           .then((result) => {
-            console.log(result);
+            logger.log(result);
           });
       });
   }
@@ -86,7 +86,7 @@ export class TipoGastoEditarComponent {
       .subscribe((data: MetodoPago) => {
         this.loader = false;
         this.TipoGasto = { ...data };
-        console.log(data);
+        logger.log(data);
       });
   }
 

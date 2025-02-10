@@ -92,13 +92,13 @@ export class ClienteListadoComponent {
       .subscribe((data: Listado<Cliente>) => {
         this.loaderTable = false;
         this.ClientesList = { ...data };
-        console.log(data);
+        logger.log(data);
       });
   }
 
   newPage(link: any) {
     if (link.url == null) return;
-    // console.log(link);
+    // logger.log(link);
 
     this.ParametrosURL.link = link.url;
 

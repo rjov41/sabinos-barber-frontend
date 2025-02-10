@@ -100,7 +100,7 @@ export class TipoGastoListadoComponent {
       .subscribe((data: Listado<TipoGasto>) => {
         this.loaderTable = false;
         this.TipoGastoList = { ...data };
-        console.log(data);
+        logger.log(data);
       });
   }
 

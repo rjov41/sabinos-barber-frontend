@@ -10,6 +10,7 @@ import { Filtro } from '../models/Filter.model';
 import { ColorModeService } from '@coreui/angular';
 import Swal from 'sweetalert2';
 import { throwError } from 'rxjs';
+import logger from '../shared/utils/logger';
 
 const URL_PRODUCTO = `${environment.apiUrl}productos`;
 @Injectable({
@@ -126,7 +127,7 @@ export class HelpersService {
         icon: 'error',
       })
       .then((result) => {
-        console.log(result);
+        logger.log(result);
       });
 
     return throwError(() => httpErrorResponse);

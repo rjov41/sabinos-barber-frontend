@@ -48,7 +48,7 @@ export class UsuarioInsertarComponent {
       )
       .subscribe((data) => {
         this.loader = false;
-        console.log(data);
+        logger.log(data);
         Swal.mixin({
           customClass: {
             container: this.#colorModeService.getStoredTheme(

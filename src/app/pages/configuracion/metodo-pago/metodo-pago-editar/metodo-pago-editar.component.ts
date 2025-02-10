@@ -76,7 +76,7 @@ export class MetodoPagoEditarComponent {
             icon: 'success',
           })
           .then((result) => {
-            console.log(result);
+            logger.log(result);
           });
       });
   }
@@ -88,7 +88,7 @@ export class MetodoPagoEditarComponent {
       .subscribe((data: MetodoPago) => {
         this.loader = false;
         this.MetodoPago = { ...data };
-        console.log(data);
+        logger.log(data);
       });
   }
 

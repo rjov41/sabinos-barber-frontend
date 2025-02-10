@@ -63,7 +63,7 @@ export class LocalEditarComponent {
             icon: 'success',
           })
           .then((result) => {
-            console.log(result);
+            logger.log(result);
           });
       });
   }
@@ -75,7 +75,7 @@ export class LocalEditarComponent {
       .subscribe((data: Local) => {
         this.loader = false;
         this.Local = { ...data };
-        console.log(data);
+        logger.log(data);
       });
   }
 

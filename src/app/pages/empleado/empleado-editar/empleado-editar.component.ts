@@ -63,7 +63,7 @@ export class EmpleadoEditarComponent {
             icon: 'success',
           })
           .then((result) => {
-            console.log(result);
+            logger.log(result);
           });
       });
   }
@@ -75,7 +75,7 @@ export class EmpleadoEditarComponent {
       .subscribe((data: Empleado) => {
         this.loader = false;
         this.Empleado = { ...data };
-        console.log(data);
+        logger.log(data);
       });
   }
 

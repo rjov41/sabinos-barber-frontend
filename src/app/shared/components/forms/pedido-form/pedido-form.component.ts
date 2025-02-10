@@ -69,7 +69,7 @@ export class PedidoFormComponent {
     this.PedidoForm.valueChanges
       .pipe(takeUntil(this.destruir$))
       .subscribe(() => {
-        console.log(this.PedidoForm);
+        // console.log(this.PedidoForm);
       });
   }
 

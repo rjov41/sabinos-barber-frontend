@@ -71,7 +71,7 @@ export class UsuarioEditarComponent {
             icon: 'success',
           })
           .then((result) => {
-            console.log(result);
+            logger.log(result);
           });
       });
   }
@@ -83,7 +83,7 @@ export class UsuarioEditarComponent {
       .subscribe((data: Usuario) => {
         this.loader = false;
         this.Usuario = { ...data };
-        console.log(data);
+        logger.log(data);
       });
   }
 

@@ -91,7 +91,7 @@ export class EmpleadoListadoComponent {
       .subscribe((data: Listado<Empleado>) => {
         this.loaderTable = false;
         this.EmpleadoList = { ...data };
-        console.log(data);
+        logger.log(data);
       });
   }
 

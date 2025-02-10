@@ -93,7 +93,7 @@ export class GastoListadoComponent {
       .subscribe((data: Listado<Gasto>) => {
         this.loaderTable = false;
         this.GastoList = { ...data };
-        console.log(data);
+        logger.log(data);
       });
   }
 
