@@ -14,6 +14,8 @@ import { NominaCrudFormComponent } from '../../../shared/components/forms/nomina
 import { NominaService } from '../../../services/nomina.service';
 import { Nomina } from '../../../models/Nomina.model';
 import { GastoCrudFormComponent } from '../../../shared/components/forms/gasto-crud-form/gasto-crud-form.component';
+import { GastoService } from '../../../services/gasto.service';
+import { Gasto } from '../../../models/Gasto.model';
 
 @Component({
   selector: 'app-gasto-insertar',
@@ -26,21 +28,21 @@ export class GastoInsertarComponent {
   private destruir$: Subject<void> = new Subject<void>();
 
   #colorModeService = inject(ColorModeService);
-  private _NominaService = inject(NominaService);
+  private _GastoService = inject(GastoService);
   private _Router = inject(Router);
   private _HelpersService = inject(HelpersService);
 
   loader: boolean = true;
 
-  FormsValues(Nomina: Nomina) {
-    logger.log(Nomina);
+  FormsValues(Gasto: Gasto) {
+    logger.log(Gasto);
     this._HelpersService.loaderSweetAlert({
       title: 'Agregando nomina',
       text: 'Esto puede demorar un momento.',
     });
 
-    this._NominaService
-      .createNomina(Nomina)
+    this._GastoService
+      .createGasto(Gasto)
       .pipe(takeUntil(this.destruir$))
       .subscribe((response) => {
         this.loader = false;
@@ -57,7 +59,7 @@ export class GastoInsertarComponent {
             icon: 'success',
           })
           .then((result) => {
-            this._Router.navigateByUrl(`/nominas/editar/${response.data.id}`);
+            this._Router.navigateByUrl(`/gastos`);
           });
       });
   }

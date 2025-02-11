@@ -1,7 +1,7 @@
 <form cForm [formGroup]="GastoCrudForm" class="form-gasto-crud">
   <!-- Campos principales -->
   <c-row class="mb-4">
-    <c-col [md]="4">
+    <c-col [md]="3" class="mb-3">
       <div cFormFloating>
         <select
           cSelect
@@ -13,7 +13,7 @@
             'is-valid': getControl('user_id').valid
           }"
         >
-          <option value="0">Seleccione un Usuario</option>
+          <option value="0" hidden>Seleccione un Usuario</option>
           <option
             *ngFor="let usuario of Usuarios; let i = index"
             [ngValue]="usuario.id"
@@ -31,7 +31,56 @@
         [messages]="GastoCrudErrorMessages['user_id']"
       ></app-valid-messages-form>
     </c-col>
-    <c-col [md]="4">
+
+    <c-col [md]="3" class="mb-3">
+      <div cFormFloating>
+        <input
+          cFormControl
+          id="passwordInput"
+          placeholder="password"
+          type="password"
+          formControlName="password"
+          [ngClass]="{
+            'is-invalid':
+              getControl('password').invalid && getControl('password').touched,
+            'is-valid': getControl('password').valid
+          }"
+          appOnlyAlphanumeric
+        />
+        <label cLabel for="passwordInput">Contraseña </label>
+      </div>
+      <app-valid-messages-form
+        [errors]="getControlError('password')"
+        [messages]="GastoCrudErrorMessages['password']"
+      ></app-valid-messages-form>
+    </c-col>
+    <c-col [md]="2" class="mb-3">
+      <div cFormFloating>
+        <c-form-check switch sizing="lg">
+          <input
+            cFormCheckInput
+            type="checkbox"
+            id="adicionalId"
+            class="pointer"
+            formControlName="tipo_usuario"
+          />
+          <label cFormCheckLabel class="pointer" for="adicionalId"
+            >¿Es para empleado?</label
+          >
+        </c-form-check>
+      </div>
+      <app-valid-messages-form
+        [errors]="getControlError('tipo_usuario')"
+        [messages]="GastoCrudErrorMessages['tipo_usuario']"
+      ></app-valid-messages-form>
+    </c-col>
+    <c-col
+      class="mb-3"
+      [md]="4"
+      [ngClass]="{
+      'd-none':!getControl('tipo_usuario').value,
+    }"
+    >
       <div cFormFloating>
         <select
           cSelect
@@ -76,12 +125,49 @@
           <c-row>
             <c-col [md]="3">
               <div cFormFloating>
-                <input
+                <select
+                  cSelect
+                  id="tipo_gasto_id_{{ i }}"
+                  formControlName="tipo_gasto_id"
+                  (change)="chageTypeGasto(gasto)"
+                >
+                  <option value="0" hidden>Seleccione un tipo de gasto</option>
+                  <option
+                    *ngFor="let tipoGasto of TiposGasto; let i = index"
+                    [ngValue]="tipoGasto.id"
+                  >
+                    {{ tipoGasto.descripcion | titlecase }}
+                  </option>
+                </select>
+                <label cLabel for="user_idlInput"
+                  >Tipo de gasto
+                  <c-spinner size="sm" *ngIf="loadingTipoGasto" />
+                </label>
+              </div>
+              <app-valid-messages-form
+                [errors]="getGastoControlError(i, 'tipo_gasto_id')"
+                [messages]="GastoCrudErrorMessages['tipo_gasto_id']"
+              ></app-valid-messages-form>
+            </c-col>
+            <c-col [md]="3" *ngIf="isProducto(gasto.value)">
+              <div cFormFloating>
+                <!-- <input
                   cFormControl
                   id="producto_id_{{ i }}"
                   formControlName="producto_id"
                   type="text"
                   placeholder="Producto ID"
+                /> -->
+                <input
+                  cFormControl
+                  id="producto_id_{{ i }}"
+                  formControlName="producto_id"
+                  placeholder=""
+                  type="text"
+                  [ngbTypeahead]="searchClient"
+                  [resultTemplate]="CLientTypeaHead"
+                  [inputFormatter]="formatterValue"
+                  (selectItem)="eventInputTypeHead($event, i)"
                 />
                 <label cLabel for="producto_id_{{ i }}">Producto ID</label>
               </div>
@@ -90,7 +176,7 @@
                 [messages]="GastoCrudErrorMessages['producto_id']"
               ></app-valid-messages-form>
             </c-col>
-            <c-col [md]="3">
+            <c-col [md]="3" *ngIf="isProducto(gasto.value)">
               <div cFormFloating>
                 <input
                   cFormControl
@@ -98,6 +184,9 @@
                   formControlName="cantidad"
                   type="text"
                   placeholder="Cantidad"
+                  (keyup)="changeCantidad(gasto)"
+                  (change)="changeCantidad(gasto)"
+                  appOnlyNumbers
                 />
                 <label cLabel for="cantidad_{{ i }}">Cantidad</label>
               </div>
@@ -106,7 +195,7 @@
                 [messages]="GastoCrudErrorMessages['cantidad']"
               ></app-valid-messages-form>
             </c-col>
-            <c-col [md]="3">
+            <c-col [md]="3" *ngIf="isProducto(gasto.value)">
               <div cFormFloating>
                 <input
                   cFormControl
@@ -124,7 +213,7 @@
                 [messages]="GastoCrudErrorMessages['precio_unitario']"
               ></app-valid-messages-form>
             </c-col>
-            <c-col [md]="3">
+            <c-col [md]="3" *ngIf="gasto.value.tipo_gasto_id != 0">
               <div cFormFloating>
                 <input
                   cFormControl
@@ -138,22 +227,6 @@
               <app-valid-messages-form
                 [errors]="getGastoControlError(i, 'precio')"
                 [messages]="GastoCrudErrorMessages['precio']"
-              ></app-valid-messages-form>
-            </c-col>
-            <c-col [md]="3">
-              <div cFormFloating>
-                <input
-                  cFormControl
-                  id="tipo_gasto_{{ i }}"
-                  formControlName="tipo_gasto"
-                  type="text"
-                  placeholder="Tipo Gasto"
-                />
-                <label cLabel for="tipo_gasto_{{ i }}">Tipo Gasto</label>
-              </div>
-              <app-valid-messages-form
-                [errors]="getGastoControlError(i, 'tipo_gasto')"
-                [messages]="GastoCrudErrorMessages['tipo_gasto']"
               ></app-valid-messages-form>
             </c-col>
           </c-row>
@@ -201,3 +274,12 @@
     </c-col>
   </c-row>
 </form>
+
+<ng-template #CLientTypeaHead let-resultado="result" let-resaltado="term">
+  <ngb-highlight [result]="resultado.id" [term]="resaltado.id"></ngb-highlight>
+  -
+  <ngb-highlight
+    [result]="resultado.marca"
+    [term]="resaltado.marca"
+  ></ngb-highlight>
+</ng-template>

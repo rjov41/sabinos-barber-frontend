@@ -73,9 +73,12 @@ export class GastoListadoComponent {
     estado: 1,
     link: null,
     disablePaginate: '0',
-    local_model: '1',
     fecha_inicio: dayjs().startOf('month').format('YYYY-MM-DD'),
     fecha_fin: dayjs().endOf('month').format('YYYY-MM-DD'),
+    empleado_model: '1',
+    local_model: '1',
+    user_model: '1',
+    gasto_detalle_model: '1',
   };
   GastoList!: Listado<Gasto>;
 

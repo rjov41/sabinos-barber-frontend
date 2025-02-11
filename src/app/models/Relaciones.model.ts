@@ -5,6 +5,7 @@ export interface Relaciones extends IdRelaciones {
   metodo_pago_model?: string;
   local_model?: string;
   factura_detalle_model?: string;
+  gasto_detalle_model?: string;
 }
 
 interface IdRelaciones {
@@ -14,4 +15,5 @@ interface IdRelaciones {
   metodo_pago_id?: string | number;
   local_id?: string | number;
   factura_detalle_id?: string | number;
+  gasto_detalle_id?: string | number;
 }

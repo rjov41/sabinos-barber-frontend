@@ -71,13 +71,13 @@
             <thead class="text-nowrap text-truncate">
               <tr>
                 <th class="bg-body-tertiary">#</th>
+                <th class="bg-body-tertiary">Usuario</th>
                 <th class="bg-body-tertiary">Empleado</th>
-                <th class="bg-body-tertiary">Nombre</th>
                 <!-- <th class="bg-body-tertiary">Monto</th>
                 <th class="bg-body-tertiary">Adicional</th>
                 <th class="bg-body-tertiary">Porcentaje</th>
-                <th class="bg-body-tertiary">Total</th>
-                <th class="bg-body-tertiary"></th> -->
+                <th class="bg-body-tertiary">Total</th>  -->
+                <th class="bg-body-tertiary"></th>
               </tr>
             </thead>
             <tbody>
@@ -90,10 +90,10 @@
                     </div> -->
                 </td>
                 <td>
-                  <span>{{ gasto.empleado_id }}</span>
+                  <span>{{ gasto.user?.nombre_completo }}</span>
                 </td>
                 <td>
-                  <span>{{ gasto.empleado_id }}</span>
+                  <span>{{ gasto.empleado?.nombre_completo }}</span>
                 </td>
                 <!-- <td>
                   <span>{{
