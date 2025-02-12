@@ -127,7 +127,7 @@ export class FacturaInsertarComponent {
         let listadoFilter: ParametersUrl = {
           estado: 1,
           disablePaginate: '1',
-          filter: valorInput,
+          filtro: valorInput,
           link: null,
         };
         // logger.log('aa', valorInput);

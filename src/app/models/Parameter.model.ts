@@ -3,7 +3,7 @@ import { Relaciones } from './Relaciones.model';
 export interface ParametersUrl extends Relaciones {
   link: null | string;
   page?: string | number;
-  filter?: string;
+  filtro?: string;
   estado?: string | number;
   fecha_inicio?: string;
   fecha_fin?: string;

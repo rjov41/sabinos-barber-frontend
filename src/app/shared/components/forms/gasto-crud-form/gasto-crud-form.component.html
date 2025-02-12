@@ -169,7 +169,9 @@
                   [inputFormatter]="formatterValue"
                   (selectItem)="eventInputTypeHead($event, i)"
                 />
-                <label cLabel for="producto_id_{{ i }}">Producto ID</label>
+                <label cLabel for="producto_id_{{ i }}"
+                  >Producto ID <c-spinner size="sm" *ngIf="LoadingSearchClient"
+                /></label>
               </div>
               <app-valid-messages-form
                 [errors]="getGastoControlError(i, 'producto_id')"
