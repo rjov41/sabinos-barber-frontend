@@ -113,7 +113,7 @@ export class UsuarioListadoComponent {
   }
 
   filtroEvent(filtros: Filtro) {
-    // logger.log('filtros', filtros);
+    logger.log('filtros', filtros);
 
     filtros.fecha_inicio = dayjs(filtros.fecha.startDate).format('YYYY-MM-DD');
     filtros.fecha_fin = dayjs(filtros.fecha.endDate).format('YYYY-MM-DD');
@@ -124,6 +124,11 @@ export class UsuarioListadoComponent {
       ...FILTROS_SANETIZE,
       fecha_inicio: FILTROS_SANETIZE.fecha_inicio,
     };
+
+    if (this.ParametrosURL.allDates) {
+      delete this.ParametrosURL.fecha_fin;
+      delete this.ParametrosURL.fecha_inicio;
+    }
     logger.log('this.ParametrosURL', this.ParametrosURL);
 
     this.getUsuarios();

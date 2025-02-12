@@ -195,9 +195,11 @@
   <c-modal-body>
     <app-filtros-list-form
       (filtrar)="filtroEvent($event)"
-      [showLocales]="true"
       [showDate]="true"
       [showEstado]="true"
+      [showValidDates]="true"
+      [showEmpleados]="true"
+      [showLocales]="true"
     />
   </c-modal-body>
 </c-modal>

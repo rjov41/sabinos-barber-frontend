@@ -125,6 +125,11 @@ export class FacturaListadoComponent {
       ...FILTROS_SANETIZE,
       fecha_inicio: FILTROS_SANETIZE.fecha_inicio,
     };
+
+    if (this.ParametrosURL.allDates) {
+      delete this.ParametrosURL.fecha_fin;
+      delete this.ParametrosURL.fecha_inicio;
+    }
     logger.log('this.ParametrosURL', this.ParametrosURL);
 
     this.getFacturas();

@@ -13,14 +13,14 @@ import {
   CardModule,
   ColComponent,
   ContainerComponent,
-  FormFloatingDirective,
+  FormCheckComponent,
+  FormCheckInputDirective,
   FormLabelDirective,
   FormSelectDirective,
   RowComponent,
 } from '@coreui/angular';
 import { IconDirective } from '@coreui/icons-angular';
 
-import { NgxDaterangepickerBootstrapDirective } from 'ngx-daterangepicker-bootstrap';
 import logger from 'src/app/shared/utils/logger';
 import { DateRangePickerComponent } from '../../date-range-picker/date-range-picker.component';
 import { LocalesService } from '../../../../services/locales.service';
@@ -30,14 +30,16 @@ import { IniciarFiltro } from '../../../utils/constants/filtro';
 import { Filtro } from '../../../../models/Filter.model';
 import dayjs from 'dayjs';
 import { Subject, takeUntil } from 'rxjs';
+import { Usuario } from '../../../../models/Usuario.model';
+import { Empleado } from '../../../../models/Empleado.model';
+import { UsuarioesService } from '../../../../services/usuarios.service';
+import { EmpleadosService } from '../../../../services/empleados.service';
 
 @Component({
   selector: 'app-filtros-list-form',
   standalone: true,
   imports: [
-    FormFloatingDirective,
     CommonModule,
-    NgxDaterangepickerBootstrapDirective,
     CardModule,
     ContainerComponent,
     RowComponent,
@@ -48,6 +50,8 @@ import { Subject, takeUntil } from 'rxjs';
     FormsModule,
     FormSelectDirective,
     FormLabelDirective,
+    FormCheckComponent,
+    FormCheckInputDirective,
   ],
   templateUrl: './filtros-list-form.component.html',
   styleUrl: './filtros-list-form.component.scss',
@@ -61,9 +65,14 @@ export class FiltrosListFormComponent {
   @Input() showDate: boolean = false;
   @Input() showLocales: boolean = false;
   @Input() showEstado: boolean = false;
+  @Input() showValidDates: boolean = false;
+  @Input() showEmpleados: boolean = false;
+  @Input() showUsers: boolean = false;
   @Output() filtrar = new EventEmitter<Filtro>();
 
   private _LocalesServices = inject(LocalesService);
+  private _UsuarioesService = inject(UsuarioesService);
+  private _EmpleadosService = inject(EmpleadosService);
 
   private ParametrosURL: ParametersUrl = {
     allDates: true,
@@ -76,6 +85,14 @@ export class FiltrosListFormComponent {
   };
 
   Locales: Local[] = [];
+  Usuarios: Usuario[] = [];
+  Empleados: Empleado[] = [];
+
+  ngOnInit(): void {
+    this.getLocales();
+    this.getEmpleados();
+    this.getUsers();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.filtro = {
@@ -83,6 +100,9 @@ export class FiltrosListFormComponent {
       estado: this.showEstado ? 1 : '',
       local_id: this.showLocales ? 0 : '',
     };
+  }
+
+  getLocales() {
     if (this.showLocales) {
       this._LocalesServices
         .getLocales(this.ParametrosURL)
@@ -93,9 +113,34 @@ export class FiltrosListFormComponent {
     }
   }
 
+  getUsers() {
+    if (this.showUsers) {
+      this._UsuarioesService
+        .getUsuarioes(this.ParametrosURL)
+        .pipe(takeUntil(this.destruir$))
+        .subscribe((Usuarios: Usuario[]) => {
+          this.Usuarios = Usuarios;
+        });
+    }
+  }
+
+  getEmpleados() {
+    if (this.showEmpleados) {
+      this._EmpleadosService
+        .getEmpleadoes(this.ParametrosURL)
+        .pipe(takeUntil(this.destruir$))
+        .subscribe((Empleados: Empleado[]) => {
+          this.Empleados = Empleados;
+        });
+    }
+  }
+
   onFiltrar() {
     // logger.log(this.filtro);
-    this.filtrar.emit(this.filtro);
+    let filtro = {
+      ...this.filtro,
+    };
+    this.filtrar.emit(filtro);
   }
 
   // Método para limpiar los campos

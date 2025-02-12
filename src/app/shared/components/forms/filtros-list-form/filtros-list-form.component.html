@@ -17,6 +17,23 @@
             />
           </div>
         </c-col>
+        } @if(showValidDates){
+        <c-col [md]="6">
+          <div class="mb-3">
+            <c-form-check [switch]="true">
+              <input
+                cFormCheckInput
+                type="checkbox"
+                [(ngModel)]="filtro.allDates"
+                id="allDatesId"
+              />
+              <label cFormCheckLabel class="ms-3" for="allDatesId"
+                >Todas las fechas</label
+              >
+            </c-form-check>
+          </div>
+        </c-col>
+        <div class="w-100 d-none d-md-block"></div>
         } @if(showMarca){
         <c-col [md]="6">
           <div class="mb-3">
@@ -47,7 +64,7 @@
             />
           </div>
         </c-col>
-        } @if(showDate){
+        } @if(showDate && !filtro.allDates){
         <c-col [md]="6">
           <div class="mb-3">
             <app-date-range-picker
@@ -72,6 +89,46 @@
                 [ngValue]="local.id"
               >
                 {{ local.nombre }}
+              </option>
+            </select>
+          </div>
+        </c-col>
+        } @if(showEmpleados){
+        <c-col [md]="6">
+          <div class="mb-3">
+            <label cLabel for="empleadoInput">Empleados</label>
+            <select
+              cSelect
+              [(ngModel)]="filtro.empleado_id"
+              name="empleado"
+              id="empleadoInput"
+            >
+              <option [ngValue]="0">Todos</option>
+              <option
+                *ngFor="let empleado of Empleados; let i = index"
+                [ngValue]="empleado.id"
+              >
+                {{ empleado.nombre_completo }}
+              </option>
+            </select>
+          </div>
+        </c-col>
+        } @if(showUsers){
+        <c-col [md]="6">
+          <div class="mb-3">
+            <label cLabel for="userInput">Usuarios</label>
+            <select
+              cSelect
+              [(ngModel)]="filtro.user_id"
+              name="user"
+              id="userInput"
+            >
+              <option [ngValue]="0">Todos</option>
+              <option
+                *ngFor="let usuario of Usuarios; let i = index"
+                [ngValue]="usuario.id"
+              >
+                {{ usuario.nombre_completo }}
               </option>
             </select>
           </div>

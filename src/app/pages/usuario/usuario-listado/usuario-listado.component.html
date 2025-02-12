@@ -5,7 +5,7 @@
         [fluid]="true"
         class="px-0 mb-3 d-flex flex-wrap botones-table"
       >
-        <!-- <button
+        <button
           cButton
           color="info"
           class="btn-action-table me-3"
@@ -13,7 +13,7 @@
         >
           <svg cIcon height="18" name="cil-filter"></svg>
           Filtros
-        </button> -->
+        </button>
 
         <!-- <button cButton color="info" class="mx-3 btn-action-table">
           <svg cIcon height="18" name="cil-fax"></svg>
@@ -190,9 +190,9 @@
   <c-modal-body>
     <app-filtros-list-form
       (filtrar)="filtroEvent($event)"
-      [showLocales]="true"
       [showDate]="true"
       [showEstado]="true"
+      [showValidDates]="true"
     />
   </c-modal-body>
 </c-modal>

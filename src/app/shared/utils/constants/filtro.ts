@@ -15,6 +15,9 @@ export const IniciarFiltro = {
     endDate: END_DATE,
   },
   estado: 1,
+  allDates: false,
+  user_id: 0,
+  empleado_id: 0,
   local_id: 0,
 };
 
