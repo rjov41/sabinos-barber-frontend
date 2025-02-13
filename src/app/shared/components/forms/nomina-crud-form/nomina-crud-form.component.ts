@@ -37,6 +37,7 @@ import {
 import dayjs from 'dayjs';
 import { FacturasService } from '../../../../services/facturas.service';
 import { Factura } from '../../../../models/Factura.model';
+import { LoginService } from '../../../../services/login.service';
 
 @Component({
   selector: 'app-nomina-crud-form',
@@ -74,20 +75,24 @@ export class NominaCrudFormComponent {
   #colorModeService = inject(ColorModeService);
   private _EmpleadosService = inject(EmpleadosService);
   private _FacturasService = inject(FacturasService);
+  // private _LocalesService = inject(LocalesService);
+  private _LoginService = inject(LoginService);
 
   @Input() Nomina!: Nomina;
   @Output() FormsValues = new EventEmitter<any>();
 
   Empleadoes: Empleado[] = [];
 
-  loadingFacturas: boolean = false;
   loadingLocales = false;
   Locales: Local[] = [];
+
+  loadingFacturas: boolean = false;
 
   ngOnInit(): void {
     this.getEmpleados();
     this.changeTotalAndPorcentaje();
     this.changeEmpleado();
+    // this.getLocales();
   }
 
   ngOnChanges(): void {
@@ -216,10 +221,12 @@ export class NominaCrudFormComponent {
 
   sendValueFom() {
     if (this.NominaCrudForm.valid) {
+      const USER_DATA = this._LoginService.userData();
       const NOMINA = {
         ...this.NominaCrudForm.value,
         total: this.getControl('total').value,
         adicional: this.NominaCrudForm.value.adicional ? '1' : '0',
+        local_id: USER_DATA.user.local_id,
       };
       logger.log(NOMINA);
 
@@ -237,6 +244,23 @@ export class NominaCrudFormComponent {
       });
     }
   }
+
+  // getLocales() {
+  //   this.loadingLocales = true;
+
+  //   this._LocalesService
+  //     .getLocales({
+  //       link: null,
+  //       disablePaginate: '1',
+  //     })
+  //     // .pipe(delay(3000))
+  //     // .pipe(takeUntil(this.destruir$))
+  //     .subscribe((data: Local[]) => {
+  //       this.loadingLocales = false;
+  //       this.Locales = [...data];
+  //       logger.log(data);
+  //     });
+  // }
 
   handleDate(event: { endDate: dayjs.Dayjs; startDate: dayjs.Dayjs }) {
     logger.log('range', event);

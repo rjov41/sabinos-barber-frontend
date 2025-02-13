@@ -29,6 +29,16 @@ export class LoginService {
     return false;
   }
 
+  userData(): Auth {
+    const Auth = this._Storage.getItem(this.KEY_STORAGE) as Auth | null;
+
+    if (Auth && Auth.token) {
+      return Auth;
+    }
+
+    return {} as Auth;
+  }
+
   login(data: { email: string; password: string }): Observable<Auth> {
     return this.http.post<Auth>(`${URL}signin`, data, {
       // headers: this._Helpers.headerJson_Token(),

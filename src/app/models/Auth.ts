@@ -10,6 +10,7 @@ export interface UserAuth {
   user_updated_at: string;
   roleId: number;
   roleName: string;
+  local_id: number;
 }
 
 export interface Auth {

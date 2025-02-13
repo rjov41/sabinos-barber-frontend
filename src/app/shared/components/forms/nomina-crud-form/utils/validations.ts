@@ -11,6 +11,7 @@ export const NominaCrudValidators: FormGroupValidators = {
   adicional: [Validators.required],
   porcentaje_adicional: [Validators.required],
   total: [Validators.required],
+  local_id: [Validators.required],
 };
 
 export const NominaCrudErrorMessages: FormErrorMessages = {
@@ -24,6 +25,9 @@ export const NominaCrudErrorMessages: FormErrorMessages = {
   },
   monto_facturado: {
     required: 'El monto facturado es requerido',
+  },
+  local_id: {
+    required: 'El local es requerido',
   },
   adicional: {
     required: 'El adicional es requerido',

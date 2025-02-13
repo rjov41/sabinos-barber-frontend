@@ -7,6 +7,7 @@ export interface NominaCrudForm {
   monto_facturado: FormControl<number | null>;
   adicional: FormControl<boolean | null>;
   porcentaje_adicional: FormControl<number | null>;
+  local_id?: FormControl<number | null>;
   total: FormControl<number | null>;
 }
 
@@ -18,6 +19,7 @@ export const NominaCrudFormBuilder = () =>
       ...NominaCrudValidators['monto_facturado'],
     ]),
     adicional: new FormControl(false, [...NominaCrudValidators['adicional']]),
+    // local_id: new FormControl(0, [...NominaCrudValidators['local_id']]),
     porcentaje_adicional: new FormControl(0, [
       ...NominaCrudValidators['porcentaje_adicional'],
     ]),
