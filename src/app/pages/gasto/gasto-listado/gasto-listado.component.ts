@@ -150,7 +150,7 @@ export class GastoListadoComponent {
     })
       .fire({
         title: '¿Estás seguro?',
-        text: 'Esta nomina se eliminará y no podrás recuperarla.',
+        text: 'Este gasto se eliminará y no podrás recuperarlo.',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#51cbce',
@@ -161,7 +161,7 @@ export class GastoListadoComponent {
       .then((result) => {
         if (result.isConfirmed) {
           this._HelpersService.loaderSweetAlert({
-            title: 'Eliminando nomina',
+            title: 'Eliminando gasto',
             text: 'Esto puede demorar un momento.',
           });
 

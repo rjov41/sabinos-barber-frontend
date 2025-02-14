@@ -1,27 +1,32 @@
 <c-card class="my-4">
   <c-card-body class="pt-4">
-    <c-container [fluid]="true" class="my-table-full px-0" *ngIf="!loaderGasto">
+    <c-container
+      [fluid]="true"
+      class="my-table-full px-0"
+      *ngIf="!loaderFactura"
+    >
       <div class="card p-4 shadow-sm">
         <div class="row mb-5">
           <div class="col-md-6">
             <h5 class="text-capitalize">
-              <strong>Empleado:</strong> {{ Gasto.empleado?.nombre_completo }}
+              <strong>Cliente:</strong> {{ Factura.cliente?.nombre }}
+              {{ Factura.cliente?.apellido }}
             </h5>
             <p class="my-1">
-              <strong>Documento:</strong> {{ Gasto.empleado?.dni }}
+              <strong>Tel:</strong> {{ Factura.cliente?.telefono }}
             </p>
             <p class="my-1">
-              <strong>Local:</strong> {{ Gasto.local?.nombre }}
+              <strong>Descripción:</strong> {{ Factura.descripcion }}
             </p>
           </div>
           <div class="col-md-6 text-md-end">
-            <h5><strong>Nomina</strong></h5>
-            <p class="my-1"><strong>ID:</strong> #{{ Gasto.id }}</p>
+            <h5><strong>Factura</strong></h5>
+            <p class="my-1"><strong>ID:</strong> #{{ Factura.id }}</p>
             <p class="my-1">
               <strong>Fecha:</strong>
-              {{ Gasto.created_at | date : "dd-MM-yyyy" }}
+              {{ Factura.created_at | date : "dd-MM-yyyy" }}
             </p>
-            <!-- <p class="my-1">
+            <p class="my-1">
               <strong>Estado:</strong>
               <span
                 class="badge ms-2"
@@ -33,7 +38,7 @@
                 }"
                 >{{ Factura.estado == 1 ? "Finalizada" : "Eliminada" }}</span
               >
-            </p> -->
+            </p>
           </div>
         </div>
         <div class="row mb-5">
@@ -42,28 +47,24 @@
               <tr>
                 <th class="bg-body-tertiary">#</th>
                 <th class="bg-body-tertiary">Descripción</th>
-                <th class="bg-body-tertiary">Linea</th>
-                <th class="bg-body-tertiary">Subtotal</th>
                 <th class="bg-body-tertiary">Cantidad</th>
-                <th class="bg-body-tertiary">Total</th>
+                <th class="bg-body-tertiary">Precio</th>
               </tr>
             </thead>
             <tbody>
-              @for (gast of Gasto.gasto_detalle; track gast.id; let i = $index)
-              {
+              @for (Fac of Factura.factura_detalle; track Fac.id; let i =
+              $index) {
               <tr>
-                <td>{{ gast.producto?.id }}</td>
-                <td>{{ gast.producto?.descripcion }}</td>
-                <td>{{ gast.producto?.linea }} u.</td>
-                <td>{{ gast.precio_unitario | currency : "ARS" }}</td>
-                <td>{{ gast.cantidad }} u.</td>
-                <td>{{ gast.precio | currency : "ARS" }}</td>
+                <td>{{ Fac.producto?.id }}</td>
+                <td>{{ Fac.producto?.descripcion }}</td>
+                <td>{{ Fac.cantidad }} u.</td>
+                <td>{{ Fac.precio | currency : "ARS" }}</td>
               </tr>
               }
             </tbody>
           </table>
         </div>
-        <!-- <div class="row text-end mb-1">
+        <div class="row text-end mb-1">
           <div class="col-md-9"><strong>Subtotal:</strong></div>
           <div class="col-md-3">{{ Factura.sub_total | currency : "ARS" }}</div>
         </div>
@@ -74,10 +75,10 @@
         <div class="row text-end fw-bold fs-5">
           <div class="col-md-9">Total a Pagar:</div>
           <div class="col-md-3">{{ Factura.total | currency : "ARS" }}</div>
-        </div> -->
+        </div>
       </div>
     </c-container>
-    <c-container [fluid]="true" class="px-0 text-center" *ngIf="loaderGasto">
+    <c-container [fluid]="true" class="px-0 text-center" *ngIf="loaderFactura">
       <c-row class="mb-4">
         <c-col>
           <div class="small text-body-secondary mt-3">

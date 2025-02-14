@@ -77,6 +77,7 @@
                 <th class="bg-body-tertiary">Descripción</th>
                 <th class="bg-body-tertiary">Valor</th>
                 <th class="bg-body-tertiary">Descuento</th>
+                <th class="bg-body-tertiary">Fecha creación</th>
                 <th class="bg-body-tertiary"></th>
               </tr>
             </thead>
@@ -112,6 +113,9 @@
                   <span>{{ Factura.descuento }}</span>
                 </td>
                 <td>
+                  <span>{{ Factura.created_at | date : "dd-MM-YYYY" }}</span>
+                </td>
+                <td>
                   <div class="d-flex flex-direction">
                     <!-- <div class="me-3" ngbTooltip="Editar">
                       <a
@@ -121,6 +125,14 @@
                         <svg cIcon height="18" name="cil-pencil"></svg>
                       </a>
                     </div> -->
+                    <div class="me-3" ngbTooltip="Detalle">
+                      <a
+                        [routerLink]="['/facturas', 'detalle', Factura.id]"
+                        cTooltip="Detalle"
+                      >
+                        <svg cIcon height="18" name="fa-eye"></svg>
+                      </a>
+                    </div>
                     <div
                       class=""
                       ngbTooltip="Eliminar"

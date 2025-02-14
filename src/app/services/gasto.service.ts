@@ -29,10 +29,19 @@ export class GastoService {
     });
   }
 
-  getGastoById(id: number): Observable<any> {
-    return this.http.get<any>(`${URL_Gasto}/${id}`, {
+  getGastoById(
+    id: number,
+    parametersURL?: ParametersUrl | null
+  ): Observable<any> {
+    const option: any = {
       responseType: 'json',
-    });
+      ...(parametersURL && {
+        params: this._Helpers.formatParameters(parametersURL),
+      }),
+    };
+
+    // logger.log('URL', URL_Gasto);
+    return this.http.get<any>(`${URL_Gasto}/${id}`, option);
   }
 
   updateGasto(Id: number, Gasto: Gasto): Observable<any> {

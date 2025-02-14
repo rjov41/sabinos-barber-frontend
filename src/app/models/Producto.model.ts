@@ -8,6 +8,7 @@ export interface Producto {
   precio: number;
   local_id: number;
   local: Local;
+  linea?: string;
 
   estado?: number;
   created_at?: Date;

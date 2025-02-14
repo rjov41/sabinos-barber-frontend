@@ -34,11 +34,10 @@ import { ColorModeService } from '@coreui/angular';
 import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
 import { Factura } from '../../../models/Factura.model';
-import { GastoService } from '../../../services/gasto.service';
-import { Gasto } from '../../../models/Gasto.model';
+import { SpinnersComponent } from '../../../documentacion/base/spinners/spinners.component';
 
 @Component({
-  selector: 'app-gasto-editar',
+  selector: 'app-factura-detalle',
   standalone: true,
   imports: [
     TableDirective,
@@ -60,12 +59,12 @@ import { Gasto } from '../../../models/Gasto.model';
     FormsModule,
     SpinnerComponent,
   ],
-  templateUrl: './gasto-editar.component.html',
-  styleUrl: './gasto-editar.component.scss',
+  templateUrl: './factura-detalle.component.html',
+  styleUrl: './factura-detalle.component.scss',
 })
-export class GastoEditarComponent {
+export class FacturaDetalleComponent {
   private destruir$: Subject<void> = new Subject<void>();
-  private _GastoService = inject(GastoService);
+  private _FacturasService = inject(FacturasService);
   private _ActivatedRoute = inject(ActivatedRoute);
 
   ParametrosURL: ParametersUrl = {
@@ -73,15 +72,16 @@ export class GastoEditarComponent {
     estado: 1,
     link: null,
     disablePaginate: '0',
+    cliente_model: '1',
     empleado_model: '1',
-    gasto_detalle_model: '1',
-    user_model: '1',
+    factura_detalle_model: '1',
+    metodo_pago_model: '1',
     fecha_inicio: dayjs().startOf('month').format('YYYY-MM-DD'),
     fecha_fin: dayjs().endOf('month').format('YYYY-MM-DD'),
   };
   Id!: number;
-  Gasto!: Gasto;
-  loaderGasto: boolean = false;
+  Factura!: Factura;
+  loaderFactura: boolean = false;
 
   ngOnInit(): void {
     this.Id = Number(this._ActivatedRoute.snapshot.paramMap.get('id'));
@@ -90,15 +90,15 @@ export class GastoEditarComponent {
   }
 
   getFactura() {
-    this.loaderGasto = true;
+    this.loaderFactura = true;
 
-    this._GastoService
-      .getGastoById(this.Id, this.ParametrosURL)
+    this._FacturasService
+      .getFacturaById(this.Id, this.ParametrosURL)
       // .pipe(delay(3000))
       .pipe(takeUntil(this.destruir$))
-      .subscribe((data: Gasto) => {
-        this.loaderGasto = false;
-        this.Gasto = { ...data };
+      .subscribe((data: Factura) => {
+        this.loaderFactura = false;
+        this.Factura = { ...data };
         logger.log(data);
       });
   }

@@ -318,7 +318,8 @@ export class FacturaInsertarComponent {
       empleado_id: this.empleadoModel,
       productos: this.Productos,
       metodo_pago_id: this.MedioPagoModel,
-      total: this.PrecioTotal,
+      sub_total: this.PrecioTotal,
+      total: this.PrecioFinal,
       descuento: String(this.DescuentoModel),
       descripcion: this.DescripcionModel,
     };

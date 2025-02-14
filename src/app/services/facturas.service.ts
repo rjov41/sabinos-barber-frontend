@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
 import { Factura } from '../models/Factura.model';
 import { Listado } from '../models/Listados.model';
@@ -29,10 +29,19 @@ export class FacturasService {
     });
   }
 
-  getFacturaById(id: number): Observable<any> {
-    return this.http.get<any>(`${URL_Factura}/${id}`, {
+  getFacturaById(
+    id: number,
+    parametersURL?: ParametersUrl | null
+  ): Observable<any> {
+    const option: any = {
       responseType: 'json',
-    });
+      ...(parametersURL && {
+        params: this._Helpers.formatParameters(parametersURL),
+      }),
+    };
+
+    // logger.log('URL', URL_Factura);
+    return this.http.get<any>(`${URL_Factura}/${id}`, option);
   }
 
   deleteFactura(id: number): Observable<any> {

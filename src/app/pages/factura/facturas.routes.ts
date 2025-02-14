@@ -47,7 +47,17 @@ export const routes: Routes = [
             (m) => m.FacturaPedidoComponent
           ),
         data: {
-          title: 'pedido',
+          title: 'Pedido',
+        },
+      },
+      {
+        path: 'detalle/:id',
+        loadComponent: () =>
+          import('./factura-detalle/factura-detalle.component').then(
+            (m) => m.FacturaDetalleComponent
+          ),
+        data: {
+          title: 'Detalle',
         },
       },
     ],

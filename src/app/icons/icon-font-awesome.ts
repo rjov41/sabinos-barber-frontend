@@ -4,6 +4,7 @@ import {
   faKey,
   faHandHoldingDollar,
   faPersonCircleCheck,
+  faEye,
 } from '@fortawesome/free-solid-svg-icons';
 
 const formatTemplate = (data: any) =>
@@ -27,4 +28,5 @@ export const CUSTOM_ICONS = {
     `${faHandHoldingDollar.icon[0]} ${faHandHoldingDollar.icon[1]}`,
     formatTemplate(faHandHoldingDollar.icon[4]),
   ],
+  faEye: [`${faEye.icon[0]} ${faEye.icon[1]}`, formatTemplate(faEye.icon[4])],
 };
