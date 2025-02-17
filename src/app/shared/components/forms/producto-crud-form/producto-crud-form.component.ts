@@ -27,6 +27,7 @@ import { Producto } from 'src/app/models/Producto.model';
 import { LocalesService } from 'src/app/services/locales.service';
 import { Local } from 'src/app/models/Local.model';
 import { Subject, takeUntil } from 'rxjs';
+import { LoginService } from '../../../../services/login.service';
 
 @Component({
   selector: 'app-producto-crud-form',
@@ -54,16 +55,34 @@ export class ProductoCrudFormComponent {
   ProductoCrudForm = ProductoCrudFormBuilder();
   #colorModeService = inject(ColorModeService);
   _LocalesServices = inject(LocalesService);
+  _LoginService = inject(LoginService);
 
   @Input() Producto!: Producto;
   @Output() FormsValues = new EventEmitter<any>();
 
+  LocalDataStorage!: Local;
   Locales: Local[] = [];
   ngOnInit(): void {
-    this.getLocales();
+    // this.getLocales();
+    this.getDataStorage();
   }
   ngOnChanges(): void {
     if (this.Producto) this.setFormValues();
+  }
+
+  getDataStorage() {
+    const USER_DATA = this._LoginService.userData();
+    this.LocalDataStorage = {
+      id: 1,
+      nombre: 'Sucursal 1',
+      estado: 1,
+    };
+
+    this.ProductoCrudForm.patchValue({
+      local_id: this.LocalDataStorage.nombre,
+    });
+
+    logger.log('USER_DATA', USER_DATA);
   }
 
   getLocales() {
@@ -103,7 +122,12 @@ export class ProductoCrudFormComponent {
 
   sendValueFom() {
     if (this.ProductoCrudForm.valid) {
-      this.FormsValues.emit(this.ProductoCrudForm.value);
+      const FORM_VALUE = {
+        ...this.ProductoCrudForm.value,
+        local_id: this.LocalDataStorage.id,
+      };
+
+      this.FormsValues.emit(FORM_VALUE);
     } else {
       Swal.mixin({
         customClass: {

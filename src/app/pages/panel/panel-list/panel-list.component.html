@@ -58,9 +58,9 @@
             color="success"
             inverse
             value="{{
-              Panel.total_facturado == 1
-                ? Panel.total_facturado + ' Fac.'
-                : Panel.total_facturado + ' Facs.'
+              Panel.total_facturas == 1
+                ? Panel.total_facturas + ' Fac.'
+                : Panel.total_facturas + ' Facs.'
             }}"
           >
             <ng-template cTemplateId="widgetIconTemplate">
@@ -113,9 +113,9 @@
             color="warning"
             inverse
             value="{{
-              Panel.total_gastos == 1
-                ? Panel.total_gastos + ' Gto.'
-                : Panel.total_gastos + ' Gtos.'
+              Panel.total_productos == 1
+                ? Panel.total_productos + ' Prod.'
+                : Panel.total_productos + ' Prods.'
             }}"
           >
             <ng-template cTemplateId="widgetIconTemplate">
@@ -141,9 +141,9 @@
             color="primary"
             inverse
             value="{{
-              Panel.total_gastos_acumulado == 1
-                ? Panel.total_gastos_acumulado + ' Gto.'
-                : Panel.total_gastos_acumulado + ' Gtos.'
+              Panel.total_gastos == 1
+                ? Panel.total_gastos + ' Gto.'
+                : Panel.total_gastos + ' Gtos.'
             }}"
           >
             <ng-template cTemplateId="widgetIconTemplate">
@@ -169,8 +169,8 @@
             inverse
             value="{{
               Panel.total_gastos_acumulado == 1
-                ? Panel.total_gastos_acumulado + ' Prod.'
-                : Panel.total_gastos_acumulado + ' Prods.'
+                ? Panel.total_gastos_acumulado + ' Gto.'
+                : Panel.total_gastos_acumulado + ' Gtos.'
             }}"
           >
             <ng-template cTemplateId="widgetIconTemplate">
@@ -191,7 +191,6 @@
   <c-modal-body>
     <app-filtros-list-form
       (filtrar)="filtroEvent($event)"
-      [showLocales]="true"
       [showDate]="true"
       [showEstado]="true"
       [showValidDates]="true"

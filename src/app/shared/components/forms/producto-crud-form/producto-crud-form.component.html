@@ -93,7 +93,20 @@
     </c-col>
     <c-col [md]="4">
       <div cFormFloating>
-        <select
+        <input
+          cFormControl
+          id="local_idInput"
+          placeholder="local_id"
+          type="text"
+          formControlName="local_id"
+          [ngClass]="{
+            'is-invalid':
+              getControl('local_id').invalid && getControl('local_id').touched,
+            'is-valid': getControl('local_id').valid
+          }"
+          appOnlyNumberAndPoint
+        />
+        <!-- <select
           cSelect
           id="localInput"
           formControlName="local_id"
@@ -110,7 +123,7 @@
           >
             {{ local.nombre }}
           </option>
-        </select>
+        </select>-->
         <label cLabel for="localInput">Local</label>
       </div>
       <app-valid-messages-form
