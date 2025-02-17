@@ -2,6 +2,11 @@ import { INavData } from '@coreui/angular';
 
 export const navItemsProject: INavData[] = [
   {
+    name: 'Inicio',
+    url: '/',
+    iconComponent: { name: 'cil-home' },
+  },
+  {
     name: 'Productos',
     url: '/productos',
     iconComponent: { name: 'cil-cut' },

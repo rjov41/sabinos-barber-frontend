@@ -10,6 +10,24 @@ export const routesPages: Routes = [
         pathMatch: 'full',
       },
       {
+        path: '',
+        loadChildren: () =>
+          import('./panel/productos.routes').then((m) => m.routes),
+        data: {
+          title: '',
+        },
+      },
+    ],
+  },
+  {
+    path: '',
+    children: [
+      {
+        path: '',
+        redirectTo: '',
+        pathMatch: 'full',
+      },
+      {
         path: 'productos',
         loadChildren: () =>
           import('./producto/productos.routes').then((m) => m.routes),
