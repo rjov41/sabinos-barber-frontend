@@ -1,5 +1,5 @@
 import { NgStyle, NgTemplateOutlet } from '@angular/common';
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, effect, inject, input } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 import {
@@ -68,7 +68,6 @@ export class DefaultHeaderComponent extends HeaderComponent {
   ];
 
   UserDataSession!: UserAuth;
-
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
@@ -85,6 +84,9 @@ export class DefaultHeaderComponent extends HeaderComponent {
 
   constructor() {
     super();
+    effect(() => {
+      this.UserDataSession = this._LoginService.getUserData();
+    });
   }
 
   sidebarId = input('sidebar1');

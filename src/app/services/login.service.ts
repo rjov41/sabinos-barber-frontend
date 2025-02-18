@@ -17,7 +17,7 @@ export class LoginService {
   private _Helpers = inject(HelpersService);
   private KEY_STORAGE = environment.SabinosStorage;
 
-  private UserDataStorage = signal<UserAuth | null>(null);
+  private UserDataStorage = signal<any>(null);
   // public methods
 
   isLogin(): boolean {
@@ -49,6 +49,7 @@ export class LoginService {
 
   setAuth(Auth: Auth) {
     this._Storage.setItem(this.KEY_STORAGE, Auth);
+    this.setUserData(this.userData().user);
     // logger.log(this._Storage.getItem(environment.SabinosStorage));
   }
 
@@ -65,7 +66,10 @@ export class LoginService {
     let userData = this.userData().user;
     if (!this.UserDataStorage()) {
       this.setUserData(this.userData().user);
+
+      userData = this.UserDataStorage();
     }
-    return userData;
+
+    return this.UserDataStorage();
   }
 }

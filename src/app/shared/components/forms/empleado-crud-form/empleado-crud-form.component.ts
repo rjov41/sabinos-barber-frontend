@@ -1,4 +1,11 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import {
+  Component,
+  effect,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+} from '@angular/core';
 import {
   FormControl,
   ReactiveFormsModule,
@@ -66,17 +73,12 @@ export class EmpleadoCrudFormComponent {
   Locales: Local[] = [];
   LocalDataStorage!: Local;
 
+  constructor() {
+    this.changeSesionStorage();
+    this.formInit();
+  }
   ngOnInit(): void {
     this.getLocales();
-    this.getDataStorage();
-
-    if (this.Empleado) {
-      this.setFormValues();
-    } else {
-      this.EmpleadoCrudForm.controls.local_id.patchValue(
-        Number(this._LoginService.getUserData().local.id)
-      );
-    }
 
     if (this._LoginService.getUserData().id != 1) {
       this.EmpleadoCrudForm.controls.local_id.disable();
@@ -85,11 +87,21 @@ export class EmpleadoCrudFormComponent {
 
   ngOnChanges(): void {}
 
-  getDataStorage() {
-    const USER_DATA = this._LoginService.getUserData();
-    this.LocalDataStorage = USER_DATA.local;
+  changeSesionStorage() {
+    effect(() => {
+      this._LoginService.getUserData();
+      this.formInit();
+    });
+  }
 
-    // logger.log('USER_DATA', USER_DATA);
+  formInit() {
+    if (this.Empleado) {
+      this.setFormValues();
+    } else {
+      this.EmpleadoCrudForm.controls.local_id.patchValue(
+        Number(this._LoginService.getUserData().local.id)
+      );
+    }
   }
 
   getControlError(name: string): ValidationErrors | null {
