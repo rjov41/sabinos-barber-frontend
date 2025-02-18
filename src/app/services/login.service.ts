@@ -63,11 +63,8 @@ export class LoginService {
   }
 
   getUserData(): UserAuth {
-    let userData = this.userData().user;
     if (!this.UserDataStorage()) {
       this.setUserData(this.userData().user);
-
-      userData = this.UserDataStorage();
     }
 
     return this.UserDataStorage();

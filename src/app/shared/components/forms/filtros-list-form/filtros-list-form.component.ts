@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
+  effect,
   EventEmitter,
   inject,
   Input,
@@ -34,6 +35,7 @@ import { Usuario } from '../../../../models/Usuario.model';
 import { Empleado } from '../../../../models/Empleado.model';
 import { UsuarioesService } from '../../../../services/usuarios.service';
 import { EmpleadosService } from '../../../../services/empleados.service';
+import { LoginService } from '../../../../services/login.service';
 
 @Component({
   selector: 'app-filtros-list-form',
@@ -73,9 +75,10 @@ export class FiltrosListFormComponent {
   private _LocalesServices = inject(LocalesService);
   private _UsuarioesService = inject(UsuarioesService);
   private _EmpleadosService = inject(EmpleadosService);
+  private _LoginService = inject(LoginService);
 
   private ParametrosURL: ParametersUrl = {
-    allDates: true,
+    allDates: false,
     link: null,
     disablePaginate: '1',
   };
@@ -88,18 +91,28 @@ export class FiltrosListFormComponent {
   Usuarios: Usuario[] = [];
   Empleados: Empleado[] = [];
 
+  constructor() {
+    effect(() => {
+      this.eventChangeLocal();
+    });
+  }
+
   ngOnInit(): void {
     this.getLocales();
     this.getEmpleados();
     this.getUsers();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
     this.filtro = {
       ...this.filtro,
       estado: this.showEstado ? 1 : '',
-      local_id: this.showLocales ? 0 : '',
+      local_id: Number(this._LoginService.getUserData().local.id),
     };
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {}
+
+  eventChangeLocal() {
+    const USER_DATA = this._LoginService.getUserData();
+    this.filtro.local_id = Number(USER_DATA.local.id);
   }
 
   getLocales() {

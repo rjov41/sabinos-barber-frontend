@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   ButtonDirective,
@@ -33,6 +33,7 @@ import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
 import { EmpleadosService } from '../../../services/empleados.service';
 import { Subject, takeUntil } from 'rxjs';
+import { LoginService } from '../../../services/login.service';
 
 @Component({
   selector: 'app-empleado-listado',
@@ -66,10 +67,12 @@ export class EmpleadoListadoComponent {
   private _ModalService = inject(ModalService);
   private _HelpersService = inject(HelpersService);
   readonly #ColorModeService = inject(ColorModeService);
+  readonly _LoginService = inject(LoginService);
 
   loaderTable: boolean = true;
   ParametrosURL: ParametersUrl = {
-    allDates: true,
+    allDates: false,
+    local_id: this._LoginService.getUserData().local.id,
     estado: 1,
     link: null,
     disablePaginate: '0',
@@ -78,8 +81,14 @@ export class EmpleadoListadoComponent {
   };
   EmpleadoList!: Listado<Empleado>;
 
+  constructor() {
+    effect((a) => {
+      this.eventChangeLocal();
+    });
+  }
+
   ngOnInit(): void {
-    this.getEmpleados();
+    // this.getEmpleados();
   }
 
   getEmpleados() {
@@ -93,6 +102,12 @@ export class EmpleadoListadoComponent {
         this.EmpleadoList = { ...data };
         logger.log(data);
       });
+  }
+
+  eventChangeLocal() {
+    const USER_DATA = this._LoginService.getUserData();
+    this.ParametrosURL.local_id = USER_DATA.local.id;
+    this.getEmpleados();
   }
 
   newPage(link: any) {

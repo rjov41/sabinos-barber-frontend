@@ -69,7 +69,7 @@ export class GastoEditarComponent {
   private _ActivatedRoute = inject(ActivatedRoute);
 
   ParametrosURL: ParametersUrl = {
-    allDates: true,
+    allDates: false,
     estado: 1,
     link: null,
     disablePaginate: '0',

@@ -74,7 +74,7 @@ export class MetodoPagoListadoComponent {
 
   loaderTable: boolean = true;
   ParametrosURL: ParametersUrl = {
-    allDates: true,
+    allDates: false,
     estado: 1,
     link: null,
     disablePaginate: '0',

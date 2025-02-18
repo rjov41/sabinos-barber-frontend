@@ -86,7 +86,7 @@ export class ProductosPedidoComponent {
   loaderTable: boolean = true;
   loadingProductos: boolean = false;
   ParametrosURL: ParametersUrl = {
-    allDates: true,
+    allDates: false,
     estado: 1,
     link: null,
     disablePaginate: '0',
