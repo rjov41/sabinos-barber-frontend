@@ -1,10 +1,10 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { HelpersService } from './helpers.service';
 import { LocalStorageService } from '@coreui/angular';
 import { Observable } from 'rxjs';
-import { Auth } from '../models/Auth';
+import { Auth, UserAuth } from '../models/Auth';
 
 const URL = `${environment.apiUrl}`;
 
@@ -17,6 +17,7 @@ export class LoginService {
   private _Helpers = inject(HelpersService);
   private KEY_STORAGE = environment.SabinosStorage;
 
+  private UserDataStorage = signal<UserAuth | null>(null);
   // public methods
 
   isLogin(): boolean {
@@ -54,5 +55,17 @@ export class LoginService {
   deleteAuth() {
     this._Storage.removeItem(this.KEY_STORAGE);
     // logger.log(this._Storage.getItem(environment.SabinosStorage));
+  }
+
+  setUserData(nuevoValor: UserAuth) {
+    this.UserDataStorage.set(nuevoValor);
+  }
+
+  getUserData(): UserAuth {
+    let userData = this.userData().user;
+    if (!this.UserDataStorage()) {
+      this.setUserData(this.userData().user);
+    }
+    return userData;
   }
 }

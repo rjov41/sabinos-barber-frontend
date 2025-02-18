@@ -57,7 +57,7 @@
             'is-valid': getControl('local_id').valid
           }"
         >
-          <option value="">Seleccione un local</option>
+          <option value="0" hidden>Seleccione un local</option>
           <option
             *ngFor="let local of Locales; let i = index"
             [ngValue]="local.id"
@@ -65,7 +65,10 @@
             {{ local.nombre | titlecase }}
           </option>
         </select>
-        <label cLabel for="rolInput">Locales</label>
+        <label cLabel for="rolInput"
+          >Locales
+          <c-spinner aria-hidden="true" size="sm" *ngIf="loadingLocales"
+        /></label>
       </div>
       <app-valid-messages-form
         [errors]="getControlError('local_id')"

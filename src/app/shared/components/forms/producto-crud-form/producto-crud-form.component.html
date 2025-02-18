@@ -93,7 +93,7 @@
     </c-col>
     <c-col [md]="4">
       <div cFormFloating>
-        <input
+        <!-- <input
           cFormControl
           id="local_idInput"
           placeholder="local_id"
@@ -105,8 +105,8 @@
             'is-valid': getControl('local_id').valid
           }"
           appOnlyNumberAndPoint
-        />
-        <!-- <select
+        /> -->
+        <select
           cSelect
           id="localInput"
           formControlName="local_id"
@@ -116,14 +116,14 @@
             'is-valid': getControl('local_id').valid
           }"
         >
-          <option value="">Seleccione un local</option>
+          <option value="0" hidden>Seleccione un local</option>
           <option
             *ngFor="let local of Locales; let i = index"
             [value]="local.id"
           >
             {{ local.nombre }}
           </option>
-        </select>-->
+        </select>
         <label cLabel for="localInput">Local</label>
       </div>
       <app-valid-messages-form

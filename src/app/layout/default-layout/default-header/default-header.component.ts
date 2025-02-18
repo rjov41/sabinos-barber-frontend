@@ -30,7 +30,7 @@ import { IconDirective } from '@coreui/icons-angular';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoginService } from 'src/app/services/login.service';
 import { CambiarLocalModalComponent } from '../../../shared/modals/cambiar-local-modal/cambiar-local-modal.component';
-import { Auth } from '../../../models/Auth';
+import { Auth, UserAuth } from '../../../models/Auth';
 
 @Component({
   selector: 'app-default-header',
@@ -67,12 +67,12 @@ export class DefaultHeaderComponent extends HeaderComponent {
     { name: 'auto', text: 'Auto', icon: 'cilContrast' },
   ];
 
-  UserDataSession!: Auth;
+  UserDataSession!: UserAuth;
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
-    this.UserDataSession = this._LoginService.userData();
+    this.UserDataSession = this._LoginService.getUserData();
   }
 
   readonly icons = computed(() => {

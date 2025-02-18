@@ -1,7 +1,7 @@
 import { Local } from './Local.model';
 
 export interface UserAuth {
-  userId: number;
+  id: number;
   nombre: string;
   apellido: string;
   cargo: string;

@@ -12,6 +12,7 @@ import {
   FormModule,
   ModalModule,
   RowComponent,
+  SpinnerComponent,
 } from '@coreui/angular';
 import { EmpleadoCrudFormBuilder } from './utils/form';
 import { CommonModule } from '@angular/common';
@@ -27,6 +28,7 @@ import { takeUntil } from 'rxjs';
 import { LocalesService } from '../../../../services/locales.service';
 import { Listado } from '../../../../models/Listados.model';
 import { Local } from '../../../../models/Local.model';
+import { LoginService } from '../../../../services/login.service';
 
 @Component({
   selector: 'app-empleado-crud-form',
@@ -42,6 +44,7 @@ import { Local } from '../../../../models/Local.model';
     ValidMessagesFormComponent,
     ModalModule,
     DirectivesModule,
+    SpinnerComponent,
   ],
   templateUrl: './empleado-crud-form.component.html',
   styleUrl: './empleado-crud-form.component.scss',
@@ -52,6 +55,7 @@ export class EmpleadoCrudFormComponent {
   #colorModeService = inject(ColorModeService);
   _EmpleadosService = inject(EmpleadosService);
   private _LocalsService = inject(LocalesService);
+  _LoginService = inject(LoginService);
 
   @Input() Empleado!: Empleado;
   @Output() FormsValues = new EventEmitter<any>();
@@ -60,13 +64,32 @@ export class EmpleadoCrudFormComponent {
 
   loadingLocales = false;
   Locales: Local[] = [];
+  LocalDataStorage!: Local;
 
   ngOnInit(): void {
     this.getLocales();
+    this.getDataStorage();
+
+    if (this.Empleado) {
+      this.setFormValues();
+    } else {
+      this.EmpleadoCrudForm.controls.local_id.patchValue(
+        Number(this._LoginService.getUserData().local.id)
+      );
+    }
+
+    if (this._LoginService.getUserData().id != 1) {
+      this.EmpleadoCrudForm.controls.local_id.disable();
+    }
   }
 
-  ngOnChanges(): void {
-    if (this.Empleado) this.setFormValues();
+  ngOnChanges(): void {}
+
+  getDataStorage() {
+    const USER_DATA = this._LoginService.getUserData();
+    this.LocalDataStorage = USER_DATA.local;
+
+    // logger.log('USER_DATA', USER_DATA);
   }
 
   getControlError(name: string): ValidationErrors | null {
@@ -113,7 +136,12 @@ export class EmpleadoCrudFormComponent {
 
   sendValueFom() {
     if (this.EmpleadoCrudForm.valid) {
-      this.FormsValues.emit(this.EmpleadoCrudForm.value);
+      const FORM_VALUE = {
+        ...this.EmpleadoCrudForm.value,
+        // local_id: this.LocalDataStorage.id,
+      };
+
+      this.FormsValues.emit(FORM_VALUE);
     } else {
       Swal.mixin({
         customClass: {

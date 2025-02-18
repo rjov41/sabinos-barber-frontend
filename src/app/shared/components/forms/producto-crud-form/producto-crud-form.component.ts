@@ -63,26 +63,31 @@ export class ProductoCrudFormComponent {
   LocalDataStorage!: Local;
   Locales: Local[] = [];
   ngOnInit(): void {
-    // this.getLocales();
+    this.getLocales();
     this.getDataStorage();
+
+    if (this.Producto) {
+      this.setFormValues();
+    } else {
+      this.ProductoCrudForm.controls.local_id.patchValue(
+        Number(this._LoginService.getUserData().local.id)
+      );
+    }
+
+    if (this._LoginService.getUserData().id != 1) {
+      this.ProductoCrudForm.controls.local_id.disable();
+    }
   }
-  ngOnChanges(): void {
-    if (this.Producto) this.setFormValues();
-  }
+  ngOnChanges(): void {}
 
   getDataStorage() {
-    const USER_DATA = this._LoginService.userData();
-    this.LocalDataStorage = {
-      id: 1,
-      nombre: 'Sucursal 1',
-      estado: 1,
-    };
+    const USER_DATA = this._LoginService.getUserData();
+    this.LocalDataStorage = USER_DATA.local;
+    // this.ProductoCrudForm.patchValue({
+    //   local_id: this.LocalDataStorage.nombre,
+    // });
 
-    this.ProductoCrudForm.patchValue({
-      local_id: this.LocalDataStorage.nombre,
-    });
-
-    logger.log('USER_DATA', USER_DATA);
+    // logger.log('USER_DATA', USER_DATA);
   }
 
   getLocales() {
@@ -124,7 +129,7 @@ export class ProductoCrudFormComponent {
     if (this.ProductoCrudForm.valid) {
       const FORM_VALUE = {
         ...this.ProductoCrudForm.value,
-        local_id: this.LocalDataStorage.id,
+        // local_id: this.LocalDataStorage.id,
       };
 
       this.FormsValues.emit(FORM_VALUE);
