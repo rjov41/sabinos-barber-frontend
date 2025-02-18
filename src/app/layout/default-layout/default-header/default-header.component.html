@@ -159,6 +159,14 @@
         </a>
       </li> -->
       <li class="pointer">
+        <span cDropdownItem (click)="open()">
+          <svg cIcon class="me-2" name="cil-factory"></svg>
+          <c-badge color="info">
+            {{ UserDataSession.user.local.nombre }}</c-badge
+          >
+        </span>
+      </li>
+      <li class="pointer">
         <span cDropdownItem (click)="logout()">
           <svg cIcon class="me-2" name="cilAccountLogout"></svg>
           Cerrar sesión

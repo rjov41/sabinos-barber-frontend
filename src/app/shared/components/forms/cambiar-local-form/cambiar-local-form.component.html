@@ -1,0 +1,43 @@
+<form cForm [formGroup]="LocalChangeForm" class="form-Empleado-crud">
+  <c-row class="mb-4 flex-wrap justify-content-center">
+    <c-col [md]="6">
+      <div cFormFloating>
+        <select
+          cSelect
+          id="rolInput"
+          formControlName="local_id"
+          [ngClass]="{
+            'is-invalid':
+              getControl('local_id').invalid && getControl('local_id').touched,
+            'is-valid': getControl('local_id').valid
+          }"
+        >
+          <option value="0" hidden>Seleccione un local</option>
+          <option
+            *ngFor="let local of Locales; let i = index"
+            [ngValue]="local.id"
+          >
+            {{ local.nombre | titlecase }}
+          </option>
+        </select>
+        <label cLabel for="rolInput"
+          >Locales
+          <c-spinner size="sm" *ngIf="loadingLocales" />
+        </label>
+      </div>
+      <app-valid-messages-form
+        [errors]="getControlError('local_id')"
+        [messages]="LocalChangeErrorMessages['local_id']"
+      ></app-valid-messages-form>
+    </c-col>
+  </c-row>
+  <c-row class="mb-4">
+    <c-col class="text-center">
+      @if (Local) {
+      <button cButton color="info" (click)="sendValueFom()">Cambiar</button>
+      } @else {
+      <button cButton color="info" (click)="sendValueFom()">Agregar</button>
+      }
+    </c-col>
+  </c-row>
+</form>

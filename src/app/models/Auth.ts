@@ -1,3 +1,5 @@
+import { Local } from './Local.model';
+
 export interface UserAuth {
   userId: number;
   nombre: string;
@@ -11,6 +13,7 @@ export interface UserAuth {
   roleId: number;
   roleName: string;
   local_id: number;
+  local: Local;
 }
 
 export interface Auth {
