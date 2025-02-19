@@ -36,6 +36,7 @@ import { LocalesService } from '../../../../services/locales.service';
 import { Listado } from '../../../../models/Listados.model';
 import { Local } from '../../../../models/Local.model';
 import { LoginService } from '../../../../services/login.service';
+import { ROLE_DATA } from '../../../utils/constants/user-roles';
 
 @Component({
   selector: 'app-empleado-crud-form',
@@ -75,12 +76,12 @@ export class EmpleadoCrudFormComponent {
 
   constructor() {
     this.changeSesionStorage();
-    this.formInit();
+    // this.formInit();
   }
   ngOnInit(): void {
     this.getLocales();
 
-    if (this._LoginService.getUserData().id != 1) {
+    if (!this._LoginService.isAdmin()) {
       this.EmpleadoCrudForm.controls.local_id.disable();
     }
   }

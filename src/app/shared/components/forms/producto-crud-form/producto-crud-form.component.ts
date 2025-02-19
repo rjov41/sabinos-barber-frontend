@@ -35,6 +35,7 @@ import { LocalesService } from 'src/app/services/locales.service';
 import { Local } from 'src/app/models/Local.model';
 import { Subject, takeUntil } from 'rxjs';
 import { LoginService } from '../../../../services/login.service';
+import { ROLE_DATA } from '../../../utils/constants/user-roles';
 
 @Component({
   selector: 'app-producto-crud-form',
@@ -78,7 +79,7 @@ export class ProductoCrudFormComponent {
   ngOnInit(): void {
     this.getLocales();
 
-    if (this._LoginService.getUserData().id != 1) {
+    if (!this._LoginService.isAdmin()) {
       this.ProductoCrudForm.controls.local_id.disable();
     }
   }

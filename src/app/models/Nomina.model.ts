@@ -2,7 +2,7 @@ import { Empleado } from './Empleado.model';
 export interface Nomina {
   id?: number;
   empleado_id: number;
-  nombre: string;
+  descripcion: string;
   monto_facturado: number;
   adicional: boolean | number;
   porcentaje_adicional: number;

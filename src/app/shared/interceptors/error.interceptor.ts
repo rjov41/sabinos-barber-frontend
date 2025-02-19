@@ -1,5 +1,6 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import { tap } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { inject } from '@angular/core';
 import Swal from 'sweetalert2';
@@ -7,6 +8,7 @@ import { ColorModeService } from '@coreui/angular';
 import { environment } from '../../../environments/environment';
 import { LoginService } from '../../services/login.service';
 import { PedidoService } from '../../services/pedido.service';
+import logger from '../utils/logger';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
@@ -17,7 +19,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     tap({
       error: (error) => {
-        console.log(error);
+        logger.log(error);
 
         if (
           (error.status == 401 && error.error.message === 'Unauthorized') ||
@@ -36,7 +38,6 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
               title: 'Sesión expirada',
               text: 'Debe volver a iniciar sesión',
               icon: 'warning',
-              // allowEnterKey: false,
               focusConfirm: false,
             })
             .then((result) => {
@@ -44,10 +45,12 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
               _PedidoService.limpiarListado();
               router.navigate(['/login']);
             });
-
-          // router.navigate(['/login']);
         }
       },
+    }),
+    catchError((error) => {
+      // Reemitimos el error para que los `catchError` en los servicios o componentes puedan manejarlo
+      return throwError(() => error);
     })
   );
 };

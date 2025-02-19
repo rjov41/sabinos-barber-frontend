@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { delay, Subject, takeUntil, timer } from 'rxjs';
 import {
@@ -32,6 +32,7 @@ import Swal from 'sweetalert2';
 import { ColorModeService } from '@coreui/angular';
 import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
+import { LoginService } from '../../../services/login.service';
 
 @Component({
   selector: 'app-producto-list',
@@ -65,10 +66,12 @@ export class ProductoListComponent {
   private _ModalService = inject(ModalService);
   private _HelpersService = inject(HelpersService);
   readonly #ColorModeService = inject(ColorModeService);
+  readonly _LoginService = inject(LoginService);
 
   loaderTable: boolean = true;
   ParametrosURL: ParametersUrl = {
     allDates: false,
+    local_id: this._LoginService.getUserData().local.id,
     estado: 1,
     link: null,
     disablePaginate: '0',
@@ -78,7 +81,17 @@ export class ProductoListComponent {
   };
   ProductosList!: Listado<Producto>;
 
-  ngOnInit(): void {
+  constructor() {
+    effect((a) => {
+      this.eventChangeLocal();
+    });
+  }
+
+  ngOnInit(): void {}
+
+  eventChangeLocal() {
+    const USER_DATA = this._LoginService.getUserData();
+    this.ParametrosURL.local_id = USER_DATA.local.id;
     this.getProductos();
   }
 

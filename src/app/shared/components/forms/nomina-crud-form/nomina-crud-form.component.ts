@@ -1,4 +1,11 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import {
+  Component,
+  effect,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+} from '@angular/core';
 import {
   FormControl,
   ReactiveFormsModule,
@@ -38,6 +45,7 @@ import dayjs from 'dayjs';
 import { FacturasService } from '../../../../services/facturas.service';
 import { Factura } from '../../../../models/Factura.model';
 import { LoginService } from '../../../../services/login.service';
+import { ROLE_DATA } from '../../../utils/constants/user-roles';
 
 @Component({
   selector: 'app-nomina-crud-form',
@@ -75,7 +83,7 @@ export class NominaCrudFormComponent {
   #colorModeService = inject(ColorModeService);
   private _EmpleadosService = inject(EmpleadosService);
   private _FacturasService = inject(FacturasService);
-  // private _LocalesService = inject(LocalesService);
+  private _LocalesService = inject(LocalesService);
   private _LoginService = inject(LoginService);
 
   @Input() Nomina!: Nomina;
@@ -88,15 +96,40 @@ export class NominaCrudFormComponent {
 
   loadingFacturas: boolean = false;
 
+  constructor() {
+    this.changeSesionStorage();
+  }
+
   ngOnInit(): void {
     this.getEmpleados();
     this.changeTotalAndPorcentaje();
     this.changeEmpleado();
-    // this.getLocales();
+    this.getLocales();
+
+    if (!this._LoginService.isAdmin()) {
+      this.NominaCrudForm.controls.local_id.disable();
+    }
   }
 
-  ngOnChanges(): void {
-    if (this.Nomina) this.setFormValues();
+  // ngOnChanges(): void {
+  //   if (this.Nomina) this.setFormValues();
+  // }
+
+  changeSesionStorage() {
+    effect(() => {
+      this._LoginService.getUserData();
+      this.formInit();
+    });
+  }
+
+  formInit() {
+    if (this.Nomina) {
+      this.setFormValues();
+    } else {
+      this.NominaCrudForm.controls.local_id.patchValue(
+        Number(this._LoginService.getUserData().local.id)
+      );
+    }
   }
 
   getControlError(name: string): ValidationErrors | null {
@@ -167,7 +200,7 @@ export class NominaCrudFormComponent {
 
     this.NominaCrudForm.patchValue({
       empleado_id: this.Nomina.empleado_id,
-      nombre: this.Nomina.nombre,
+      descripcion: this.Nomina.descripcion,
       monto_facturado: this.Nomina.monto_facturado,
       adicional: this.Nomina.adicional == 1 ? true : false,
       porcentaje_adicional: this.Nomina.porcentaje_adicional,
@@ -221,12 +254,12 @@ export class NominaCrudFormComponent {
 
   sendValueFom() {
     if (this.NominaCrudForm.valid) {
-      const USER_DATA = this._LoginService.userData();
+      // const USER_DATA = this._LoginService.userData();
       const NOMINA = {
         ...this.NominaCrudForm.value,
         total: this.getControl('total').value,
         adicional: this.NominaCrudForm.value.adicional ? '1' : '0',
-        local_id: USER_DATA.user.local_id,
+        // local_id: USER_DATA.user.local_id,
       };
       logger.log(NOMINA);
 
@@ -245,22 +278,22 @@ export class NominaCrudFormComponent {
     }
   }
 
-  // getLocales() {
-  //   this.loadingLocales = true;
+  getLocales() {
+    this.loadingLocales = true;
 
-  //   this._LocalesService
-  //     .getLocales({
-  //       link: null,
-  //       disablePaginate: '1',
-  //     })
-  //     // .pipe(delay(3000))
-  //     // .pipe(takeUntil(this.destruir$))
-  //     .subscribe((data: Local[]) => {
-  //       this.loadingLocales = false;
-  //       this.Locales = [...data];
-  //       logger.log(data);
-  //     });
-  // }
+    this._LocalesService
+      .getLocales({
+        link: null,
+        disablePaginate: '1',
+      })
+      // .pipe(delay(3000))
+      // .pipe(takeUntil(this.destruir$))
+      .subscribe((data: Local[]) => {
+        this.loadingLocales = false;
+        this.Locales = [...data];
+        logger.log(data);
+      });
+  }
 
   handleDate(event: { endDate: dayjs.Dayjs; startDate: dayjs.Dayjs }) {
     logger.log('range', event);

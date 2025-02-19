@@ -8,7 +8,7 @@ import logger from 'src/app/shared/utils/logger';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
 // import { EmpleadoCrudFormComponent } from '../../../shared/components/forms/empleado-crud-form/empleado-crud-form.component';
-import { Subject, takeUntil } from 'rxjs';
+import { catchError, Subject, takeUntil, throwError } from 'rxjs';
 import { HelpersService } from '../../../services/helpers.service';
 import { NominaCrudFormComponent } from '../../../shared/components/forms/nomina-crud-form/nomina-crud-form.component';
 import { NominaService } from '../../../services/nomina.service';
@@ -16,6 +16,7 @@ import { Nomina } from '../../../models/Nomina.model';
 import { GastoCrudFormComponent } from '../../../shared/components/forms/gasto-crud-form/gasto-crud-form.component';
 import { GastoService } from '../../../services/gasto.service';
 import { Gasto } from '../../../models/Gasto.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-gasto-insertar',
@@ -43,7 +44,22 @@ export class GastoInsertarComponent {
 
     this._GastoService
       .createGasto(Gasto)
-      .pipe(takeUntil(this.destruir$))
+      .pipe(
+        takeUntil(this.destruir$),
+        catchError((error: HttpErrorResponse) => {
+          Swal.mixin({
+            customClass: {
+              container: this.#colorModeService.getStoredTheme(
+                environment.SabinosTheme
+              ),
+            },
+          }).fire({
+            text: 'Contraseña incorrecta',
+            icon: 'info',
+          });
+          return throwError(() => error);
+        })
+      )
       .subscribe((response) => {
         this.loader = false;
         logger.log(response);
@@ -55,7 +71,7 @@ export class GastoInsertarComponent {
           },
         })
           .fire({
-            text: 'Nomina agregada con éxito',
+            text: 'Gasto agregada con éxito',
             icon: 'success',
           })
           .then((result) => {

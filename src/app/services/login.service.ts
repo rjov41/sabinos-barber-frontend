@@ -5,6 +5,7 @@ import { HelpersService } from './helpers.service';
 import { LocalStorageService } from '@coreui/angular';
 import { Observable } from 'rxjs';
 import { Auth, UserAuth } from '../models/Auth';
+import { ROLE_DATA } from '../shared/utils/constants/user-roles';
 
 const URL = `${environment.apiUrl}`;
 
@@ -68,5 +69,13 @@ export class LoginService {
     }
 
     return this.UserDataStorage();
+  }
+
+  isAdmin(): boolean {
+    if (this.getUserData().role.name === ROLE_DATA.ADMIN.name) {
+      return true;
+    }
+
+    return false;
   }
 }

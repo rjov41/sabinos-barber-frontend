@@ -1,4 +1,5 @@
 import { Local } from './Local.model';
+import { Role } from './Role.model';
 
 export interface UserAuth {
   id: number;
@@ -14,6 +15,7 @@ export interface UserAuth {
   roleName: string;
   local_id: number;
   local: Local;
+  role: Role;
 }
 
 export interface Auth {

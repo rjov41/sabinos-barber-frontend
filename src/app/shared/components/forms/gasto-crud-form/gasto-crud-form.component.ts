@@ -1,6 +1,5 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import {
-  AbstractControl,
   FormArray,
   FormControl,
   FormGroup,
@@ -334,10 +333,10 @@ export class GastoCrudFormComponent {
         ...this.GastoCrudForm.getRawValue(),
         // ...this.GastoCrudForm.value,
         gastos: gastos,
-        //   empleado_id:
-        //     this.GastoCrudForm.value.empleado_id == 0
-        //       ? null
-        //       : this.GastoCrudForm.value.empleado_id,
+        empleado_id:
+          this.GastoCrudForm.value.empleado_id == 0
+            ? null
+            : this.GastoCrudForm.value.empleado_id,
       };
       this.FormsValues.emit(FORM_DATA);
     } else {

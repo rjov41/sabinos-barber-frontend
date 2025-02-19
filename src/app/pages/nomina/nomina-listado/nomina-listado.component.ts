@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import {
@@ -34,6 +34,7 @@ import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
 import { NominaService } from '../../../services/nomina.service';
 import { Nomina } from '../../../models/Nomina.model';
+import { LoginService } from '../../../services/login.service';
 
 @Component({
   selector: 'app-nomina-listado',
@@ -63,10 +64,11 @@ import { Nomina } from '../../../models/Nomina.model';
 export class NominaListadoComponent {
   private destruir$: Subject<void> = new Subject<void>();
 
+  readonly #ColorModeService = inject(ColorModeService);
   private _NominaService = inject(NominaService);
   private _ModalService = inject(ModalService);
   private _HelpersService = inject(HelpersService);
-  readonly #ColorModeService = inject(ColorModeService);
+  readonly _LoginService = inject(LoginService);
 
   loaderTable: boolean = true;
   ParametrosURL: ParametersUrl = {
@@ -81,7 +83,17 @@ export class NominaListadoComponent {
   };
   NominaList!: Listado<Nomina>;
 
-  ngOnInit(): void {
+  constructor() {
+    effect((a) => {
+      this.eventChangeLocal();
+    });
+  }
+
+  ngOnInit(): void {}
+
+  eventChangeLocal() {
+    const USER_DATA = this._LoginService.getUserData();
+    this.ParametrosURL.local_id = USER_DATA.local.id;
     this.getNominas();
   }
 

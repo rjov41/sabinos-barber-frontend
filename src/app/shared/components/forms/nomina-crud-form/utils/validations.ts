@@ -6,7 +6,7 @@ import {
 
 export const NominaCrudValidators: FormGroupValidators = {
   empleado_id: [Validators.required],
-  nombre: [Validators.required],
+  descripcion: [Validators.required],
   monto_facturado: [Validators.required],
   adicional: [Validators.required],
   porcentaje_adicional: [Validators.required],
@@ -19,8 +19,8 @@ export const NominaCrudErrorMessages: FormErrorMessages = {
     required: 'El Empleado es requerido',
     maxlength: 'Solo se permite 80 caracteres.',
   },
-  nombre: {
-    required: 'El nombre es requerido',
+  descripcion: {
+    required: 'La descripción es requerido',
     maxlength: 'Solo se permite 80 caracteres.',
   },
   monto_facturado: {
