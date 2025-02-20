@@ -8,6 +8,7 @@ export interface Producto {
   precio: number;
   local_id: number;
   local: Local;
+  ilimitado: number;
   linea?: string;
 
   estado?: number;
@@ -19,4 +20,5 @@ export interface ProductoPedido extends Producto {
   precioTotal: number;
   precioUnitario: number;
   cantidadPedido: number;
+  gratis: number;
 }

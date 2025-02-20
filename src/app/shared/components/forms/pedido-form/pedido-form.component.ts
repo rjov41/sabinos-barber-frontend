@@ -101,9 +101,11 @@ export class PedidoFormComponent {
     //   this.PedidoForm.controls.cantidad
     // );
 
-    this.PedidoForm.controls.cantidadPedido.addValidators([
-      Validators.max(this.Producto.cantidad),
-    ]);
+    if (!this.Producto.ilimitado) {
+      this.PedidoForm.controls.cantidadPedido.addValidators([
+        Validators.max(this.Producto.cantidad),
+      ]);
+    }
   }
 
   setFormValues() {
@@ -122,6 +124,7 @@ export class PedidoFormComponent {
         precioTotal: Number(this.PedidoForm.controls.precioTotal.value),
         precioUnitario: Number(this.PedidoForm.controls.precioUnitario.value),
         cantidadPedido: Number(this.PedidoForm.controls.cantidadPedido.value),
+        gratis: 0,
       };
       // logger.log('darda', PRODUT);
       this._PedidoService.agregarProducto(PRODUT);

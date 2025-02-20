@@ -124,7 +124,7 @@ export class ProductosPedidoComponent {
       const productoExistente = PRODUCTOS_CARRITO.find(
         (p) => p.id === producto.id
       ); // Buscar por ID
-      if (productoExistente) {
+      if (productoExistente && !producto.ilimitado) {
         return {
           ...producto,
           cantidad: producto.cantidad - productoExistente.cantidadPedido, // Restar la cantidad

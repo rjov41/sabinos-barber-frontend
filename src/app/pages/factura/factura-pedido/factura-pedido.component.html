@@ -147,16 +147,3 @@
     </c-container>
   </c-card-body>
 </c-card>
-
-<c-modal id="ListadoProductos">
-  <c-modal-header>
-    <h5 cModalTitle>Agregar producto a carrito</h5>
-    <button
-      (click)="modalStatusById('ListadoProductos', false)"
-      cButtonClose
-    ></button>
-  </c-modal-header>
-  <c-modal-body>
-    <app-pedido-form [Producto]="Producto" />
-  </c-modal-body>
-</c-modal>

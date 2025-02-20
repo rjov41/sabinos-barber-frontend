@@ -134,6 +134,7 @@ export class ProductoCrudFormComponent {
       descripcion: this.Producto.descripcion,
       local_id: this.Producto.local_id,
       precio: this.Producto.precio,
+      ilimitado: this.Producto.ilimitado == 1 ? true : false,
     });
   }
 
@@ -141,6 +142,7 @@ export class ProductoCrudFormComponent {
     if (this.ProductoCrudForm.valid) {
       const FORM_VALUE = {
         ...this.ProductoCrudForm.value,
+        ilimitado: this.ProductoCrudForm.value.ilimitado ? 1 : 0,
         // local_id: this.LocalDataStorage.id,
       };
 

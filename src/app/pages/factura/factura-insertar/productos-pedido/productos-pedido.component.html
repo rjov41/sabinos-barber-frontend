@@ -72,7 +72,11 @@
               <span>{{ producto.precio | currency : "ARS" : "symbol" }}</span>
             </td>
             <td>
+              @if(producto.ilimitado == 1){
+              <svg cIcon height="18" name="cilInfinity"></svg>
+              } @if(producto.ilimitado != 1){
               <span>{{ producto.cantidad }} unidades</span>
+              }
             </td>
             <td>
               <div class="d-flex flex-direction">

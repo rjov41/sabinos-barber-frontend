@@ -38,6 +38,9 @@
             <c-col class="text-center item precio">
               <span class="price">Precio T.</span>
             </c-col>
+            <c-col class="text-center item precio">
+              <span class="price">Gratis.</span>
+            </c-col>
             <c-col class="text-end item acciones">
               <div class="px-3"></div>
             </c-col>
@@ -64,6 +67,19 @@
               <span class="price">{{
                 producto.precioTotal | currency : "ARS"
               }}</span>
+            </c-col>
+            <c-col class="text-center item precio">
+              <c-form-check switch sizing="lg">
+                <input
+                  cFormCheckInput
+                  type="checkbox"
+                  value="{{ producto.gratis }}"
+                  id="ilimitadoId"
+                  class="pointer"
+                  (change)="changeStatusGratis(producto)"
+                />
+              </c-form-check>
+              <span class="price"></span>
             </c-col>
             <c-col class="text-end item acciones">
               <div class="px-3">

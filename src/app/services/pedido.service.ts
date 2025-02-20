@@ -66,6 +66,18 @@ export class PedidoService {
     this.setProductos(productos);
   }
 
+  editarDataProducto(producto: ProductoPedido): void {
+    const productos = this.getProductos();
+
+    const index = productos.findIndex(
+      (p) => p.id === producto.id && p.local_id === producto.local_id
+    );
+
+    productos[index] = producto;
+
+    this.setProductos(productos);
+  }
+
   /**
    * Obtener el listado de productos actuales.
    */

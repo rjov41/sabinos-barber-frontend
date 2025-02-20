@@ -178,6 +178,13 @@ export class FacturaInsertarComponent {
       });
   }
 
+  changeStatusGratis(producto: ProductoPedido) {
+    let productoStorage = { ...producto };
+    productoStorage.gratis = producto.gratis == 0 ? 1 : 0;
+
+    this._PedidoService.editarDataProducto(productoStorage);
+  }
+
   getEmpleados() {
     this.loadingEmpleados = true;
     this._EmpleadosService
