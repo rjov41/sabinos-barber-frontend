@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { NgScrollbar } from 'ngx-scrollbar';
 
 import { IconDirective } from '@coreui/icons-angular';
 import {
   ContainerComponent,
+  INavData,
   InputGroupComponent,
   ShadowOnScrollDirective,
   SidebarBrandComponent,
@@ -20,6 +21,7 @@ import { DefaultFooterComponent, DefaultHeaderComponent } from './';
 import { navItems } from './navs/_nav';
 import { navItemsProject } from './navs/_nav-project';
 import { environment } from '../../../environments/environment';
+import { LoginService } from '../../services/login.service';
 
 function isOverflown(element: HTMLElement) {
   return (
@@ -53,14 +55,36 @@ function isOverflown(element: HTMLElement) {
   ],
 })
 export class DefaultLayoutComponent {
-  public navItems = environment.production
-    ? [...navItemsProject]
-    : [...navItemsProject, ...navItems];
+  private _LoginService = inject(LoginService);
+
+  public navItems: INavData[] = [];
   // :  [...navItemsProject];
+
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    this.filterByRole();
+  }
 
   onScrollbarUpdate($event: any) {
     // if ($event.verticalUsed) {
     // console.log('verticalUsed', $event.verticalUsed);
     // }
+  }
+
+  filterByRole() {
+    // const roleUsuario = 'administrador';
+    const roleUsuario = this._LoginService.getUserData().role.name;
+    const SECCIONES = environment.production
+      ? [...navItemsProject]
+      : [...navItemsProject, ...navItems];
+
+    this.navItems = SECCIONES.filter((item) =>
+      this.tieneAcceso(roleUsuario, item)
+    );
+  }
+
+  tieneAcceso(roleUsuario: string, item: any): boolean {
+    return item.attributes?.roles?.includes(roleUsuario) ?? true;
   }
 }

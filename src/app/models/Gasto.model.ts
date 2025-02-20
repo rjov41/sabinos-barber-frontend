@@ -9,6 +9,7 @@ export interface Gasto {
 
   user_id: number;
   empleado_id: number;
+  total?: number;
   detalle_gasto_id: number;
 
   empleado?: Empleado;

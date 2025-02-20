@@ -5,21 +5,34 @@ export const navItemsProject: INavData[] = [
     name: 'Inicio',
     url: '/',
     iconComponent: { name: 'cil-home' },
+    attributes: {
+      roles: ['administrador'],
+      seccion: 'Inicio',
+    },
   },
   {
     name: 'Productos',
     url: '/productos',
     iconComponent: { name: 'cil-cut' },
+    attributes: {
+      roles: ['administrador'],
+    },
   },
   {
     name: 'Clientes',
     url: '/clientes',
     iconComponent: { name: 'cil-user' },
+    attributes: {
+      roles: ['administrador'],
+    },
   },
   {
     name: 'Locales',
     url: '/locales',
     iconComponent: { name: 'cil-factory' },
+    attributes: {
+      roles: ['administrador'],
+    },
   },
   // {
   //   name: 'Roles',
@@ -30,26 +43,41 @@ export const navItemsProject: INavData[] = [
     name: 'Usuarios',
     url: '/usuarios',
     iconComponent: { name: 'cil-user' },
+    attributes: {
+      roles: ['administrador'],
+    },
   },
   {
     name: 'Empleados',
     url: '/empleados',
     iconComponent: { name: 'cil-user' },
+    attributes: {
+      roles: ['administrador'],
+    },
   },
   {
     name: 'Facturas',
     url: '/facturas',
     iconComponent: { name: 'faFileInvoiceDollar' },
+    attributes: {
+      roles: ['administrador'],
+    },
   },
   {
     name: 'Nominas',
     url: '/nominas',
     iconComponent: { name: 'faPersonCircleCheck' },
+    attributes: {
+      roles: ['administrador'],
+    },
   },
   {
     name: 'Gastos',
     url: '/gastos',
     iconComponent: { name: 'faHandHoldingDollar' },
+    attributes: {
+      roles: ['administrador'],
+    },
   },
   {
     name: 'Ajustes',
@@ -66,14 +94,8 @@ export const navItemsProject: INavData[] = [
         icon: 'nav-icon-bullet',
       },
     ],
-  },
-  {
-    title: true,
-    name: 'Theme',
-  },
-  {
-    name: 'Colors',
-    url: '/theme/colors',
-    iconComponent: { name: 'cil-drop' },
+    attributes: {
+      roles: ['administrador'],
+    },
   },
 ];

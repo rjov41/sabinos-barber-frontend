@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { DefaultLayoutComponent } from './layout';
 import { loginGuard } from './guards/login.guard';
+import { RoleGuard } from './guards/role.guard';
 
 export const routes: Routes = [
   {
@@ -12,6 +13,7 @@ export const routes: Routes = [
     path: '',
     component: DefaultLayoutComponent,
     canActivate: [loginGuard],
+    canActivateChild: [RoleGuard],
     children: [
       {
         path: '',
@@ -32,5 +34,5 @@ export const routes: Routes = [
         (c) => c.Error404Component
       ),
   },
-  // { path: '**', redirectTo: '404' },
+  { path: '**', redirectTo: '404' },
 ];
