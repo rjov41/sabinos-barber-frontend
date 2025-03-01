@@ -6,7 +6,7 @@ export const navItemsProject: INavData[] = [
     url: '/',
     iconComponent: { name: 'cil-home' },
     attributes: {
-      roles: ['administrador'],
+      roles: ['administrador', 'encargado'],
       seccion: 'Inicio',
     },
   },
@@ -15,7 +15,7 @@ export const navItemsProject: INavData[] = [
     url: '/productos',
     iconComponent: { name: 'cil-cut' },
     attributes: {
-      roles: ['administrador'],
+      roles: ['administrador', 'encargado'],
     },
   },
   {
@@ -23,7 +23,7 @@ export const navItemsProject: INavData[] = [
     url: '/clientes',
     iconComponent: { name: 'cil-user' },
     attributes: {
-      roles: ['administrador'],
+      roles: ['administrador', 'encargado'],
     },
   },
   {
@@ -52,7 +52,7 @@ export const navItemsProject: INavData[] = [
     url: '/empleados',
     iconComponent: { name: 'cil-user' },
     attributes: {
-      roles: ['administrador'],
+      roles: ['administrador', 'encargado'],
     },
   },
   {
@@ -60,7 +60,7 @@ export const navItemsProject: INavData[] = [
     url: '/facturas',
     iconComponent: { name: 'faFileInvoiceDollar' },
     attributes: {
-      roles: ['administrador'],
+      roles: ['administrador', 'encargado'],
     },
   },
   {
@@ -76,7 +76,7 @@ export const navItemsProject: INavData[] = [
     url: '/gastos',
     iconComponent: { name: 'faHandHoldingDollar' },
     attributes: {
-      roles: ['administrador'],
+      roles: ['administrador', 'encargado'],
     },
   },
   {
