@@ -2,6 +2,7 @@ import { Cliente } from './Cliente.model';
 import { Empleado } from './Empleado.model';
 import { MetodoPago } from './MetodoPago.model';
 import { Producto } from './Producto.model';
+import { Usuario } from './Usuario.model';
 
 export interface Factura {
   id?: number;
@@ -17,6 +18,7 @@ export interface Factura {
 
   cliente?: Cliente;
   empleado?: Empleado;
+  user?: Usuario;
   metodo_pago?: MetodoPago;
   factura_detalle?: FacturaDetalle[];
 
@@ -33,8 +35,9 @@ interface FacturaDetalle {
   cantidad: number;
   estado: number;
   cobrar: number;
-  created_at: string;
-  updated_at: string;
+  gratis?: number;
+  created_at?: string;
+  updated_at?: string;
 
   producto?: Producto;
 }

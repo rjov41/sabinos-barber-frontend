@@ -18,10 +18,16 @@
             <p class="my-1">
               <strong>Descripción:</strong> {{ Factura.descripcion }}
             </p>
+            <p class="my-1">
+              <strong>Empleado:</strong> {{ Factura.empleado?.nombre_completo }}
+            </p>
           </div>
           <div class="col-md-6 text-md-end">
             <h5><strong>Factura</strong></h5>
             <p class="my-1"><strong>ID:</strong> #{{ Factura.id }}</p>
+            <p class="my-1">
+              <strong>Usuario:</strong> #{{ Factura.user?.nombre_completo }}
+            </p>
             <p class="my-1">
               <strong>Fecha:</strong>
               {{ Factura.created_at | date : "dd-MM-yyyy" }}
@@ -48,17 +54,25 @@
                 <th class="bg-body-tertiary">#</th>
                 <th class="bg-body-tertiary">Descripción</th>
                 <th class="bg-body-tertiary">Cantidad</th>
-                <th class="bg-body-tertiary">Precio</th>
+                <th class="bg-body-tertiary">Gratis</th>
+                <th class="bg-body-tertiary">Precio unidad</th>
+                <th class="bg-body-tertiary">Precio Total</th>
               </tr>
             </thead>
             <tbody>
-              @for (Fac of Factura.factura_detalle; track Fac.id; let i =
-              $index) {
+              @for (FacDetalle of Factura.factura_detalle; track FacDetalle.id;
+              let i = $index) {
               <tr>
-                <td>{{ Fac.producto?.id }}</td>
-                <td>{{ Fac.producto?.descripcion }}</td>
-                <td>{{ Fac.cantidad }} u.</td>
-                <td>{{ Fac.precio | currency : "ARS" }}</td>
+                <td>{{ FacDetalle.producto?.id }}</td>
+                <td>{{ FacDetalle.producto?.descripcion }}</td>
+                <td>{{ FacDetalle.cantidad }}</td>
+                <td>{{ FacDetalle?.gratis == 1 ? "Si" : "No" }}</td>
+                <td>{{ FacDetalle.precio | currency : "ARS" }}</td>
+                <td>
+                  {{
+                    FacDetalle.precio * FacDetalle.cantidad | currency : "ARS"
+                  }}
+                </td>
               </tr>
               }
             </tbody>

@@ -74,6 +74,7 @@ export class FacturaDetalleComponent {
     disablePaginate: '0',
     cliente_model: '1',
     empleado_model: '1',
+    user_model: '1',
     factura_detalle_model: '1',
     metodo_pago_model: '1',
     fecha_inicio: dayjs().startOf('month').format('YYYY-MM-DD'),

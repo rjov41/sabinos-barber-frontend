@@ -19,7 +19,9 @@ export const NominaCrudFormBuilder = () =>
       ...NominaCrudValidators['monto_facturado'],
     ]),
     adicional: new FormControl(false, [...NominaCrudValidators['adicional']]),
-    local_id: new FormControl(0, [...NominaCrudValidators['local_id']]),
+    local_id: new FormControl({ value: 0, disabled: true }, [
+      ...NominaCrudValidators['local_id'],
+    ]),
     porcentaje_adicional: new FormControl(0, [
       ...NominaCrudValidators['porcentaje_adicional'],
     ]),

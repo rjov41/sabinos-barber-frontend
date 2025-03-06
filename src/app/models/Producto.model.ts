@@ -21,4 +21,5 @@ export interface ProductoPedido extends Producto {
   precioUnitario: number;
   cantidadPedido: number;
   gratis: number;
+  idTemp: number;
 }

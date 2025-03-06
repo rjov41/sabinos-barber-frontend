@@ -162,7 +162,6 @@
                   cFormControl
                   id="producto_id_{{ i }}"
                   formControlName="producto_id"
-                  placeholder=""
                   type="text"
                   [ngbTypeahead]="searchClient"
                   [resultTemplate]="CLientTypeaHead"
@@ -170,7 +169,7 @@
                   (selectItem)="eventInputTypeHead($event, i)"
                 />
                 <label cLabel for="producto_id_{{ i }}"
-                  >Producto ID <c-spinner size="sm" *ngIf="LoadingSearchClient"
+                  >Nombre <c-spinner size="sm" *ngIf="LoadingSearchClient"
                 /></label>
               </div>
               <app-valid-messages-form

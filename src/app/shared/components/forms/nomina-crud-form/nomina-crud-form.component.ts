@@ -256,7 +256,8 @@ export class NominaCrudFormComponent {
     if (this.NominaCrudForm.valid) {
       // const USER_DATA = this._LoginService.userData();
       const NOMINA = {
-        ...this.NominaCrudForm.value,
+        // ...this.NominaCrudForm.value,
+        ...this.NominaCrudForm.getRawValue(),
         total: this.getControl('total').value,
         adicional: this.NominaCrudForm.value.adicional ? '1' : '0',
         // local_id: USER_DATA.user.local_id,

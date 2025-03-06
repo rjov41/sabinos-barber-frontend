@@ -49,7 +49,7 @@ export class TipoGastoEditarComponent {
   FormsValues(TipoGasto: TipoGasto) {
     logger.log(TipoGasto);
     this._HelpersService.loaderSweetAlert({
-      title: 'Actualizando nomina',
+      title: 'Actualizando tipo de gasto',
       text: 'Esto puede demorar un momento.',
     });
 
@@ -70,7 +70,7 @@ export class TipoGastoEditarComponent {
           },
         })
           .fire({
-            text: 'Método de pago modificado con éxito',
+            text: 'Tipo de pago modificado con éxito',
             icon: 'success',
           })
           .then((result) => {

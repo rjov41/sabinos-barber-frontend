@@ -3,31 +3,61 @@
   border: none;
 }
 
-::ng-deep [data-coreui-theme="dark"] .daterangepicker {
-  thead th,
-  .week-days th {
-    color: #fff !important;
-  }
+::ng-deep {
+  [data-coreui-theme="dark"] {
+    .daterangepicker {
+      thead th,
+      .week-days th {
+        color: #fff !important;
+      }
 
-  th.available:hover,
-  td.available:hover {
-    color: #212631;
-  }
+      th.available:hover,
+      td.available:hover {
+        color: #212631;
+      }
 
-  td {
-    &.in-range {
-      background-color: #5b5b5b !important;
-      color: #cfcece !important;
+      td {
+        &.in-range {
+          background-color: #5b5b5b !important;
+          color: #cfcece !important;
+        }
+
+        &.off {
+          background-color: #31323b !important;
+          color: #837e7e !important;
+        }
+
+        &.end-date {
+          background-color: #08c !important;
+          color: #fff !important;
+        }
+      }
     }
 
-    &.off {
-      background-color: #31323b !important;
-      color: #837e7e !important;
+    .calendar {
+      .month {
+        .dropdowns {
+          .monthselect {
+            background-color: #212631;
+          }
+          .yearselect {
+            background-color: #212631;
+          }
+        }
+      }
     }
+  }
+  .calendar {
+    .month {
+      .dropdowns {
+        &:first-child {
+          margin-right: 10px !important;
+        }
 
-    &.end-date {
-      background-color: #08c !important;
-      color: #fff !important;
+        display: inline-block;
+        width: auto !important;
+        padding-right: 13px !important;
+      }
     }
   }
 }

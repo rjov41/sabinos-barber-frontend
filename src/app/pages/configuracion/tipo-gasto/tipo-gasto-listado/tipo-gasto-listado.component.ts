@@ -87,10 +87,10 @@ export class TipoGastoListadoComponent {
   TipoGastoList!: Listado<TipoGasto>;
 
   ngOnInit(): void {
-    this.getNominas();
+    this.getTiposGastos();
   }
 
-  getNominas() {
+  getTiposGastos() {
     this.loaderTable = true;
 
     this._TipoGastoService
@@ -110,7 +110,7 @@ export class TipoGastoListadoComponent {
 
     this.ParametrosURL.link = link.url;
 
-    this.getNominas();
+    this.getTiposGastos();
   }
 
   modalStatusById(id: string, show: boolean) {
@@ -133,11 +133,11 @@ export class TipoGastoListadoComponent {
     logger.log('this.ParametrosURL', this.ParametrosURL);
     logger.log('this.ParametrosURL', this.ParametrosURL);
 
-    this.getNominas();
+    this.getTiposGastos();
   }
 
   buscar() {
-    this.getNominas();
+    this.getTiposGastos();
   }
 
   eliminar(tipoGasto: TipoGasto) {

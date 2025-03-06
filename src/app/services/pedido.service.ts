@@ -48,20 +48,20 @@ export class PedidoService {
   agregarProducto(producto: ProductoPedido): void {
     const productos = this.getProductos();
 
-    const index = productos.findIndex(
-      (p) => p.id === producto.id && p.local_id === producto.local_id
-    );
+    // const index = productos.findIndex(
+    //   (p) => p.id === producto.id && p.local_id === producto.local_id
+    // );
 
-    if (index !== -1) {
-      // Producto ya existe, actualizamos la cantidad y el precio
-      productos[index].cantidadPedido += producto.cantidadPedido;
-      productos[index].precioUnitario = producto.precioUnitario;
-      productos[index].precioTotal =
-        productos[index].cantidadPedido * productos[index].precio;
-    } else {
-      // Producto nuevo, lo agregamos al listado
-      productos.push(producto);
-    }
+    // if (index !== -1) {
+    //   // Producto ya existe, actualizamos la cantidad y el precio
+    //   productos[index].cantidadPedido += producto.cantidadPedido;
+    //   productos[index].precioUnitario = producto.precioUnitario;
+    //   productos[index].precioTotal =
+    //     productos[index].cantidadPedido * productos[index].precio;
+    // } else {
+    //   // Producto nuevo, lo agregamos al listado
+    productos.push(producto);
+    // }
 
     this.setProductos(productos);
   }
@@ -70,7 +70,7 @@ export class PedidoService {
     const productos = this.getProductos();
 
     const index = productos.findIndex(
-      (p) => p.id === producto.id && p.local_id === producto.local_id
+      (p) => p.idTemp === producto.idTemp && p.local_id === producto.local_id
     );
 
     productos[index] = producto;
@@ -98,7 +98,9 @@ export class PedidoService {
    */
   eliminarProductoPorId(id: number): void {
     const productos = this.getProductos();
-    const nuevosProductos = productos.filter((producto) => producto.id !== id);
+    const nuevosProductos = productos.filter(
+      (producto) => producto.idTemp !== id
+    );
     this.setProductos(nuevosProductos);
   }
 }

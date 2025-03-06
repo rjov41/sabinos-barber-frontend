@@ -31,6 +31,11 @@ export class MetodoPagoInsertarComponent {
 
   loader: boolean = true;
 
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    // this._Router.navigateByUrl(`/ajustes/metodo-pago/editar/6`);
+  }
   FormsValues(MetodoPago: MetodoPago) {
     logger.log(MetodoPago);
     this._HelpersService.loaderSweetAlert({
@@ -57,7 +62,7 @@ export class MetodoPagoInsertarComponent {
           })
           .then((result) => {
             this._Router.navigateByUrl(
-              `/metodo_pago/editar/${response.data.id}`
+              `/ajustes/metodo-pago/editar/${response.id}`
             );
           });
       });

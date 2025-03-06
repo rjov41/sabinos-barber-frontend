@@ -27,6 +27,7 @@ import { PedidoService } from '../../../../services/pedido.service';
 import { Producto, ProductoPedido } from 'src/app/models/Producto.model';
 import { Subject, takeUntil } from 'rxjs';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { HelpersService } from '../../../../services/helpers.service';
 
 @Component({
   selector: 'app-pedido-form',
@@ -56,6 +57,7 @@ export class PedidoFormComponent {
   _PedidoService = inject(PedidoService);
   _ModalService = inject(ModalService);
   _ModalServiceNgB = inject(NgbModal);
+  _HelpersService = inject(HelpersService);
 
   @Input() Producto!: Producto;
 
@@ -125,6 +127,7 @@ export class PedidoFormComponent {
         precioUnitario: Number(this.PedidoForm.controls.precioUnitario.value),
         cantidadPedido: Number(this.PedidoForm.controls.cantidadPedido.value),
         gratis: 0,
+        idTemp: this._HelpersService.idAleatorio(),
       };
       // logger.log('darda', PRODUT);
       this._PedidoService.agregarProducto(PRODUT);

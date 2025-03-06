@@ -13,5 +13,7 @@ export const EmpleadoCrudFormBuilder = () =>
       ...EmpleadoCrudValidators['nombre_completo'],
     ]),
     dni: new FormControl('', [...EmpleadoCrudValidators['dni']]),
-    local_id: new FormControl('', [...EmpleadoCrudValidators['local_id']]),
+    local_id: new FormControl({ value: '', disabled: true }, [
+      ...EmpleadoCrudValidators['local_id'],
+    ]),
   });

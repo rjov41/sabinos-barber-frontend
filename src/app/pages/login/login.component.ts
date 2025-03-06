@@ -27,7 +27,7 @@ import { LoginService } from '../../services/login.service';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
 import { Auth } from '../../models/Auth';
-import { delay, Subject, takeUntil, tap } from 'rxjs';
+import { catchError, delay, Subject, takeUntil, tap, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -76,12 +76,18 @@ export class LoginComponent {
       //   }),
       //   delay(30000)
       // )
-      .pipe(takeUntil(this.destruir$))
+      .pipe(
+        takeUntil(this.destruir$),
+        catchError((error: any) => {
+          this.loadingFormLogin = false;
+          return throwError(() => error);
+        })
+      )
       .subscribe((data) => {
-        this.loadingFormLogin = false;
         let Auth: Auth = { ...data };
 
         this._LoginService.setAuth(Auth);
+        // this.loadingFormLogin = false;
 
         // this._RememberFiltersService.deleteAllFilterStorage();
 

@@ -17,7 +17,14 @@ import {
   NgbModalRef,
   NgbTypeaheadModule,
 } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subject, OperatorFunction, of, interval } from 'rxjs';
+import {
+  Observable,
+  Subject,
+  OperatorFunction,
+  of,
+  interval,
+  throwError,
+} from 'rxjs';
 import {
   catchError,
   debounceTime,
@@ -227,7 +234,7 @@ export class FacturaInsertarComponent {
     this.changeDescuento(this.DescuentoModel);
   }
 
-  eliminarProductoCarrito(producto: Producto) {
+  eliminarProductoCarrito(producto: ProductoPedido) {
     // this.loadingProductos = true;
 
     Swal.mixin({
@@ -259,7 +266,7 @@ export class FacturaInsertarComponent {
             icon: 'success',
           })
           .then((result) => {
-            this._PedidoService.eliminarProductoPorId(Number(producto.id));
+            this._PedidoService.eliminarProductoPorId(Number(producto.idTemp));
             this.getProductos();
           });
       });
@@ -349,22 +356,33 @@ export class FacturaInsertarComponent {
         text: 'Esto puede demorar un momento.',
       });
 
-      this._FacturasService.createFactura(factura).subscribe((data) => {
-        logger.log('data', data);
+      this._FacturasService
+        .createFactura(factura)
+        .pipe(
+          catchError((error) => {
+            this._HelpersService.handleErrorApiCrud(
+              error,
+              'No se pudo crear la factura.'
+            );
+            return throwError(() => error);
+          })
+        )
+        .subscribe((data) => {
+          logger.log('data', data);
 
-        Swal.mixin({
-          customClass: {
-            container: this.#colorModeService.getStoredTheme(
-              environment.SabinosTheme
-            ),
-          },
-        }).fire({
-          text: 'Factura creada correctamente',
-          icon: 'success',
+          Swal.mixin({
+            customClass: {
+              container: this.#colorModeService.getStoredTheme(
+                environment.SabinosTheme
+              ),
+            },
+          }).fire({
+            text: 'Factura creada correctamente',
+            icon: 'success',
+          });
+
+          this.resetForm();
         });
-
-        this.resetForm();
-      });
     }
     logger.log('validarFactura', this.validarFactura());
   }

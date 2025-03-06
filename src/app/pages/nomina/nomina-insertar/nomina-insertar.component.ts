@@ -55,7 +55,7 @@ export class NominaInsertarComponent {
             icon: 'success',
           })
           .then((result) => {
-            this._Router.navigateByUrl(`/nominas/editar/${response.data.id}`);
+            this._Router.navigateByUrl(`/nominas/editar/${response.id}`);
           });
       });
   }

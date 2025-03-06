@@ -70,8 +70,8 @@ export class LoginFormComponent {
 
   login() {
     if (this.LoginForm.valid) {
-      this.loadingFormLogin = true;
       this.LoginFormValues.emit(this.LoginForm.value);
+      // this.loadingFormLogin = true;
     } else {
       Swal.mixin({
         customClass: {

@@ -45,7 +45,7 @@
               <div class="px-3"></div>
             </c-col>
           </c-row>
-          @for (producto of Productos; track producto.id; let i = $index) {
+          @for (producto of Productos; track producto.idTemp; let i = $index) {
           <c-row class="mb-4 border-bottom align-items-center">
             <c-col class="pt-2 pb-3 item detalles" md="4">
               <p class="text-muted mb-1 marca">{{ producto.marca }}</p>

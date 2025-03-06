@@ -73,8 +73,8 @@
                 <th class="bg-body-tertiary">#</th>
                 <th class="bg-body-tertiary">Usuario</th>
                 <th class="bg-body-tertiary">Empleado</th>
-                <!-- <th class="bg-body-tertiary">Monto</th>
-                <th class="bg-body-tertiary">Adicional</th>
+                <th class="bg-body-tertiary">Monto</th>
+                <!-- <th class="bg-body-tertiary">Adicional</th>
                 <th class="bg-body-tertiary">Porcentaje</th>
                 <th class="bg-body-tertiary">Total</th>  -->
                 <th class="bg-body-tertiary"></th>
@@ -95,11 +95,9 @@
                 <td>
                   <span>{{ gasto.empleado?.nombre_completo }}</span>
                 </td>
-                <!-- <td>
-                  <span>{{
-                    gasto. | currency : "ARS" : "symbol"
-                  }}</span>
-                </td> -->
+                <td>
+                  <span>{{ gasto.total | currency : "ARS" }}</span>
+                </td>
                 <!-- <td>
                   <span>{{ gasto.adicional }}</span>
                 </td>

@@ -1,4 +1,5 @@
 import { inject, Injectable } from '@angular/core';
+import { v4 as uuidv4 } from 'uuid';
 import {
   HttpErrorResponse,
   HttpHeaders,
@@ -90,6 +91,12 @@ export class HelpersService {
         Swal.showLoading();
       },
     });
+  }
+
+  idAleatorio() {
+    const timestamp = Date.now().toString(); // Fecha en milisegundos
+    const uuid = uuidv4().replace(/\D/g, ''); // Genera UUID y elimina caracteres no numéricos
+    return Number(timestamp + uuid.substring(0, 6)); // Toma los primeros 6 números del UUID
   }
 
   handleErrorApiCrud(

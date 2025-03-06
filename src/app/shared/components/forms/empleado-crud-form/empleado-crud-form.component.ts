@@ -150,7 +150,7 @@ export class EmpleadoCrudFormComponent {
   sendValueFom() {
     if (this.EmpleadoCrudForm.valid) {
       const FORM_VALUE = {
-        ...this.EmpleadoCrudForm.value,
+        ...this.EmpleadoCrudForm.getRawValue(),
         // local_id: this.LocalDataStorage.id,
       };
 
