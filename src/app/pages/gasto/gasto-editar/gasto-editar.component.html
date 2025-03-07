@@ -15,7 +15,7 @@
             </p>
           </div>
           <div class="col-md-6 text-md-end">
-            <h5><strong>Nomina</strong></h5>
+            <h5><strong>Gasto</strong></h5>
             <p class="my-1"><strong>ID:</strong> #{{ Gasto.id }}</p>
             <p class="my-1">
               <strong>Fecha:</strong>
@@ -42,7 +42,7 @@
               <tr>
                 <th class="bg-body-tertiary">#</th>
                 <th class="bg-body-tertiary">Descripción</th>
-                <th class="bg-body-tertiary">Linea</th>
+                <!-- <th class="bg-body-tertiary">Linea</th> -->
                 <th class="bg-body-tertiary">Subtotal</th>
                 <th class="bg-body-tertiary">Cantidad</th>
                 <th class="bg-body-tertiary">Total</th>
@@ -52,13 +52,26 @@
               @for (gast of Gasto.gasto_detalle; track gast.id; let i = $index)
               {
               <tr>
-                <td>{{ gast.producto?.id }}</td>
+                @if( gast.tipo_gasto?.descripcion == 'Producto' ) {
+
+                <td>{{ i + 1 }}</td>
                 <td>{{ gast.producto?.descripcion }}</td>
-                <td>{{ gast.producto?.linea }} u.</td>
+                <!-- <td>{{ gast.producto?.linea }} u.</td> -->
                 <td>{{ gast.precio_unitario | currency : "ARS" }}</td>
                 <td>{{ gast.cantidad }} u.</td>
                 <td>{{ gast.precio | currency : "ARS" }}</td>
+
+                }@else{
+
+                <td>{{ i + 1 }}</td>
+                <td>{{ gast.tipo_gasto?.descripcion }}</td>
+                <!-- <td>{{ gast.producto?.linea }} u.</td> -->
+                <td>-</td>
+                <td>-</td>
+                <td>{{ gast.precio | currency : "ARS" }}</td>
+                }
               </tr>
+
               }
             </tbody>
           </table>

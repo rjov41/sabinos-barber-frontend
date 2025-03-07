@@ -67,12 +67,20 @@
                 <td>{{ FacDetalle.producto?.descripcion }}</td>
                 <td>{{ FacDetalle.cantidad }}</td>
                 <td>{{ FacDetalle?.gratis == 1 ? "Si" : "No" }}</td>
+                @if(FacDetalle?.gratis == 1){
+                <td>-</td>
+                }@else{
+
                 <td>{{ FacDetalle.precio | currency : "ARS" }}</td>
+                } @if(FacDetalle?.gratis == 1){
+                <td>-</td>
+                }@else{
                 <td>
                   {{
                     FacDetalle.precio * FacDetalle.cantidad | currency : "ARS"
                   }}
                 </td>
+                }
               </tr>
               }
             </tbody>

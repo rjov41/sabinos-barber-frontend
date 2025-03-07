@@ -18,6 +18,8 @@ export const ProductoCrudFormBuilder = () =>
     ]),
     cantidad: new FormControl(null, [...ProductoCrudValidators['cantidad']]),
     precio: new FormControl(null, [...ProductoCrudValidators['precio']]),
-    local_id: new FormControl('0', [...ProductoCrudValidators['local_id']]),
+    local_id: new FormControl({ value: '0', disabled: true }, [
+      ...ProductoCrudValidators['local_id'],
+    ]),
     ilimitado: new FormControl(false, [...ProductoCrudValidators['ilimitado']]),
   });

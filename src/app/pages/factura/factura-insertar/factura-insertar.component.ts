@@ -55,6 +55,7 @@ import { FacturasService } from '../../../services/facturas.service';
 import { Factura } from '../../../models/Factura.model';
 import { DirectivesModule } from '../../../shared/directivas/directives.module';
 import { HelpersService } from '../../../services/helpers.service';
+import { LoginService } from '../../../services/login.service';
 
 @Component({
   selector: 'app-factura-insertar',
@@ -103,6 +104,7 @@ export class FacturaInsertarComponent {
   public _MetodoPagoService = inject(MetodoPagoService);
   public _FacturasService = inject(FacturasService);
   public _HelpersService = inject(HelpersService);
+  public _LoginService = inject(LoginService);
 
   modalRef!: NgbModalRef;
 
@@ -186,10 +188,12 @@ export class FacturaInsertarComponent {
   }
 
   changeStatusGratis(producto: ProductoPedido) {
+    logger.log('producto', producto);
     let productoStorage = { ...producto };
     productoStorage.gratis = producto.gratis == 0 ? 1 : 0;
 
     this._PedidoService.editarDataProducto(productoStorage);
+    this.getProductos();
   }
 
   getEmpleados() {
@@ -199,6 +203,7 @@ export class FacturaInsertarComponent {
         estado: 1,
         disablePaginate: '1',
         link: null,
+        local_id: this._LoginService.getUserData().local.id,
       })
       // .pipe(delay(3000))
       .pipe(takeUntil(this.destruir$))
@@ -227,7 +232,12 @@ export class FacturaInsertarComponent {
   getProductos() {
     // this.loadingProductos = true;
     this.Productos = this._PedidoService.obtenerListado();
+    logger.log('this.Productos', this.Productos);
     this.PrecioTotal = this.Productos.reduce((prod_anterior, prod_actual) => {
+      if (prod_actual.gratis == 1) {
+        return prod_anterior;
+      }
+
       return prod_anterior + prod_actual.precioTotal;
     }, 0);
 

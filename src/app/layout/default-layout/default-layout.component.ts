@@ -75,9 +75,12 @@ export class DefaultLayoutComponent {
   filterByRole() {
     // const roleUsuario = 'administrador';
     const roleUsuario = this._LoginService.getUserData().role.name;
+    // const SECCIONES = environment.production
+    //   ? [...navItemsProject]
+    //   : [...navItemsProject, ...navItems];
     const SECCIONES = environment.production
       ? [...navItemsProject]
-      : [...navItemsProject, ...navItems];
+      : [...navItemsProject];
 
     this.navItems = SECCIONES.filter((item) =>
       this.tieneAcceso(roleUsuario, item)

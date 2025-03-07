@@ -73,7 +73,8 @@
                 <input
                   cFormCheckInput
                   type="checkbox"
-                  value="{{ producto.gratis }}"
+                  value="{{ producto.gratis == 1 ? 1 : 0 }}"
+                  [checked]="producto.gratis == 1 ? true : false"
                   id="ilimitadoId"
                   class="pointer"
                   (change)="changeStatusGratis(producto)"
