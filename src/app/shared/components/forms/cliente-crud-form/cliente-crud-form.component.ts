@@ -120,7 +120,7 @@ export class ClienteCrudFormComponent {
 
   sendValueFom() {
     if (this.ClienteCrudForm.valid) {
-      this.FormsValues.emit(this.ClienteCrudForm.value);
+      this.FormsValues.emit(this.ClienteCrudForm.getRawValue());
     } else {
       Swal.mixin({
         customClass: {
