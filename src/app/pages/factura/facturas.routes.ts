@@ -33,8 +33,8 @@ export const routes: Routes = [
       {
         path: 'insertar',
         loadComponent: () =>
-          import('./factura-insertar/factura-insertar.component').then(
-            (m) => m.FacturaInsertarComponent
+          import('./factura-insertar2/factura-insertar2.component').then(
+            (m) => m.FacturaInsertar2Component
           ),
         data: {
           title: 'Agregar',

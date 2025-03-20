@@ -1,0 +1,313 @@
+<div cForm [formGroup]="PedidoCrudForm" class="form-Pedido-crud border p-4">
+  <c-row class="mb-4 flex-wrap">
+    <c-col [md]="4">
+      <div cFormFloating class="mb-3">
+        <!-- <input
+          cFormControl
+          id="clienteInput"
+          placeholder="cliente_id"
+          type="text"
+          formControlName="cliente_id"
+          [ngClass]="{
+            'is-invalid':
+              getControl('cliente_id').invalid &&
+              getControl('cliente_id').touched,
+            'is-valid': getControl('cliente_id').valid
+          }"
+          appOnlyAlphanumeric
+        />
+        <div class="">
+          <label cLabel for="clienteInput" class="mb-3"
+            >Cliente
+            <c-spinner size="sm" *ngIf="LoadingSearchClient" />
+          </label> -->
+        <input
+          cFormControl
+          id="clienteInput"
+          placeholder="cliente_id"
+          type="text"
+          formControlName="cliente_id"
+          type="text"
+          [ngClass]="{
+            'is-invalid':
+              getControl('cliente_id').invalid &&
+              getControl('cliente_id').touched,
+            'is-valid': getControl('cliente_id').valid
+          }"
+          appOnlyAlphanumeric
+          [ngbTypeahead]="searchClient"
+          [resultTemplate]="CLientTypeaHead"
+          [inputFormatter]="formatterValue"
+          (selectItem)="eventInputTypeHead($event)"
+        />
+        <!-- </div> -->
+        <label cLabel for="clienteInput">Cliente</label>
+        <app-valid-messages-form
+          [errors]="getControlError('cliente_id')"
+          [messages]="PedidoCrudErrorMessages['cliente_id']"
+        ></app-valid-messages-form>
+        <ng-template
+          #CLientTypeaHead
+          let-resultado="result"
+          let-resaltado="term"
+        >
+          <ngb-highlight
+            [result]="resultado.id"
+            [term]="resaltado.id"
+          ></ngb-highlight>
+          -
+          <ngb-highlight
+            [result]="resultado.nombre"
+            [term]="resaltado.nombre"
+          ></ngb-highlight>
+          &nbsp;
+          <ngb-highlight
+            [result]="resultado.apellido"
+            [term]="resaltado.apellido"
+          ></ngb-highlight>
+        </ng-template>
+      </div>
+    </c-col>
+    <c-col [md]="4">
+      <div cFormFloating>
+        <select
+          cSelect
+          id="rolInput"
+          formControlName="servicio_id"
+          [ngClass]="{
+            'is-invalid':
+              getControl('servicio_id').invalid &&
+              getControl('servicio_id').touched,
+            'is-valid': getControl('servicio_id').valid
+          }"
+        >
+          <option value="null" hidden>Seleccione un servicio</option>
+          <option
+            *ngFor="let local of Locales; let i = index"
+            [ngValue]="local.id"
+          >
+            {{ local.nombre | titlecase }}
+          </option>
+        </select>
+        <label cLabel for="rolInput"
+          >Servicio
+          <c-spinner size="sm" *ngIf="loadingLocales" />
+        </label>
+      </div>
+      <app-valid-messages-form
+        [errors]="getControlError('servicio_id')"
+        [messages]="PedidoCrudErrorMessages['servicio_id']"
+      ></app-valid-messages-form>
+    </c-col>
+    <c-col [md]="4">
+      <div cFormFloating>
+        <select
+          cSelect
+          id="metodoInput"
+          formControlName="metodo_pago_id"
+          [ngClass]="{
+            'is-invalid':
+              getControl('metodo_pago_id').invalid &&
+              getControl('metodo_pago_id').touched,
+            'is-valid': getControl('metodo_pago_id').valid
+          }"
+        >
+          <option hidden value="null">Seleccione un método de pago</option>
+          <option
+            *ngFor="let MetodosPago of MetodosPagos"
+            [ngValue]="MetodosPago.id"
+          >
+            {{ MetodosPago.tipo | uppercase }}
+          </option>
+        </select>
+        <label cLabel for="metodoInput"
+          >Método de Pago
+          <c-spinner size="sm" *ngIf="loadingMetodosPagos" />
+        </label>
+      </div>
+      <app-valid-messages-form
+        [errors]="getControlError('metodo_pago_id')"
+        [messages]="PedidoCrudErrorMessages['metodo_pago_id']"
+      ></app-valid-messages-form>
+    </c-col>
+  </c-row>
+  <div formArrayName="productos">
+    <div
+      *ngFor="let prod of ProductorFormArray.controls; let i = index"
+      [formGroupName]="i"
+      class="position-relative"
+    >
+      <c-row class="form-gasto">
+        <h6 class="mb-3">Producto Nro. {{ i + 1 }}</h6>
+        <c-col [md]="11">
+          <c-row class="flex-wrap">
+            <c-col [md]="3" class="mb-3">
+              <div cFormFloating>
+                <select
+                  cSelect
+                  id="producto_input{{ i }}"
+                  formControlName="producto_id"
+                  (change)="changeProducto(prod)"
+                >
+                  <option value="null" hidden>Seleccione un producto</option>
+                  <option
+                    *ngFor="let producto of Productos; let i = index"
+                    [ngValue]="producto.id"
+                  >
+                    {{ producto.marca | titlecase }} -
+                    {{ producto.descripcion | titlecase }}
+                  </option>
+                </select>
+                <label cLabel for="producto_input{{ i }}"
+                  >Producto
+                  <!-- <c-spinner size="sm" *ngIf="loadingProductos" /> -->
+                </label>
+              </div>
+              <app-valid-messages-form
+                [errors]="getProductoFormControlError(i, 'producto_id')"
+                [messages]="PedidoCrudErrorMessages['producto_id']"
+              ></app-valid-messages-form>
+            </c-col>
+            <c-col [md]="2" class="mb-3">
+              <div cFormFloating>
+                <input
+                  cFormControl
+                  id="cantidad_{{ i }}"
+                  formControlName="cantidad"
+                  type="text"
+                  placeholder="Cantidad"
+                  (keyup)="changeCantidad(prod)"
+                  (change)="changeCantidad(prod)"
+                  appOnlyNumbers
+                />
+                <label cLabel for="cantidad_{{ i }}">Cantidad</label>
+              </div>
+              <app-valid-messages-form
+                [errors]="getProductoFormControlError(i, 'cantidad')"
+                [messages]="PedidoCrudErrorMessages['cantidad']"
+              ></app-valid-messages-form>
+            </c-col>
+            <c-col
+              [md]="1"
+              class="mb-3 d-flex justify-content-center flex-column align-items-center text-center"
+            >
+              <label cLabel for="gratis_{{ i }}">¿Gratis?</label>
+              <c-form-check switch sizing="lg">
+                <input
+                  cFormCheckInput
+                  type="checkbox"
+                  formControlName="gratis"
+                  id="gratis_{{ i }}"
+                  class="pointer"
+                  (change)="changeStatusGratis(prod)"
+                />
+              </c-form-check>
+              <span class="price"></span>
+              <!-- <div cFormFloating>
+                <input
+                  cFormControl
+                  id="gratis_{{ i }}"
+                  formControlName="gratis"
+                  type="text"
+                  placeholder="gratis"
+                  (keyup)="changeCantidad(prod)"
+                  (change)="changeCantidad(prod)"
+                  appOnlyNumbers
+                />
+                <label cLabel for="gratis_{{ i }}">Cantidad</label>
+              </div> -->
+              <app-valid-messages-form
+                [errors]="getProductoFormControlError(i, 'gratis')"
+                [messages]="PedidoCrudErrorMessages['gratis']"
+              ></app-valid-messages-form>
+            </c-col>
+            <c-col [md]="3" class="mb-3">
+              <div cFormFloating>
+                <input
+                  cFormControl
+                  id="precio_unitario_{{ i }}"
+                  formControlName="precio_unitario"
+                  type="text"
+                  placeholder="Precio Unitario"
+                />
+                <label cLabel for="precio_unitario_{{ i }}"
+                  >Precio Unitario</label
+                >
+              </div>
+              <app-valid-messages-form
+                [errors]="getProductoFormControlError(i, 'precio_unitario')"
+                [messages]="PedidoCrudErrorMessages['precio_unitario']"
+              ></app-valid-messages-form>
+            </c-col>
+            <c-col [md]="2" class="mb-3">
+              <div cFormFloating>
+                <input
+                  cFormControl
+                  id="precio_{{ i }}"
+                  formControlName="precio"
+                  type="text"
+                  placeholder="precio"
+                />
+                <label cLabel for="precio_{{ i }}">Total</label>
+              </div>
+              <app-valid-messages-form
+                [errors]="getProductoFormControlError(i, 'precio')"
+                [messages]="PedidoCrudErrorMessages['precio']"
+              ></app-valid-messages-form>
+            </c-col>
+            <c-col [md]="1" class="align-content-center mb-3">
+              <button
+                cButton
+                color="danger"
+                (click)="eliminarGasto(i)"
+                [disabled]="ProductorFormArray.controls.length == 1"
+              >
+                <svg cIcon height="18" name="cil-trash"></svg>
+              </button>
+            </c-col>
+          </c-row>
+        </c-col>
+      </c-row>
+    </div>
+  </div>
+  <c-row class="mb-4 mt-2">
+    <c-col [md]="6" class="d-flex align-items-center">
+      <button
+        cButton
+        type="button"
+        (click)="agregarProducto()"
+        class="me-3 text-white"
+      >
+        <svg cIcon height="18" name="cil-plus"></svg>
+        Producto
+      </button>
+      @if (PedidoDetail) {
+      <button
+        [disabled]="!this.PedidoCrudForm.valid"
+        cButton
+        color="primary"
+        (click)="sendValueFom()"
+      >
+        Editar
+      </button>
+      } @else {
+      <button
+        [disabled]="!this.PedidoCrudForm.valid"
+        cButton
+        variant="outline"
+        (click)="sendValueFom()"
+      >
+        <svg cIcon height="18" name="cil-save"></svg>
+        Guardar
+      </button>
+      }
+    </c-col>
+    <c-col [md]="6" class="d-flex align-items-center">
+      <div class="w-100 d-flex justify-content-end align-content-center">
+        <h5 class="text-end m-0">
+          Total: {{ TotalFactura | currency : "ARS" }}
+        </h5>
+      </div>
+    </c-col>
+  </c-row>
+</div>
