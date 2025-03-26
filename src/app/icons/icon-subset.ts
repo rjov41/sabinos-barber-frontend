@@ -103,6 +103,7 @@ import {
   cilLan,
   cilPlaylistAdd,
   cilInfinity,
+  cilCheckAlt,
 } from '@coreui/icons';
 import { signet } from './signet';
 import { logo } from './logo';
@@ -214,6 +215,7 @@ export const iconSubset = {
   cilLan,
   cilPlaylistAdd,
   cilInfinity,
+  cilCheckAlt,
 };
 
 export enum IconSubset {
@@ -323,4 +325,5 @@ export enum IconSubset {
   cilLan = 'cilLan',
   cilPlaylistAdd = 'cilPlaylistAdd',
   cilInfinity = 'cilInfinity',
+  cilCheckAlt = 'cilCheckAlt',
 }

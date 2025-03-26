@@ -21,7 +21,7 @@ export const PedidoCrudFormBuilder = () =>
         ...PedidoCrudValidators['metodo_pago_id'],
       ]),
       productos: new FormArray<FormGroup<PedidoProductoForm>>([
-        crearProductoArrayForm(),
+        // crearProductoArrayForm(),
       ]), // Inicializar con un gasto
     },
     { validators: validarProductosCargados }
@@ -33,6 +33,10 @@ export interface PedidoProductoForm {
   precio_unitario: FormControl<number | null>;
   precio: FormControl<number | null>;
   gratis: FormControl<boolean | null>;
+  pendiente: FormControl<boolean | null>;
+  completado: FormControl<boolean | null>;
+  editable: FormControl<boolean | null>;
+  pendienteEliminado: FormControl<boolean | null>;
 }
 
 const crearProductoArrayForm = (): FormGroup<PedidoProductoForm> => {
@@ -53,6 +57,10 @@ const crearProductoArrayForm = (): FormGroup<PedidoProductoForm> => {
       gratis: new FormControl({ disabled: true, value: false }, [
         ...PedidoCrudValidators['gratis'],
       ]),
+      pendiente: new FormControl(false),
+      completado: new FormControl(false),
+      editable: new FormControl(false),
+      pendienteEliminado: new FormControl(false),
     },
     { updateOn: 'change' }
   );

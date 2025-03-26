@@ -38,7 +38,6 @@
           [ngbTypeahead]="searchClient"
           [resultTemplate]="CLientTypeaHead"
           [inputFormatter]="formatterValue"
-          (selectItem)="eventInputTypeHead($event)"
         />
         <!-- </div> -->
         <label cLabel for="clienteInput">Cliente</label>
@@ -83,15 +82,15 @@
         >
           <option value="null" hidden>Seleccione un servicio</option>
           <option
-            *ngFor="let local of Locales; let i = index"
-            [ngValue]="local.id"
+            *ngFor="let servicio of Servicios; let i = index"
+            [ngValue]="servicio.id"
           >
-            {{ local.nombre | titlecase }}
+            {{ servicio.nombre | titlecase }}
           </option>
         </select>
         <label cLabel for="rolInput"
           >Servicio
-          <c-spinner size="sm" *ngIf="loadingLocales" />
+          <c-spinner size="sm" *ngIf="loadingServicios" />
         </label>
       </div>
       <app-valid-messages-form
@@ -221,7 +220,7 @@
                 [messages]="PedidoCrudErrorMessages['gratis']"
               ></app-valid-messages-form>
             </c-col>
-            <c-col [md]="3" class="mb-3">
+            <c-col [md]="2" class="mb-3">
               <div cFormFloating>
                 <input
                   cFormControl
@@ -255,14 +254,69 @@
                 [messages]="PedidoCrudErrorMessages['precio']"
               ></app-valid-messages-form>
             </c-col>
-            <c-col [md]="1" class="align-content-center mb-3">
+            <c-col
+              [md]="2"
+              class="align-content-center mb-3"
+              *ngIf="prod.valid"
+            >
+              <button
+                cButton
+                color="primary"
+                (click)="guardarProducto(i, prod)"
+                [disabled]="
+                  prod.get('completado')?.value || prod.get('pendiente')?.value
+                "
+                class="me-4"
+              >
+                <svg
+                  cIcon
+                  height="18"
+                  name="cil-save"
+                  *ngIf="
+                    !prod.get('completado')?.value &&
+                    !prod.get('pendiente')?.value &&
+                    !prod.get('editable')?.value
+                  "
+                ></svg>
+                <svg
+                  cIcon
+                  height="18"
+                  name="cil-check-alt"
+                  *ngIf="prod.get('completado')?.value"
+                ></svg>
+                <svg
+                  cIcon
+                  height="18"
+                  name="cil-pencil"
+                  *ngIf="prod.get('editable')?.value"
+                ></svg>
+                <c-spinner
+                  aria-hidden="true"
+                  size="sm"
+                  *ngIf="prod.get('pendiente')?.value"
+                />
+              </button>
+
               <button
                 cButton
                 color="danger"
-                (click)="eliminarGasto(i)"
-                [disabled]="ProductorFormArray.controls.length == 1"
+                (click)="eliminarProducto(i, prod)"
+                [disabled]="
+                  ProductorFormArray.controls.length == 1 &&
+                  !prod.get('editable')?.value
+                "
               >
-                <svg cIcon height="18" name="cil-trash"></svg>
+                <c-spinner
+                  aria-hidden="true"
+                  size="sm"
+                  *ngIf="prod.get('pendienteEliminado')?.value"
+                />
+                <svg
+                  cIcon
+                  height="18"
+                  name="cil-trash"
+                  *ngIf="!prod.get('pendienteEliminado')?.value"
+                ></svg>
               </button>
             </c-col>
           </c-row>
@@ -281,7 +335,7 @@
         <svg cIcon height="18" name="cil-plus"></svg>
         Producto
       </button>
-      @if (PedidoDetail) {
+      <!-- @if (PedidoDetail) {
       <button
         [disabled]="!this.PedidoCrudForm.valid"
         cButton
@@ -300,7 +354,7 @@
         <svg cIcon height="18" name="cil-save"></svg>
         Guardar
       </button>
-      }
+      } -->
     </c-col>
     <c-col [md]="6" class="d-flex align-items-center">
       <div class="w-100 d-flex justify-content-end align-content-center">

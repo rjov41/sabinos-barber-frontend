@@ -1,0 +1,19 @@
+<div class="modal-header">
+  <h4 class="modal-title">Creación de factura</h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  ></button>
+</div>
+<div class="modal-body">
+  <!-- <app-cambiar-local-form (FormsValues)="FormsValues($event)" [Local]="Local" /> -->
+  <app-factura-detalle-form
+    [Clientes]="Clientes"
+    [MetodosPagos]="MetodosPagos"
+    [Servicios]="Servicios"
+    [empleado_id]="empleado_id"
+    (FormsValues)="FormsValues($event)"
+  />
+</div>

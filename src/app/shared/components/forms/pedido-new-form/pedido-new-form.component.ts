@@ -1,4 +1,12 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+  signal,
+} from '@angular/core';
+
 import {
   FormArray,
   FormControl,
@@ -81,29 +89,28 @@ export class PedidoNewFormComponent {
   PedidoCrudForm = PedidoCrudFormBuilder();
   #colorModeService = inject(ColorModeService);
   _PedidoService = inject(PedidoService);
-  _LocalesService = inject(LocalesService);
-  _ProductosService = inject(ProductosService);
-  _MetodoPagoService = inject(MetodoPagoService);
   _ClientesService = inject(ClientesService);
 
-  @Input() PedidoDetail!: any;
-  @Output() FormsValues = new EventEmitter<any>();
+  _ProductosService = inject(ProductosService);
 
-  loadingLocales: boolean = false;
+  @Input() PedidoDetail!: any;
+  @Input() Clientes: Cliente[] = [];
+  @Input() MetodosPagos: MetodoPago[] = [];
+  @Input() Productos: Producto[] = [];
+  @Input() Servicios: any[] = [];
+
+  @Output() FormsValues = new EventEmitter<any>();
+  @Output() ActualizarProductos = new EventEmitter<any>();
+
+  loadingServicios: boolean = false;
   loadingProductos: boolean = false;
   loadingMetodosPagos: boolean = false;
 
-  Locales: Local[] = [];
   Pedidos: any[] = [];
-  MetodosPagos: MetodoPago[] = [];
-  Productos: Producto[] = [];
   gastos: any[] = [];
   TotalFactura: number = 0;
 
   ngOnInit(): void {
-    this.getLocales();
-    this.getProductos();
-    this.getMetodosPagos();
     this.changeCantidad(this.PedidoCrudForm);
 
     this.PedidoCrudForm.controls.productos.valueChanges.subscribe((value) => {
@@ -119,56 +126,6 @@ export class PedidoNewFormComponent {
 
   ngOnChanges(): void {
     if (this.PedidoDetail) this.setFormValues();
-  }
-
-  getLocales() {
-    this.loadingLocales = true;
-
-    this._LocalesService
-      .getLocales({
-        link: null,
-        disablePaginate: '1',
-      })
-      // .pipe(delay(3000))
-      .pipe(takeUntil(this.destruir$))
-      .subscribe((data: Local[]) => {
-        this.loadingLocales = false;
-        this.Locales = [...data];
-        logger.log(data);
-      });
-  }
-
-  getProductos() {
-    this.loadingProductos = true;
-
-    this._ProductosService
-      .getProductos({
-        link: null,
-        disablePaginate: '1',
-      })
-      // .pipe(delay(3000))
-      .pipe(takeUntil(this.destruir$))
-      .subscribe((data: Producto[]) => {
-        this.loadingProductos = false;
-        this.Productos = [...data];
-        logger.log(data);
-      });
-  }
-
-  getMetodosPagos() {
-    this.loadingMetodosPagos = true;
-    this._MetodoPagoService
-      .getMetodoPago({
-        estado: 1,
-        disablePaginate: '1',
-        link: null,
-      })
-      // .pipe(delay(3000))
-      .pipe(takeUntil(this.destruir$))
-      .subscribe((data: MetodoPago[]) => {
-        this.loadingMetodosPagos = false;
-        this.MetodosPagos = [...data];
-      });
   }
 
   getControlError(name: string): ValidationErrors | null {
@@ -268,66 +225,94 @@ export class PedidoNewFormComponent {
     // agregarProductosArray(this.PedidoCrudForm);
   }
 
-  eliminarGasto(index: number) {
+  eliminarProducto(index: number, prod: any) {
     logger.log('index', index);
-    if (
-      this.ProductorFormArray.length > 0 &&
-      index >= 0 &&
-      index < this.ProductorFormArray.length
-    ) {
-      this.ProductorFormArray.removeAt(index);
+
+    if (prod.get('editable').value) {
+      Swal.fire({
+        title: '¿Desea eliminar el producto?',
+        text: 'Una vez que acepte se eliminará el producto',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'No, quedarme aquí',
+        customClass: {
+          container: this.#colorModeService.getStoredTheme(
+            environment.SabinosTheme
+          ),
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.ProductorFormArray.at(index).patchValue({
+            pendienteEliminado: true,
+          });
+          setTimeout(() => {
+            this.ProductorFormArray.at(index).patchValue({
+              pendienteEliminado: false,
+            });
+            logger.log('Eliminar producto', prod.getRawValue());
+            this.ProductorFormArray.removeAt(index);
+            this.ActualizarProductos.emit(index);
+          }, 2500);
+        }
+      });
+    } else {
+      if (
+        this.ProductorFormArray.length > 0 &&
+        index >= 0 &&
+        index < this.ProductorFormArray.length
+      ) {
+        this.ProductorFormArray.removeAt(index);
+      }
     }
   }
 
-  formatterValue = (x: { nombre_completo: string } | string) =>
-    typeof x === 'string' ? x : x.nombre_completo;
+  guardarProducto(index: number, prod: any) {
+    logger.log('index', index);
+    logger.log('prod', prod.getRawValue());
 
-  searchClient: OperatorFunction<string, readonly string[]> = (
+    this.ProductorFormArray.at(index).patchValue({
+      pendiente: true,
+      completado: false,
+    });
+    setTimeout(() => {
+      this.ProductorFormArray.at(index).patchValue({
+        pendiente: false,
+        completado: true,
+      });
+
+      setTimeout(() => {
+        this.ProductorFormArray.at(index).patchValue({
+          pendiente: false,
+          completado: false,
+          editable: true,
+        });
+      }, 1500);
+    }, 4000);
+  }
+
+  formatterValue = (x: { nombre: string; apellido: string } | string) => {
+    // logger.log('x', x);
+    return typeof x === 'string' ? x : x.nombre + ' ' + x.apellido;
+  };
+
+  searchClient: OperatorFunction<string, Cliente[]> = (
     text$: Observable<string>
   ) =>
     text$.pipe(
-      // tap(() => (this.LoadingSearchClient = true)),
       debounceTime(200),
       distinctUntilChanged(),
-      filter((valorInput) => valorInput.length > 2), // Se ejecuta solo si tiene 2 o más caracteres
-      switchMap((valorInput) => {
-        let listadoFilter: ParametersUrl = {
-          estado: 1,
-          disablePaginate: '1',
-          filtro: String(valorInput),
-          link: null,
-        };
-        // logger.log('aa', valorInput);
-        return this._ClientesService.getClientes(listadoFilter).pipe(
-          catchError(() => {
-            // this.LoadingSearchClient = true;
-            return of([]);
-          }),
-          map((value) => {
-            // this.LoadingSearchClient = false;
-
-            return value;
-          })
+      filter((valorInput) => valorInput.length > 2), // Solo busca si hay más de 2 caracteres
+      // tap(() => logger.log('Buscando clientes', this.Clientes)),
+      map((valorInput) => {
+        const clientesFiltrados = this.Clientes.filter(
+          (cliente) =>
+            cliente.nombre.toLowerCase().includes(valorInput.toLowerCase()) // Filtra por nombre
         );
+        // logger.log('Clientes filtrados:', clientesFiltrados);
+        return clientesFiltrados;
       })
     );
-
-  eventInputTypeHead({ item }: { item: Cliente }) {
-    setTimeout(() => {
-      logger.log('item', item);
-      // this.clienteModel = `${item.nombre} ${item.apellido}`;
-      // this.clienteId = Number(item.id);
-      // const controlInversion = this.getControlFormArray();
-      // const patchValue = {
-      //   codigo: item.id,
-      //   // producto: productoCompleto.descripcion,
-      //   marca: item.marca,
-      // };
-      // console.log(patchValue);
-
-      // controlInversion[i].patchValue(patchValue);
-    }, 10);
-  }
 
   sendValueFom() {
     logger.log('sendValueFom', this.PedidoCrudForm);
@@ -349,7 +334,14 @@ export class PedidoNewFormComponent {
       }).then((result) => {
         if (result.isConfirmed) {
           // this._Router.navigateByUrl(`/clientes/editar/${data.id}`);
-          this.FormsValues.emit(this.PedidoCrudForm.getRawValue());
+          let valuesFrom: any = this.PedidoCrudForm.getRawValue();
+          this.FormsValues.emit({
+            ...valuesFrom,
+            cliente_id:
+              typeof valuesFrom.cliente_id == 'string'
+                ? valuesFrom.cliente_id
+                : Number(valuesFrom.cliente_id.id),
+          });
         }
       });
     } else {

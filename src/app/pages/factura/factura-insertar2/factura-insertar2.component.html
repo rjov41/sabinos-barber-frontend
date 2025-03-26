@@ -1,18 +1,63 @@
 <c-card class="my-4">
-  <c-card-header>
-    <p class="h3">Facturacion usuaio asafas</p>
-  </c-card-header>
-  <c-card-body class="pt-4">
-    <c-container [fluid]="true" class="px-0">
-      <c-row class="mb-4">
-        <c-col>
-          <div class="small text-body-secondary mt-3">
-            <app-pedido-new-form
-              (FormsValues)="FormsValues($event)"
-            ></app-pedido-new-form>
+  <c-tabs [activeItemKey]="'profile'" (activeItemKeyChange)="tabChange($event)">
+    <c-tabs-list variant="tabs">
+      <button
+        cTab
+        [itemKey]="empleado.id"
+        *ngFor="let empleado of EmpleadoList"
+      >
+        {{ empleado.nombre_completo }}
+      </button>
+    </c-tabs-list>
+    <c-tabs-content>
+      <c-tab-panel
+        class="p-3"
+        [itemKey]="empleado?.id"
+        *ngFor="let empleado of EmpleadoList"
+      >
+        <c-card-header>
+          <p class="h3">Facturación {{ empleado.nombre_completo }}</p>
+          <!-- Botón principal (visible en la parte normal de la pantalla) -->
+          <!-- Botón principal -->
+          <div class="scroll-info" *ngIf="scrollPosition <= 70">
+            <button
+              class="btn btn-primary"
+              (click)="agregarFactura(empleado.id)"
+            >
+              <svg cIcon height="18" name="cil-plus"></svg>
+              Agregar Factura
+            </button>
           </div>
-        </c-col>
-      </c-row>
-    </c-container>
-  </c-card-body>
+        </c-card-header>
+        <c-card-body class="pt-4">
+          <c-container [fluid]="true" class="px-0">
+            <c-row class="mb-4" *ngFor="let Fdetalle of FacturasDetalles">
+              <c-col>
+                <div class="small text-body-secondary mt-3">
+                  <app-pedido-new-form
+                    (FormsValues)="FormsValues($event)"
+                    [Clientes]="Clientes"
+                    [MetodosPagos]="MetodosPagos"
+                    [Productos]="Productos"
+                    [Servicios]="Locales"
+                    [PedidoDetail]="Fdetalle"
+                    (ActualizarProductos)="ActualizarProductos($event)"
+                  ></app-pedido-new-form>
+                </div>
+              </c-col>
+            </c-row>
+          </c-container>
+        </c-card-body>
+        <!-- Botón flotante dentro de la pestaña -->
+        <button
+          class="btn btn-primary btn-flotante"
+          (click)="agregarFactura(empleado.id)"
+          *ngIf="scrollPosition > 70"
+        >
+          <svg cIcon height="18" name="cil-plus"></svg>
+          Factura {{ empleado.nombre_completo }}
+        </button>
+      </c-tab-panel>
+    </c-tabs-content>
+  </c-tabs>
 </c-card>
