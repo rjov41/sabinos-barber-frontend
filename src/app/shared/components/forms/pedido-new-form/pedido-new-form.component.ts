@@ -198,6 +198,7 @@ export class PedidoNewFormComponent {
               gratis: new FormControl(item.gratis ?? null, [
                 ...PedidoCrudValidators['gratis'],
               ]),
+              facturtaProdutoId: new FormControl(item.id),
               pendiente: new FormControl(false),
               completado: new FormControl(false),
               editable: new FormControl(true),
@@ -285,78 +286,105 @@ export class PedidoNewFormComponent {
   }
 
   eliminarProducto(index: number, prod: any) {
-    logger.log('index', index);
+    // logger.log('index', index);
 
-    if (prod.get('editable').value) {
-      Swal.fire({
-        title: '¿Desea eliminar el producto?',
-        text: 'Una vez que acepte se eliminará el producto',
-        icon: 'info',
-        showCancelButton: true,
-        confirmButtonText: 'Sí, eliminar',
-        cancelButtonText: 'No, quedarme aquí',
-        customClass: {
-          container: this.#colorModeService.getStoredTheme(
-            environment.SabinosTheme
-          ),
-        },
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.ProductorFormArray.at(index).patchValue({
-            pendienteEliminado: true,
-          });
-          setTimeout(() => {
+    Swal.fire({
+      title: '¿Desea eliminar el producto?',
+      text: 'Una vez que acepte se eliminará el producto',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'No, quedarme aquí',
+      customClass: {
+        container: this.#colorModeService.getStoredTheme(
+          environment.SabinosTheme
+        ),
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.ProductorFormArray.at(index).patchValue({
+          pendienteEliminado: true,
+        });
+        const PRODUCTO_ID = prod.get('facturtaProdutoId').value;
+        logger.log('PRODUCTO_ID', PRODUCTO_ID);
+        this._FacturaProductoService
+          .deleteFacturaProducto(PRODUCTO_ID)
+          .subscribe((data) => {
             this.ProductorFormArray.at(index).patchValue({
               pendienteEliminado: false,
             });
-            logger.log('Eliminar producto', prod.getRawValue());
             this.ProductorFormArray.removeAt(index);
-            this.ActualizarProductos.emit(index);
-          }, 2500);
-        }
-      });
-    } else {
-      if (
-        this.ProductorFormArray.length > 0 &&
-        index >= 0 &&
-        index < this.ProductorFormArray.length
-      ) {
-        this.ProductorFormArray.removeAt(index);
+            this.PedidoDetail.factura_producto =
+              this.PedidoDetail.factura_producto.filter(
+                (f_producto: any) => f_producto.id != PRODUCTO_ID
+              );
+          });
+
+        // this.ActualizarProductos.emit(index);
       }
-    }
+    });
   }
 
   guardarProducto(index: number, prod: any) {
     // logger.log('index', index);
     // logger.log('prod', prod.getRawValue());
-
     this.ProductorFormArray.at(index).patchValue({
       pendiente: true,
       completado: false,
+      editable: false,
     });
 
-    this._FacturaProductoService
-      .createFacturaProducto({
-        factura_detalle_id: this.PedidoDetail.id,
-        producto_id: prod.get('producto_id').value,
-        precio_unitario: prod.get('precio_unitario').value,
-        precio: prod.get('precio').value,
-        cantidad: prod.get('cantidad').value,
-        gratis: prod.get('gratis').value,
-      })
-      .subscribe((data) => {
-        this.ProductorFormArray.at(index).patchValue({
-          pendiente: false,
-          completado: true,
-        });
-        setTimeout(() => {
+    if (prod.get('editable').value) {
+      const PRODUCTO_ID = prod.get('facturtaProdutoId').value;
+      logger.log('PRODUCTO_ID', PRODUCTO_ID);
+
+      this._FacturaProductoService
+        .updateFacturaProducto(PRODUCTO_ID, {
+          factura_detalle_id: this.PedidoDetail.id,
+          producto_id: prod.get('producto_id').value,
+          precio_unitario: prod.get('precio_unitario').value,
+          precio: prod.get('precio').value,
+          cantidad: prod.get('cantidad').value,
+          gratis: prod.get('gratis').value,
+        })
+        .subscribe((data) => {
           this.ProductorFormArray.at(index).patchValue({
             pendiente: false,
-            completado: false,
-            editable: true,
+            completado: true,
           });
-        }, 1000);
-      });
+          setTimeout(() => {
+            this.ProductorFormArray.at(index).patchValue({
+              pendiente: false,
+              completado: false,
+              editable: true,
+            });
+          }, 1000);
+        });
+    } else {
+      this._FacturaProductoService
+        .createFacturaProducto({
+          factura_detalle_id: this.PedidoDetail.id,
+          producto_id: prod.get('producto_id').value,
+          precio_unitario: prod.get('precio_unitario').value,
+          precio: prod.get('precio').value,
+          cantidad: prod.get('cantidad').value,
+          gratis: prod.get('gratis').value,
+        })
+        .subscribe((data) => {
+          this.ProductorFormArray.at(index).patchValue({
+            pendiente: false,
+            completado: true,
+            facturtaProdutoId: data.id,
+          });
+          setTimeout(() => {
+            this.ProductorFormArray.at(index).patchValue({
+              pendiente: false,
+              completado: false,
+              editable: true,
+            });
+          }, 1000);
+        });
+    }
   }
 
   formatterValue = (x: { nombre: string; apellido: string } | string) => {

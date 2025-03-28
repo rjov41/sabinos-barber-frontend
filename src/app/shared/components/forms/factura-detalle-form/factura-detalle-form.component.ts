@@ -40,6 +40,7 @@ import { Cliente } from '../../../../models/Cliente.model';
 import { LoginService } from '../../../../services/login.service';
 import { FacturaDetalleService } from '../../../../services/factura_detalle.service';
 import { FacturaProductoService } from '../../../../services/factura_producto.service';
+import { Servicios } from '../../../../models/Servicios.model';
 
 @Component({
   selector: 'app-factura-detalle-form',
@@ -76,7 +77,7 @@ export class FacturaDetalleFormComponent {
 
   @Input() Clientes: Cliente[] = [];
   @Input() MetodosPagos: MetodoPago[] = [];
-  @Input() Servicios: any[] = [];
+  @Input() Servicios: Servicios[] = [];
   @Input() empleado_id!: number;
 
   @Output() FormsValues = new EventEmitter<any>();

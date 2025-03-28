@@ -20,7 +20,7 @@ export class PanelService {
   // public methods
   getPanel(parametersURL: ParametersUrl): Observable<Panel> {
     let URL = parametersURL.link ? parametersURL.link : URL_PANEL;
-    logger.log(URL, parametersURL);
+    // logger.log(URL, parametersURL);
     return this.http.get<any>(URL, {
       params: this._Helpers.formatParameters(parametersURL),
       responseType: 'json',

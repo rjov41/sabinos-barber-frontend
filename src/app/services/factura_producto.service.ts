@@ -44,14 +44,14 @@ export class FacturaProductoService {
     return this.http.get<any>(`${URL_Factura}/${id}`, option);
   }
 
-  deleteFactura(id: number): Observable<any> {
+  deleteFacturaProducto(id: number): Observable<any> {
     return this.http.delete<any>(`${URL_Factura}/${id}`, {
       responseType: 'json',
     });
   }
 
-  updateFactura(Id: number, Factura: Factura): Observable<any> {
-    return this.http.put<Factura>(
+  updateFacturaProducto(Id: number, Factura: any): Observable<any> {
+    return this.http.put<any>(
       `${URL_Factura}/${Id}`,
       { ...Factura },
       {

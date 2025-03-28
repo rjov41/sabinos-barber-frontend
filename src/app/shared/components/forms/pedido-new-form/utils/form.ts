@@ -37,6 +37,7 @@ export interface PedidoProductoForm {
   completado: FormControl<boolean | null>;
   editable: FormControl<boolean | null>;
   pendienteEliminado: FormControl<boolean | null>;
+  facturtaProdutoId: FormControl<boolean | null>;
 }
 
 const crearProductoArrayForm = (): FormGroup<PedidoProductoForm> => {
@@ -61,6 +62,7 @@ const crearProductoArrayForm = (): FormGroup<PedidoProductoForm> => {
       completado: new FormControl(false),
       editable: new FormControl(false),
       pendienteEliminado: new FormControl(false),
+      facturtaProdutoId: new FormControl(null),
     },
     { updateOn: 'change' }
   );

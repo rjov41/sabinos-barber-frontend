@@ -8,6 +8,7 @@ import { FacturaDetalleFormComponent } from '../../components/forms/factura-deta
 import { Cliente } from '../../../models/Cliente.model';
 import { MetodoPago } from '../../../models/MetodoPago.model';
 import logger from '../../utils/logger';
+import { Servicios } from '../../../models/Servicios.model';
 
 @Component({
   selector: 'app-facturar-cliente-modal',
@@ -19,7 +20,7 @@ import logger from '../../utils/logger';
 export class FacturarClienteModalComponent {
   @Input() Clientes: Cliente[] = [];
   @Input() MetodosPagos: MetodoPago[] = [];
-  @Input() Servicios: any[] = [];
+  @Input() Servicios: Servicios[] = [];
   @Input() empleado_id!: number;
 
   @Output() ResponseFacturaCreate = new EventEmitter<string>();
