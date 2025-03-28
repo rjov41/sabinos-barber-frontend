@@ -4,8 +4,10 @@ export interface Relaciones extends IdRelaciones {
   empleado_model?: string;
   metodo_pago_model?: string;
   local_model?: string;
-  factura_detalle_model?: string;
   gasto_detalle_model?: string;
+  factura_model?: string;
+  factura_detalle_model?: string;
+  factura_producto_model?: string;
 }
 
 interface IdRelaciones {

@@ -23,7 +23,7 @@ export class TipoGastoService {
   // public methods
   getTipoGasto(parametersURL: ParametersUrl): Observable<any> {
     let URL = parametersURL.link ? parametersURL.link : URL_Tipos_Gasto;
-    logger.log(URL, parametersURL);
+    // logger.log(URL, parametersURL);
     return this.http.get<any>(URL, {
       params: this._Helpers.formatParameters(parametersURL),
       responseType: 'json',

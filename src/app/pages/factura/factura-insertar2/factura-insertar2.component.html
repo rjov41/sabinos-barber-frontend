@@ -31,7 +31,10 @@
         </c-card-header>
         <c-card-body class="pt-4">
           <c-container [fluid]="true" class="px-0">
-            <c-row class="mb-4" *ngFor="let Fdetalle of FacturasDetalles">
+            <c-row
+              class="mb-4"
+              *ngFor="let empFactura of empleado.facturas?.[0]?.factura_detalle || []"
+            >
               <c-col>
                 <div class="small text-body-secondary mt-3">
                   <app-pedido-new-form
@@ -39,8 +42,8 @@
                     [Clientes]="Clientes"
                     [MetodosPagos]="MetodosPagos"
                     [Productos]="Productos"
-                    [Servicios]="Locales"
-                    [PedidoDetail]="Fdetalle"
+                    [Servicios]="Servicios"
+                    [PedidoDetail]="empFactura"
                     (ActualizarProductos)="ActualizarProductos($event)"
                   ></app-pedido-new-form>
                 </div>

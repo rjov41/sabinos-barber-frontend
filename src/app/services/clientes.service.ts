@@ -22,7 +22,7 @@ export class ClientesService {
   // public methods
   getClientes(parametersURL: ParametersUrl): Observable<any> {
     let URL = parametersURL.link ? parametersURL.link : URL_Cliente;
-    logger.log(URL, parametersURL);
+    // logger.log(URL, parametersURL);
     return this.http.get<any>(URL, {
       params: this._Helpers.formatParameters(parametersURL),
       responseType: 'json',

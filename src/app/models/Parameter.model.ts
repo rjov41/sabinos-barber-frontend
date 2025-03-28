@@ -9,6 +9,6 @@ export interface ParametersUrl extends Relaciones {
   fecha_fin?: string;
   allDates?: boolean;
   disablePaginate?: string;
-
+  fecha_creacion_factura?: string;
   local?: string | number;
 }

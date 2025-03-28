@@ -8,13 +8,13 @@ import { HelpersService } from './helpers.service';
 import { ParametersUrl } from '../models/Parameter.model';
 import logger from '../shared/utils/logger';
 
-const URL_Factura = `${environment.apiUrl}factura`;
+const URL_Factura = `${environment.apiUrl}factura_producto`;
 export type FacturaResponse = Factura[] | Listado<Factura>;
 
 @Injectable({
   providedIn: 'root',
 })
-export class FacturasService {
+export class FacturaProductoService {
   // constructor(private http: HttpClient) {}
   private http = inject(HttpClient);
   private _Helpers = inject(HelpersService);
@@ -60,10 +60,10 @@ export class FacturasService {
     );
   }
 
-  createFactura(Factura: Factura): Observable<any> {
+  createFacturaProducto(producto: any): Observable<any> {
     return this.http.post<Factura>(
       `${URL_Factura}`,
-      { ...Factura },
+      { ...producto },
       {
         responseType: 'json',
       }

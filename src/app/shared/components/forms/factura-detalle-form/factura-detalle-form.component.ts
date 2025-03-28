@@ -38,6 +38,8 @@ import { ClientesService } from '../../../../services/clientes.service';
 import { NgbActiveModal, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { Cliente } from '../../../../models/Cliente.model';
 import { LoginService } from '../../../../services/login.service';
+import { FacturaDetalleService } from '../../../../services/factura_detalle.service';
+import { FacturaProductoService } from '../../../../services/factura_producto.service';
 
 @Component({
   selector: 'app-factura-detalle-form',
@@ -70,6 +72,7 @@ export class FacturaDetalleFormComponent {
   _ClientesService = inject(ClientesService);
   _LoginService = inject(LoginService);
   activeModal = inject(NgbActiveModal);
+  _FacturaDetalleService = inject(FacturaDetalleService);
 
   @Input() Clientes: Cliente[] = [];
   @Input() MetodosPagos: MetodoPago[] = [];
@@ -81,10 +84,13 @@ export class FacturaDetalleFormComponent {
   Pedidos: any[] = [];
   gastos: any[] = [];
   TotalFactura: number = 0;
-  User_id!: number;
+  User_id: number;
+  Local_id!: number;
 
   constructor() {
-    this.User_id = this._LoginService.userData().user.id;
+    let datoUsuario = this._LoginService.userData().user;
+    this.User_id = datoUsuario.id;
+    this.Local_id = Number(datoUsuario.local.id);
   }
 
   ngOnInit(): void {}
@@ -164,11 +170,27 @@ export class FacturaDetalleFormComponent {
                 : Number(valuesFrom.cliente_id.id),
             empleado_id: this.empleado_id,
             user_id: this.User_id,
+            local_id: this.Local_id,
           };
-          // agregar logica de llamado a la api
-          payloadFactura;
 
-          this.FormsValues.emit({});
+          // agregar logica de llamado a la api
+          this._FacturaDetalleService
+            .createFactura(payloadFactura)
+            .subscribe((data) => {
+              logger.log('resukltado factura creada', data);
+              this.FormsValues.emit(data);
+              Swal.fire({
+                // title: ',
+                text: '!Agregado con éxito!',
+                icon: 'success',
+                confirmButtonText: 'Aceptar',
+                customClass: {
+                  container: this.#colorModeService.getStoredTheme(
+                    environment.SabinosTheme
+                  ),
+                },
+              });
+            });
         }
       });
     } else {

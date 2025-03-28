@@ -64,7 +64,6 @@ import { ClientesService } from '../../../../services/clientes.service';
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { Cliente } from '../../../../models/Cliente.model';
 import { FacturaProductoService } from '../../../../services/factura_producto.service';
-import { Servicios } from '../../../../models/Servicios.model';
 
 @Component({
   selector: 'app-pedido-new-form',
@@ -102,7 +101,7 @@ export class PedidoNewFormComponent {
   @Input() Clientes: Cliente[] = [];
   @Input() MetodosPagos: MetodoPago[] = [];
   @Input() Productos: Producto[] = [];
-  @Input() Servicios: Servicios[] = [];
+  @Input() Servicios: any[] = [];
 
   @Output() FormsValues = new EventEmitter<any>();
   @Output() ActualizarProductos = new EventEmitter<any>();

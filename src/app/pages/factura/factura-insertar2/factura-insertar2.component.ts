@@ -30,6 +30,9 @@ import { ProductosService } from '../../../services/productos.service';
 import { LocalesService } from '../../../services/locales.service';
 import { Local } from '../../../models/Local.model';
 import { FacturarClienteModalComponent } from '../../../shared/modals/facturar-cliente-modal/facturar-cliente-modal.component';
+import { NOW } from '../../../shared/utils/constants/filtro';
+import { ServicioService } from '../../../services/servicios.service';
+import { Servicios } from '../../../models/Servicios.model';
 
 @Component({
   selector: 'app-factura-insertar2',
@@ -59,13 +62,13 @@ export class FacturaInsertar2Component {
   private _HelpersService = inject(HelpersService);
   private _ClientesService = inject(ClientesService);
   private _EmpleadosService = inject(EmpleadosService);
-  private _LocalesService = inject(LocalesService);
+  private _ServicioService = inject(ServicioService);
   private _ProductosService = inject(ProductosService);
   private _MetodoPagoService = inject(MetodoPagoService);
   private _ModalServiceNgB = inject(NgbModal);
 
   EmpleadoList: any[] = [];
-  Locales: Local[] = [];
+  Servicios: Servicios[] = [];
   Productos: Producto[] = [];
   MetodosPagos: MetodoPago[] = [];
   Clientes: Cliente[] = [];
@@ -79,7 +82,7 @@ export class FacturaInsertar2Component {
   };
 
   loaderEmpleados: boolean = false;
-  loadingLocales: boolean = false;
+  loadingServicios: boolean = false;
   loadingProductos: boolean = false;
   loadingMetodosPagos: boolean = false;
   loaderClientes: boolean = true;
@@ -88,11 +91,10 @@ export class FacturaInsertar2Component {
 
   ngOnInit(): void {
     this.getEmpleados();
-    this.getLocales();
+    this.getServicios();
     this.getProductos();
     this.getMetodosPagos();
     this.getClientes();
-    logger.log('scroll');
   }
 
   @HostListener('window:scroll', [])
@@ -101,11 +103,11 @@ export class FacturaInsertar2Component {
   }
 
   tabChange(event: any) {
-    logger.log(event);
+    // logger.log(event);
   }
 
   ActualizarProductos(index: number) {
-    logger.log('index', index);
+    // logger.log('index', index);
     this.getProductos();
   }
 
@@ -113,29 +115,35 @@ export class FacturaInsertar2Component {
     this.loaderEmpleados = true;
 
     this._EmpleadosService
-      .getEmpleadoes(this.ParametrosURL)
+      .getEmpleadoes({
+        ...this.ParametrosURL,
+        factura_model: '1',
+        factura_detalle_model: '1',
+        factura_producto_model: '1',
+        fecha_creacion_factura: NOW.format('YYYY-MM-DD'),
+      })
       .pipe(takeUntil(this.destruir$))
       .subscribe((data: Empleado[]) => {
         this.loaderEmpleados = false;
         this.EmpleadoList = [...data];
-        logger.log(data);
+        // logger.log(data);
       });
   }
 
-  getLocales() {
-    this.loadingLocales = true;
+  getServicios() {
+    this.loadingServicios = true;
 
-    this._LocalesService
-      .getLocales({
+    this._ServicioService
+      .getServicios({
         link: null,
         disablePaginate: '1',
       })
       // .pipe(delay(3000))
       .pipe(takeUntil(this.destruir$))
-      .subscribe((data: Local[]) => {
-        this.loadingLocales = false;
-        this.Locales = [...data];
-        logger.log(data);
+      .subscribe((data: Servicios[]) => {
+        this.loadingServicios = false;
+        this.Servicios = [...data];
+        // logger.log(data);
       });
   }
 
@@ -152,7 +160,7 @@ export class FacturaInsertar2Component {
       .subscribe((data: Producto[]) => {
         this.loadingProductos = false;
         this.Productos = [...data];
-        logger.log(data);
+        // logger.log(data);
       });
   }
 
@@ -182,7 +190,7 @@ export class FacturaInsertar2Component {
       .subscribe((data: Cliente[]) => {
         this.loaderClientes = false;
         this.Clientes = [...data];
-        logger.log(data);
+        // logger.log(data);
       });
   }
 
@@ -190,16 +198,26 @@ export class FacturaInsertar2Component {
     const modalRef = this._ModalServiceNgB.open(FacturarClienteModalComponent);
     modalRef.componentInstance.Clientes = this.Clientes;
     modalRef.componentInstance.MetodosPagos = this.MetodosPagos;
-    modalRef.componentInstance.Servicios = this.Locales;
+    modalRef.componentInstance.Servicios = this.Servicios;
     modalRef.componentInstance.empleado_id = empleadiId;
 
     modalRef.componentInstance.ResponseFacturaCreate.subscribe((data: any) => {
       logger.log('dataFacturaCreate', data);
+      this.FacturasDetalles = [
+        {
+          cliente_id: 'sdvcvx',
+          servicio_id: 1,
+          metodo_pago_id: 1,
+          empleado_id: 1,
+          user_id: 1,
+          local_id: 1,
+        },
+      ];
     });
   }
 
   FormsValues(Cliente: Cliente) {
-    logger.log(Cliente);
+    // logger.log(Cliente);
 
     this._HelpersService.loaderSweetAlert({
       title: 'Cargando',

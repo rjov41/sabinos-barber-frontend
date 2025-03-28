@@ -22,7 +22,7 @@ export class ProductosService {
   // public methods
   getProductos(parametersURL: ParametersUrl): Observable<any> {
     let URL = parametersURL.link ? parametersURL.link : URL_PRODUCTO;
-    logger.log(URL, parametersURL);
+    // logger.log(URL, parametersURL);
     return this.http.get<any>(URL, {
       params: this._Helpers.formatParameters(parametersURL),
       responseType: 'json',

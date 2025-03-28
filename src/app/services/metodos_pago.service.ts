@@ -23,7 +23,7 @@ export class MetodoPagoService {
   // public methods
   getMetodoPago(parametersURL: ParametersUrl): Observable<any> {
     let URL = parametersURL.link ? parametersURL.link : URL_Metodo_Pago;
-    logger.log(URL, parametersURL);
+    // logger.log(URL, parametersURL);
     return this.http.get<any>(URL, {
       params: this._Helpers.formatParameters(parametersURL),
       responseType: 'json',
