@@ -9,7 +9,7 @@ import {
 } from '@coreui/angular';
 import { IconDirective } from '@coreui/icons-angular';
 import { FormModule } from '@coreui/angular';
-import { Component, inject, HostListener } from '@angular/core';
+import { Component, inject, HostListener, effect } from '@angular/core';
 import { NgbModal, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -33,6 +33,7 @@ import { FacturarClienteModalComponent } from '../../../shared/modals/facturar-c
 import { NOW } from '../../../shared/utils/constants/filtro';
 import { ServicioService } from '../../../services/servicios.service';
 import { Servicios } from '../../../models/Servicios.model';
+import { LoginService } from '../../../services/login.service';
 
 @Component({
   selector: 'app-factura-insertar2',
@@ -65,6 +66,7 @@ export class FacturaInsertar2Component {
   private _ServicioService = inject(ServicioService);
   private _ProductosService = inject(ProductosService);
   private _MetodoPagoService = inject(MetodoPagoService);
+  private _LoginService = inject(LoginService);
   private _ModalServiceNgB = inject(NgbModal);
 
   EmpleadoList: any[] = [];
@@ -89,12 +91,22 @@ export class FacturaInsertar2Component {
 
   scrollPosition = 0;
 
+  constructor() {
+    effect(() => {
+      this._LoginService.getUserData();
+      this.getEmpleados();
+      this.getServicios();
+      this.getProductos();
+      this.getMetodosPagos();
+      this.getClientes();
+    });
+  }
   ngOnInit(): void {
-    this.getEmpleados();
-    this.getServicios();
-    this.getProductos();
-    this.getMetodosPagos();
-    this.getClientes();
+    // this.getEmpleados();
+    // this.getServicios();
+    // this.getProductos();
+    // this.getMetodosPagos();
+    // this.getClientes();
   }
 
   @HostListener('window:scroll', [])
@@ -121,6 +133,7 @@ export class FacturaInsertar2Component {
         factura_detalle_model: '1',
         factura_producto_model: '1',
         fecha_creacion_factura: NOW.format('YYYY-MM-DD'),
+        local_id: this._LoginService.getUserData().local.id,
       })
       .pipe(takeUntil(this.destruir$))
       .subscribe((data: Empleado[]) => {
@@ -202,17 +215,21 @@ export class FacturaInsertar2Component {
     modalRef.componentInstance.empleado_id = empleadiId;
 
     modalRef.componentInstance.ResponseFacturaCreate.subscribe((data: any) => {
-      logger.log('dataFacturaCreate', data);
-      this.FacturasDetalles = [
-        {
-          cliente_id: 'sdvcvx',
-          servicio_id: 1,
-          metodo_pago_id: 1,
-          empleado_id: 1,
-          user_id: 1,
-          local_id: 1,
-        },
-      ];
+      const EmpleadoResponse = [...data];
+      const empleadoIndex = this.EmpleadoList.findIndex(
+        (empleado) => empleado.id === EmpleadoResponse[0].empleado_id
+      );
+
+      if (
+        empleadoIndex !== -1 &&
+        (!this.EmpleadoList[empleadoIndex].facturas ||
+          this.EmpleadoList[empleadoIndex].facturas.length === 0)
+      ) {
+        // Actualizamos solo la propiedad 'factura' para el empleado encontrado
+
+        this.EmpleadoList[empleadoIndex].facturas = [...EmpleadoResponse];
+        this.getClientes();
+      }
     });
   }
 

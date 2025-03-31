@@ -45,6 +45,24 @@ export const routes: Routes = [
         redirectTo: '',
         pathMatch: 'full',
       },
+      {
+        path: 'servicios',
+        loadChildren: () =>
+          import('./servicios/servicios.routes').then((m) => m.routes),
+        data: {
+          title: 'Servicios',
+        },
+      },
+    ],
+  },
+  {
+    path: '',
+    children: [
+      {
+        path: '',
+        redirectTo: '',
+        pathMatch: 'full',
+      },
     ],
   },
 ];

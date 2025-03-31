@@ -32,7 +32,7 @@
       <c-row class="mb-4">
         <c-col>
           <div class="small text-body-secondary mt-3">
-            <span class=""> Facturas: {{ FacturasList.total }}</span>
+            <span class=""> Servicios: {{ Servicios.total }}</span>
           </div>
         </c-col>
         <c-col class="d-flex justify-content-end" md="4">
@@ -58,7 +58,7 @@
           </c-input-group>
         </c-col>
       </c-row>
-      @if(FacturasList.data.length > 0){
+      @if(Servicios.data.length > 0){
       <c-row class="mb-4">
         <c-col>
           <table
@@ -71,53 +71,46 @@
             <thead class="text-nowrap text-truncate">
               <tr>
                 <th class="bg-body-tertiary">#</th>
-                <th class="bg-body-tertiary">Empleado</th>
-                <th class="bg-body-tertiary">Local</th>
-                <th class="bg-body-tertiary">Fecha creación</th>
+                <th class="bg-body-tertiary">Descripcion</th>
+                <th class="bg-body-tertiary">Precio</th>
                 <th class="bg-body-tertiary"></th>
               </tr>
             </thead>
             <tbody>
-              @for (Factura of FacturasList.data; track Factura.id; let i =
+              @for (Servicio of Servicios.data; track Servicio.id; let i =
               $index) {
               <tr>
                 <td>
-                  <span>{{ Factura.id }}</span>
+                  <span>{{ Servicio.id }}</span>
                   <!-- <div class="small text-body-secondary text-nowrap">
                       <span> Registered: </span>
                     </div> -->
                 </td>
                 <td>
-                  <span>{{ Factura.empleado?.nombre_completo }}</span>
+                  <span>{{ Servicio.descripcion }}</span>
                 </td>
                 <td>
-                  <span>{{ Factura.local?.nombre }}</span>
-                </td>
-                <td>
-                  <span>{{ Factura.created_at | date : "dd-MM-YYYY" }}</span>
+                  <span>{{ Servicio.precio }}</span>
                 </td>
                 <td>
                   <div class="d-flex flex-direction">
-                    <!-- <div class="me-3" ngbTooltip="Editar">
+                    <div class="me-3" ngbTooltip="Editar">
                       <a
-                        [routerLink]="['/Facturas', 'editar', Factura.id]"
+                        [routerLink]="[
+                          '/ajustes',
+                          'servicios',
+                          'editar',
+                          Servicio.id
+                        ]"
                         cTooltip="Editar"
                       >
                         <svg cIcon height="18" name="cil-pencil"></svg>
                       </a>
-                    </div> -->
-                    <div class="me-3" ngbTooltip="Detalle">
-                      <a
-                        [routerLink]="['/facturas', 'detalle', Factura.id]"
-                        cTooltip="Detalle"
-                      >
-                        <svg cIcon height="18" name="fa-eye"></svg>
-                      </a>
                     </div>
-                    <!-- <div
+                    <div
                       class=""
                       ngbTooltip="Eliminar"
-                      (click)="eliminar(Factura)"
+                      (click)="eliminar(Servicio)"
                     >
                       <span
                         class="text-primary pointer"
@@ -126,7 +119,7 @@
                       >
                         <svg cIcon height="18" name="cil-trash"></svg>
                       </span>
-                    </div> -->
+                    </div>
                   </div>
                 </td>
               </tr>
@@ -144,7 +137,7 @@
               }" -->
             <li
               cPageItem
-              *ngFor="let listado of FacturasList.links"
+              *ngFor="let listado of Servicios.links"
               [active]="listado.active ? true : false"
               [disabled]="listado.url ? false : true"
               (click)="newPage(listado)"
@@ -159,7 +152,7 @@
       <c-row>
         <c-col>
           <c-container [fluid]="true">
-            <h4 class="text-center py-5">No se encontraron Facturas</h4>
+            <h4 class="text-center py-5">No se encontraron servicios</h4>
           </c-container>
         </c-col>
       </c-row>
@@ -173,7 +166,9 @@
       <c-row class="mb-4">
         <c-col>
           <div class="small text-body-secondary mt-3">
-            <span class="h4"> Cargando facturas...</span>
+            <span class="h4">
+              Cargando <c-spinner aria-hidden="true" size="sm" variant="grow"
+            /></span>
           </div>
         </c-col>
       </c-row>

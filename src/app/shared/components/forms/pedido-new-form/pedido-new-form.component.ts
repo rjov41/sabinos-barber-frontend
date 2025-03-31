@@ -5,6 +5,7 @@ import {
   Input,
   Output,
   signal,
+  SimpleChanges,
 } from '@angular/core';
 
 import {
@@ -129,7 +130,8 @@ export class PedidoNewFormComponent {
     });
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    // logger.log('changes', changes);
     if (this.PedidoDetail) this.setFormValues();
   }
 
@@ -159,7 +161,7 @@ export class PedidoNewFormComponent {
   }
 
   setFormValues() {
-    logger.log('setFormValues', this.PedidoDetail);
+    // logger.log('setFormValues', this.PedidoDetail);
 
     let cliente: any = this.Clientes.find(
       (cliente) => cliente.id === this.PedidoDetail.cliente_id
@@ -188,7 +190,10 @@ export class PedidoNewFormComponent {
                 ...PedidoCrudValidators['cantidad'],
               ]),
               precio_unitario: new FormControl(
-                { disabled: true, value: item.precio_unitario ?? null },
+                {
+                  disabled: true,
+                  value: item.gratis ? 0 : item.precio_unitario ?? null,
+                },
                 [...PedidoCrudValidators['precio_unitario']]
               ),
               precio: new FormControl(
@@ -328,15 +333,17 @@ export class PedidoNewFormComponent {
   guardarProducto(index: number, prod: any) {
     // logger.log('index', index);
     // logger.log('prod', prod.getRawValue());
+    const ACCION = prod.get('editable').value;
     this.ProductorFormArray.at(index).patchValue({
       pendiente: true,
       completado: false,
       editable: false,
     });
 
-    if (prod.get('editable').value) {
+    if (ACCION) {
       const PRODUCTO_ID = prod.get('facturtaProdutoId').value;
-      logger.log('PRODUCTO_ID', PRODUCTO_ID);
+      // logger.log('PRODUCTO_ID', PRODUCTO_ID);
+      // logger.log('ACCION', ACCION);
 
       this._FacturaProductoService
         .updateFacturaProducto(PRODUCTO_ID, {
@@ -361,6 +368,7 @@ export class PedidoNewFormComponent {
           }, 1000);
         });
     } else {
+      // logger.log('prod.get(editable).value', prod.get('editable').value);
       this._FacturaProductoService
         .createFacturaProducto({
           factura_detalle_id: this.PedidoDetail.id,

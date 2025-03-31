@@ -43,6 +43,7 @@ import { SpinnersComponent } from '../../../documentacion/base/spinners/spinners
     TableDirective,
     CardModule,
     GridModule,
+    IconDirective,
     InputGroupComponent,
     FormControlDirective,
     ButtonDirective,
@@ -77,12 +78,12 @@ export class FacturaDetalleComponent {
     user_model: '1',
     factura_detalle_model: '1',
     metodo_pago_model: '1',
-    fecha_inicio: dayjs().startOf('month').format('YYYY-MM-DD'),
-    fecha_fin: dayjs().endOf('month').format('YYYY-MM-DD'),
   };
   Id!: number;
   Factura!: Factura;
   loaderFactura: boolean = false;
+
+  expandedRow: number | null = null;
 
   ngOnInit(): void {
     this.Id = Number(this._ActivatedRoute.snapshot.paramMap.get('id'));
@@ -102,5 +103,9 @@ export class FacturaDetalleComponent {
         this.Factura = { ...data };
         logger.log(data);
       });
+  }
+
+  toggleDetail(index: number) {
+    this.expandedRow = this.expandedRow === index ? null : index;
   }
 }

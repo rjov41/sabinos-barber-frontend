@@ -1,6 +1,5 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { delay, Subject, takeUntil, timer } from 'rxjs';
 import {
   ButtonDirective,
   FormControlDirective,
@@ -15,28 +14,31 @@ import {
   ModalModule,
   ButtonModule,
   ModalService,
+  SpinnerComponent,
 } from '@coreui/angular';
 import { IconDirective } from '@coreui/icons-angular';
-import { FacturasService } from '../../../services/facturas.service';
+
 import { CommonModule } from '@angular/common';
 import { Listado } from 'src/app/models/Listados.model';
-import { Producto } from 'src/app/models/Producto.model';
+import { Local } from 'src/app/models/Local.model';
 import { ParametersUrl } from 'src/app/models/Parameter.model';
-import { FiltrosListFormComponent } from '../../../shared/components/forms/filtros-list-form/filtros-list-form.component';
 import { IModalAction } from '@coreui/angular/lib/modal/modal.service';
 import logger from 'src/app/shared/utils/logger';
-import { Filtro, FiltroKeys } from 'src/app/models/Filter.model';
+import { Filtro } from 'src/app/models/Filter.model';
 import dayjs from 'dayjs';
 import { HelpersService } from 'src/app/services/helpers.service';
 import Swal from 'sweetalert2';
 import { ColorModeService } from '@coreui/angular';
 import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
-import { Factura } from '../../../models/Factura.model';
-import { LoginService } from '../../../services/login.service';
+import { Subject, takeUntil } from 'rxjs';
+import { FiltrosListFormComponent } from '../../../../shared/components/forms/filtros-list-form/filtros-list-form.component';
+import { LocalesService } from '../../../../services/locales.service';
+import { Servicios } from '../../../../models/Servicios.model';
+import { ServicioService } from '../../../../services/servicios.service';
 
 @Component({
-  selector: 'app-factura-listado',
+  selector: 'app-servicio-listado',
   standalone: true,
   imports: [
     TableDirective,
@@ -56,57 +58,44 @@ import { LoginService } from '../../../services/login.service';
     ModalModule,
     ButtonModule,
     FormsModule,
+    SpinnerComponent,
   ],
-  templateUrl: './factura-listado.component.html',
-  styleUrl: './factura-listado.component.scss',
+  templateUrl: './servicio-listado.component.html',
+  styleUrl: './servicio-listado.component.scss',
 })
-export class FacturaListadoComponent {
+export class ServicioListadoComponent {
   private destruir$: Subject<void> = new Subject<void>();
 
-  private _FacturasService = inject(FacturasService);
+  private _ServicioService = inject(ServicioService);
   private _ModalService = inject(ModalService);
   private _HelpersService = inject(HelpersService);
   readonly #ColorModeService = inject(ColorModeService);
-  readonly _LoginService = inject(LoginService);
 
   loaderTable: boolean = true;
   ParametrosURL: ParametersUrl = {
     allDates: false,
-    local_id: this._LoginService.getUserData().local.id,
     estado: 1,
     link: null,
     disablePaginate: '0',
-    empleado_model: '1',
-    local_model: '1',
     fecha_inicio: dayjs().startOf('month').format('YYYY-MM-DD'),
     fecha_fin: dayjs().endOf('month').format('YYYY-MM-DD'),
   };
-  FacturasList!: Listado<Factura>;
+  Servicios!: Listado<Servicios>;
 
-  constructor() {
-    effect((a) => {
-      this.eventChangeLocal();
-    });
+  ngOnInit(): void {
+    this.getservicios();
   }
 
-  ngOnInit(): void {}
-
-  eventChangeLocal() {
-    const USER_DATA = this._LoginService.getUserData();
-    this.ParametrosURL.local_id = USER_DATA.local.id;
-    this.getFacturas();
-  }
-
-  getFacturas() {
+  getservicios() {
     this.loaderTable = true;
 
-    this._FacturasService
-      .getFacturas(this.ParametrosURL)
+    this._ServicioService
+      .getServicios(this.ParametrosURL)
       // .pipe(delay(3000))
       .pipe(takeUntil(this.destruir$))
-      .subscribe((data: Listado<Factura>) => {
+      .subscribe((data: Listado<Servicios>) => {
         this.loaderTable = false;
-        this.FacturasList = { ...data };
+        this.Servicios = { ...data };
         logger.log(data);
       });
   }
@@ -117,7 +106,7 @@ export class FacturaListadoComponent {
 
     this.ParametrosURL.link = link.url;
 
-    this.getFacturas();
+    this.getservicios();
   }
 
   modalStatusById(id: string, show: boolean) {
@@ -144,14 +133,14 @@ export class FacturaListadoComponent {
     }
     logger.log('this.ParametrosURL', this.ParametrosURL);
 
-    this.getFacturas();
+    this.getservicios();
   }
 
   buscar() {
-    this.getFacturas();
+    this.getservicios();
   }
 
-  eliminar(factura: Factura) {
+  eliminar(servicioElim: Servicios) {
     Swal.mixin({
       customClass: {
         container: this.#ColorModeService.getStoredTheme(
@@ -161,7 +150,7 @@ export class FacturaListadoComponent {
     })
       .fire({
         title: '¿Estás seguro?',
-        text: 'Esta factura se eliminará y no podrás recuperarlo. Pero quedara registrada esta acción',
+        text: 'Este servicio se eliminará y no podrás recuperarlo.',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#51cbce',
@@ -172,7 +161,7 @@ export class FacturaListadoComponent {
       .then((result) => {
         if (result.isConfirmed) {
           this._HelpersService.loaderSweetAlert({
-            title: 'Eliminando factura',
+            title: 'Eliminando servicio',
             text: 'Esto puede demorar un momento.',
           });
           // Swal.mixin({
@@ -182,7 +171,7 @@ export class FacturaListadoComponent {
           //     ),
           //   },
           // }).fire({
-          //   title: 'Eliminando producto',
+          //   title: 'Eliminando local',
           //   text: 'Esto puede demorar un momento.',
           //   timerProgressBar: true,
           //   allowEscapeKey: false,
@@ -193,12 +182,12 @@ export class FacturaListadoComponent {
           //     Swal.showLoading();
           //   },
           // });
-          this._FacturasService
-            .deleteFactura(Number(factura.id))
+          this._ServicioService
+            .deleteServicio(Number(servicioElim.id))
             .pipe(takeUntil(this.destruir$))
             .subscribe((data) => {
-              this.FacturasList.data = this.FacturasList.data.filter(
-                (factu) => factu.id != factura.id
+              this.Servicios.data = this.Servicios.data.filter(
+                (serv) => serv.id != servicioElim.id
               );
 
               Swal.mixin({

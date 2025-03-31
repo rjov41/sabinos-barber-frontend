@@ -240,15 +240,15 @@ export class NominaCrudFormComponent {
       .subscribe((facturas: Factura[]) => {
         logger.log('data nomina', facturas);
         this.loadingFacturas = false;
-        const sumaTotal = facturas.reduce(
-          (acumulador, item) => acumulador + item.total,
-          0
-        );
+        // const sumaTotal = facturas.reduce(
+        //   (acumulador, item) => acumulador + item.total,
+        //   0
+        // );
 
-        logger.log(sumaTotal);
-        this.NominaCrudForm.patchValue({
-          monto_facturado: sumaTotal,
-        });
+        // logger.log(sumaTotal);
+        // this.NominaCrudForm.patchValue({
+        //   monto_facturado: sumaTotal,
+        // });
       });
   }
 

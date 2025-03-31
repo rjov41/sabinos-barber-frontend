@@ -34,4 +34,8 @@ export class FacturarClienteModalComponent {
     logger.log('event', event);
     this.ResponseFacturaCreate.emit(event);
   }
+
+  ngOnDestroy(): void {
+    this.ResponseFacturaCreate.complete();
+  }
 }

@@ -28,6 +28,7 @@ import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
 import { Auth } from '../../models/Auth';
 import { catchError, delay, Subject, takeUntil, tap, throwError } from 'rxjs';
+import { HelpersService } from '../../services/helpers.service';
 
 @Component({
   selector: 'app-login',
@@ -35,22 +36,14 @@ import { catchError, delay, Subject, takeUntil, tap, throwError } from 'rxjs';
   imports: [
     CardModule,
     GridModule,
-    RouterLink,
     ContainerComponent,
     LoginFormComponent,
     ContainerComponent,
     RowComponent,
     ColComponent,
-    CardGroupComponent,
     TextColorDirective,
     CardComponent,
     CardBodyComponent,
-    FormDirective,
-    InputGroupComponent,
-    InputGroupTextDirective,
-    IconDirective,
-    FormControlDirective,
-    ButtonDirective,
     FormModule,
   ],
   templateUrl: './login.component.html',
@@ -59,6 +52,7 @@ import { catchError, delay, Subject, takeUntil, tap, throwError } from 'rxjs';
 export class LoginComponent {
   private destruir$: Subject<void> = new Subject<void>();
 
+  private _HelpersService = inject(HelpersService);
   private _LoginService = inject(LoginService);
   private _Router = inject(Router);
   #colorModeService = inject(ColorModeService);
@@ -80,9 +74,26 @@ export class LoginComponent {
         takeUntil(this.destruir$),
         catchError((error: any) => {
           this.loadingFormLogin = false;
+          this._HelpersService.handleErrorApiCrud(
+            error,
+            'No se pudo iniciar sesión.'
+          );
+
+          Swal.mixin({
+            customClass: {
+              container: this.#colorModeService.getStoredTheme(
+                environment.SabinosTheme
+              ),
+            },
+          }).fire({
+            icon: 'error',
+            title: '!Error¡',
+            text: 'Usuario o contraseña incorrecto',
+          });
           return throwError(() => error);
         })
       )
+
       .subscribe((data) => {
         let Auth: Auth = { ...data };
 
