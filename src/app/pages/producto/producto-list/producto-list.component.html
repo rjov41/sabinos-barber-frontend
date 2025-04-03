@@ -76,7 +76,7 @@
                 <th class="bg-body-tertiary">Local</th>
                 <th class="bg-body-tertiary">Precio</th>
                 <th class="bg-body-tertiary">Cantidad</th>
-                <th class="bg-body-tertiary">Ilimitado</th>
+                <!-- <th class="bg-body-tertiary">Ilimitado</th> -->
                 <th class="bg-body-tertiary"></th>
               </tr>
             </thead>
@@ -104,19 +104,15 @@
                     producto.precio | currency : "ARS" : "symbol"
                   }}</span>
                 </td>
-                <td>
+                <!-- <td>
                   @if(producto.ilimitado == 1){
                   <svg cIcon height="18" name="cilInfinity"></svg>
                   } @if(producto.ilimitado != 1){
                   <span>{{ producto.cantidad }} unidades</span>
                   }
-                </td>
+                </td> -->
                 <td>
-                  @if(producto.ilimitado == 1){
-                  <span>Si</span>
-                  } @if(producto.ilimitado != 1){
-                  <span>No</span>
-                  }
+                  <span>{{ producto.cantidad }}</span>
                 </td>
                 <td>
                   <div class="d-flex flex-direction">

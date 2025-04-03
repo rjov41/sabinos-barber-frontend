@@ -7,7 +7,7 @@ import {
 export const ProductoCrudValidators: FormGroupValidators = {
   marca: [Validators.required, Validators.maxLength(20)],
   descripcion: [Validators.required, Validators.maxLength(20)],
-  cantidad: [Validators.required, Validators.maxLength(3)],
+  cantidad: [Validators.required, Validators.maxLength(9)],
   precio: [Validators.required, Validators.maxLength(15)],
   local_id: [Validators.required],
   ilimitado: [Validators.required],
@@ -24,7 +24,7 @@ export const ProductoCrudErrorMessages: FormErrorMessages = {
   },
   cantidad: {
     required: 'La cantidad es requerida.',
-    maxlength: 'Solo se permite 3 caracteres.',
+    maxlength: 'Solo se permite 9 caracteres.',
   },
   precio: {
     required: 'El precio es requerido.',

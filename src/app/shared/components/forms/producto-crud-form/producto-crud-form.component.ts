@@ -143,7 +143,7 @@ export class ProductoCrudFormComponent {
       const FORM_VALUE = {
         ...this.ProductoCrudForm.value,
         ilimitado: this.ProductoCrudForm.value.ilimitado ? 1 : 0,
-        // local_id: this.LocalDataStorage.id,
+        local_id: this.ProductoCrudForm.getRawValue().local_id,
       };
 
       this.FormsValues.emit(FORM_VALUE);
