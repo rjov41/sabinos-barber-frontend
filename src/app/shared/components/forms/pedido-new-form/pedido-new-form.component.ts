@@ -121,11 +121,7 @@ export class PedidoNewFormComponent {
 
     this.PedidoCrudForm.valueChanges.subscribe((value) => {
       // logger.log('value', value);
-      const totalPrecio = this.ProductorFormArray.getRawValue().reduce(
-        (acc, producto) => acc + (producto.precio || 0),
-        0
-      );
-      this.TotalFactura = totalPrecio;
+      this.getValueFacturaTotal();
       // console.log('Total de precios:', totalPrecio);
     });
   }
@@ -218,13 +214,23 @@ export class PedidoNewFormComponent {
         emitEvent: true,
       });
     }
-
     this.PedidoCrudForm.patchValue({
       cliente_id: cliente,
       metodo_pago_id: this.PedidoDetail.metodo_pago_id,
       servicio_id: this.PedidoDetail.servicio_id,
     });
+
+    this.getValueFacturaTotal();
     // logger.log('this.PedidoCrudForm', this.PedidoCrudForm.value);
+  }
+
+  getValueFacturaTotal() {
+    const totalPrecio = this.ProductorFormArray.getRawValue().reduce(
+      (acc, producto) => acc + (producto.precio || 0),
+      0
+    );
+    this.TotalFactura = totalPrecio;
+    // this.Pedidos.
   }
 
   changeProducto(producGroup: any) {

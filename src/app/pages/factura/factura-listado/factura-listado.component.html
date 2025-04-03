@@ -98,20 +98,26 @@
                 </td>
                 <td>
                   <div class="d-flex flex-direction">
-                    <!-- <div class="me-3" ngbTooltip="Editar">
-                      <a
-                        [routerLink]="['/Facturas', 'editar', Factura.id]"
-                        cTooltip="Editar"
-                      >
-                        <svg cIcon height="18" name="cil-pencil"></svg>
-                      </a>
-                    </div> -->
                     <div class="me-3" ngbTooltip="Detalle">
                       <a
                         [routerLink]="['/facturas', 'detalle', Factura.id]"
                         cTooltip="Detalle"
                       >
                         <svg cIcon height="18" name="fa-eye"></svg>
+                      </a>
+                    </div>
+                    <div class="me-3" ngbTooltip="Editar">
+                      <a
+                        [routerLink]="[
+                          '/facturas',
+                          'editar',
+                          Factura.id,
+                          'empleado',
+                          Factura.empleado_id
+                        ]"
+                        cTooltip="Editar"
+                      >
+                        <svg cIcon height="18" name="cil-pencil"></svg>
                       </a>
                     </div>
                     <!-- <div

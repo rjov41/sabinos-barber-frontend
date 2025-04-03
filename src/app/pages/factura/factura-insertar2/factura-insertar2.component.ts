@@ -133,6 +133,7 @@ export class FacturaInsertar2Component {
         factura_detalle_model: '1',
         factura_producto_model: '1',
         fecha_creacion_factura: NOW.format('YYYY-MM-DD'),
+        total_facturado: '1',
         local_id: this._LoginService.getUserData().local.id,
       })
       .pipe(takeUntil(this.destruir$))
@@ -215,16 +216,21 @@ export class FacturaInsertar2Component {
     modalRef.componentInstance.empleado_id = empleadiId;
 
     modalRef.componentInstance.ResponseFacturaCreate.subscribe((data: any) => {
+      logger.log('datacreateFactura', data);
       const EmpleadoResponse = [...data];
       const empleadoIndex = this.EmpleadoList.findIndex(
         (empleado) => empleado.id === EmpleadoResponse[0].empleado_id
       );
-
-      if (
-        empleadoIndex !== -1 &&
-        (!this.EmpleadoList[empleadoIndex].facturas ||
-          this.EmpleadoList[empleadoIndex].facturas.length === 0)
-      ) {
+      logger.log('empleadoIndex', empleadoIndex);
+      logger.log(
+        'this.EmpleadoList[empleadoIndex].',
+        this.EmpleadoList[empleadoIndex]
+      );
+      logger.log(
+        'this.EmpleadoList[empleadoIndex].facturas',
+        this.EmpleadoList[empleadoIndex].facturas
+      );
+      if (empleadoIndex !== -1 && this.EmpleadoList[empleadoIndex].facturas) {
         // Actualizamos solo la propiedad 'factura' para el empleado encontrado
 
         this.EmpleadoList[empleadoIndex].facturas = [...EmpleadoResponse];

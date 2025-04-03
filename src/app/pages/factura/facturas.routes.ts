@@ -21,7 +21,7 @@ export const routes: Routes = [
       },
       {
         // Ruta de edición con el parámetro dinámico :id
-        path: 'editar/:id',
+        path: 'editar/:id/empleado/:empleado_id',
         loadComponent: () =>
           import('./factura-editar/factura-editar.component').then(
             (m) => m.FacturaEditarComponent

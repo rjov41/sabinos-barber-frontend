@@ -11,4 +11,5 @@ export interface ParametersUrl extends Relaciones {
   disablePaginate?: string;
   fecha_creacion_factura?: string;
   local?: string | number;
+  total_facturado?: string | number;
 }
