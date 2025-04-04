@@ -1,6 +1,6 @@
-<div cForm [formGroup]="PedidoCrudForm" class="form-Pedido-crud border p-4">
+<div cForm [formGroup]="PedidoCrudForm" class="form-Pedido-crud p-0">
   <c-row class="mb-4 flex-wrap">
-    <c-col [md]="4">
+    <c-col [md]="4" class="d-none">
       <div cFormFloating class="mb-3">
         <!-- <input
           cFormControl
@@ -85,7 +85,8 @@
             *ngFor="let servicio of Servicios; let i = index"
             [ngValue]="servicio.id"
           >
-            {{ servicio.descripcion | titlecase }}
+            {{ servicio.descripcion | titlecase }} -
+            {{ servicio.precio | currency : "ARS" }}
           </option>
         </select>
         <label cLabel for="rolInput"
@@ -128,6 +129,27 @@
         [errors]="getControlError('metodo_pago_id')"
         [messages]="PedidoCrudErrorMessages['metodo_pago_id']"
       ></app-valid-messages-form>
+    </c-col>
+    <c-col [md]="2">
+      <button cButton color="primary" (click)="guardarCambioFacturaDetalle()">
+        <c-spinner
+          aria-hidden="true"
+          size="sm"
+          *ngIf="getControl('pendiente')?.value"
+        />
+        <svg
+          cIcon
+          height="18"
+          name="cil-check-alt"
+          *ngIf="getControl('completado')?.value"
+        ></svg>
+        <svg
+          cIcon
+          height="18"
+          name="cil-pencil"
+          *ngIf="getControl('editable')?.value"
+        ></svg>
+      </button>
     </c-col>
   </c-row>
   <div formArrayName="productos">
@@ -359,7 +381,11 @@
     <c-col [md]="6" class="d-flex align-items-center">
       <div class="w-100 d-flex justify-content-end align-content-center">
         <h5 class="text-end m-0">
-          Total: {{ TotalFactura | currency : "ARS" }}
+          Total:
+          {{
+            _FacturaPedidoService.sumarTotalesPorFactura(PedidoDetail.id)
+              | currency : "ARS"
+          }}
         </h5>
       </div>
     </c-col>

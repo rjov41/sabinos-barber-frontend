@@ -26,7 +26,11 @@ import {
   RowComponent,
   SpinnerComponent,
 } from '@coreui/angular';
-import { agregarProductosArray, PedidoCrudFormBuilder } from './utils/form';
+import {
+  agregarProductosArray,
+  PedidoCrudFormBuilder,
+  PedidoCrudForm,
+} from './utils/form';
 import { CommonModule } from '@angular/common';
 import { ValidMessagesFormComponent } from '../../valid-messages-form/valid-messages-form.component';
 import {
@@ -66,6 +70,9 @@ import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { Cliente } from '../../../../models/Cliente.model';
 import { FacturaProductoService } from '../../../../services/factura_producto.service';
 import { Servicios } from '../../../../models/Servicios.model';
+import { FacturaDetalle } from '../../../../models/FacturaDetail';
+import { FacturaPedidoService } from '../../../../services/factura_pedido.service';
+import { FacturaDetalleService } from '../../../../services/factura_detalle.service';
 
 @Component({
   selector: 'app-pedido-new-form',
@@ -98,8 +105,10 @@ export class PedidoNewFormComponent {
   _ClientesService = inject(ClientesService);
   _FacturaProductoService = inject(FacturaProductoService);
   _ProductosService = inject(ProductosService);
+  _FacturaPedidoService = inject(FacturaPedidoService);
+  _FacturaDetalleService = inject(FacturaDetalleService);
 
-  @Input() PedidoDetail!: any;
+  @Input() PedidoDetail!: FacturaDetalle;
   @Input() Clientes: Cliente[] = [];
   @Input() MetodosPagos: MetodoPago[] = [];
   @Input() Productos: Producto[] = [];
@@ -112,9 +121,7 @@ export class PedidoNewFormComponent {
   loadingProductos: boolean = false;
   loadingMetodosPagos: boolean = false;
 
-  Pedidos: any[] = [];
-  gastos: any[] = [];
-  TotalFactura: number = 0;
+  // TotalFactura: number = 0;
 
   ngOnInit(): void {
     this.changeCantidad(this.PedidoCrudForm);
@@ -163,7 +170,10 @@ export class PedidoNewFormComponent {
       (cliente) => cliente.id === this.PedidoDetail.cliente_id
     );
 
-    if (this.PedidoDetail.factura_producto.length > 0) {
+    if (
+      this.PedidoDetail.factura_producto &&
+      this.PedidoDetail.factura_producto.length > 0
+    ) {
       const productos = this.PedidoDetail.factura_producto.map(
         (item: any) =>
           // new FormGroup({
@@ -218,10 +228,21 @@ export class PedidoNewFormComponent {
       cliente_id: cliente,
       metodo_pago_id: this.PedidoDetail.metodo_pago_id,
       servicio_id: this.PedidoDetail.servicio_id,
+      pendiente: false,
+      completado: false,
+      editable: true,
     });
 
     this.getValueFacturaTotal();
+
     // logger.log('this.PedidoCrudForm', this.PedidoCrudForm.value);
+    this.PedidoCrudForm.get('servicio_id')?.valueChanges.subscribe((data) => {
+      let dataService = this.Servicios.find((servicio) => servicio.id == data);
+      this._FacturaPedidoService.actualizarTotalServicio(
+        Number(this.PedidoDetail.id),
+        Number(dataService?.precio)
+      );
+    });
   }
 
   getValueFacturaTotal() {
@@ -229,8 +250,12 @@ export class PedidoNewFormComponent {
       (acc, producto) => acc + (producto.precio || 0),
       0
     );
-    this.TotalFactura = totalPrecio;
-    // this.Pedidos.
+    // this.TotalFactura = totalPrecio;
+    this._FacturaPedidoService.actualizarTotalProductos(
+      Number(this.PedidoDetail.id),
+      Number(totalPrecio)
+    );
+    // this.PedidoDetail.total = totalPrecio;
   }
 
   changeProducto(producGroup: any) {
@@ -296,6 +321,41 @@ export class PedidoNewFormComponent {
     // agregarProductosArray(this.PedidoCrudForm);
   }
 
+  guardarCambioFacturaDetalle() {
+    logger.log(
+      'guardarCambioFacturaDetalle',
+      this.PedidoCrudForm.getRawValue()
+    );
+    this.PedidoCrudForm.patchValue({
+      pendiente: true,
+      completado: false,
+      editable: false,
+    });
+    let values: any = this.PedidoCrudForm.getRawValue();
+    // let cliente:any = values.cliente_id.id
+    // agregarProductosArray(this.PedidoCrudForm);
+    this._FacturaDetalleService
+      .updateFactura(Number(this.PedidoDetail.id), {
+        metodo_pago_id: values.metodo_pago_id,
+        servicio_id: values.servicio_id,
+        cliente_id: values.cliente_id.id,
+      })
+      .subscribe((data) => {
+        this.PedidoCrudForm.patchValue({
+          pendiente: false,
+          completado: true,
+          editable: false,
+        });
+        setTimeout(() => {
+          this.PedidoCrudForm.patchValue({
+            pendiente: false,
+            completado: false,
+            editable: true,
+          });
+        }, 1000);
+      });
+  }
+
   eliminarProducto(index: number, prod: any) {
     // logger.log('index', index);
 
@@ -325,10 +385,12 @@ export class PedidoNewFormComponent {
               pendienteEliminado: false,
             });
             this.ProductorFormArray.removeAt(index);
-            this.PedidoDetail.factura_producto =
-              this.PedidoDetail.factura_producto.filter(
-                (f_producto: any) => f_producto.id != PRODUCTO_ID
-              );
+            if (this.PedidoDetail.factura_producto) {
+              this.PedidoDetail.factura_producto =
+                this.PedidoDetail.factura_producto.filter(
+                  (f_producto: any) => f_producto.id != PRODUCTO_ID
+                );
+            }
           });
 
         // this.ActualizarProductos.emit(index);

@@ -6,14 +6,21 @@ export interface PedidoCrudForm {
   servicio_id: FormControl<number | null>;
   metodo_pago_id: FormControl<number | null>;
   productos: FormArray<FormGroup<PedidoProductoForm>>;
+  pendiente: FormControl<boolean | null>;
+  completado: FormControl<boolean | null>;
+  editable: FormControl<boolean | null>;
 }
 
 export const PedidoCrudFormBuilder = () =>
   new FormGroup<PedidoCrudForm>(
     {
-      cliente_id: new FormControl(null, [
-        ...PedidoCrudValidators['cliente_id'],
-      ]),
+      cliente_id: new FormControl(
+        {
+          disabled: true,
+          value: null,
+        },
+        [...PedidoCrudValidators['cliente_id']]
+      ),
       servicio_id: new FormControl(null, [
         ...PedidoCrudValidators['servicio_id'],
       ]),
@@ -23,6 +30,9 @@ export const PedidoCrudFormBuilder = () =>
       productos: new FormArray<FormGroup<PedidoProductoForm>>([
         // crearProductoArrayForm(),
       ]), // Inicializar con un gasto
+      pendiente: new FormControl(false),
+      completado: new FormControl(false),
+      editable: new FormControl(true),
     },
     { validators: validarProductosCargados }
   );

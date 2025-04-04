@@ -19,5 +19,7 @@ export interface FacturaDetalle {
   metodo_pago_id: number;
   metodo_pago?: MetodoPago;
 
+  total: number;
+
   factura_producto?: any[];
 }

@@ -50,7 +50,7 @@ export class FacturaDetalleService {
     });
   }
 
-  updateFactura(Id: number, Factura: Factura): Observable<any> {
+  updateFactura(Id: number, Factura: any): Observable<any> {
     return this.http.put<Factura>(
       `${URL_Factura}/${Id}`,
       { ...Factura },

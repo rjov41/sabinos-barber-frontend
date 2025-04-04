@@ -3,7 +3,7 @@
     <c-tabs-list variant="tabs">
       <button
         cTab
-        [itemKey]="empleado.id"
+        [itemKey]="numberValue(empleado.id)"
         *ngFor="let empleado of EmpleadoList"
       >
         {{ empleado.nombre_completo }}
@@ -12,17 +12,29 @@
     <c-tabs-content>
       <c-tab-panel
         class="p-3"
-        [itemKey]="empleado?.id"
+        [itemKey]="numberValue(empleado.id)"
         *ngFor="let empleado of EmpleadoList"
       >
         <c-card-header>
-          <p class="h3">Facturación {{ empleado.nombre_completo }}</p>
+          <div
+            class="w-100 d-flex justify-content-between align-items-center flex-wrap mb-3"
+          >
+            <p class="h3">Facturación {{ empleado.nombre_completo }}</p>
+
+            <h4>
+              Facturado :
+              {{
+                _FacturaPedidoService.sumarTotalesPorEmpleado(empleado.id)
+                  | currency : "ARS"
+              }}
+            </h4>
+          </div>
           <!-- Botón principal (visible en la parte normal de la pantalla) -->
           <!-- Botón principal -->
           <div class="scroll-info" *ngIf="scrollPosition <= 70">
             <button
               class="btn btn-primary"
-              (click)="agregarFactura(empleado.id)"
+              (click)="agregarFactura(empleado?.id)"
             >
               <svg cIcon height="18" name="cil-plus"></svg>
               Agregar Factura
@@ -33,10 +45,35 @@
           <c-container [fluid]="true" class="px-0">
             <c-row
               class="mb-4"
-              *ngFor="let empFactura of empleado.facturas?.[0]?.factura_detalle || []"
+              *ngFor="let empFactura of empleado.facturas?.[0]?.factura_detalle || [] ; let j = index"
             >
               <c-col>
-                <div class="small text-body-secondary mt-3">
+                <div class="small text-body-secondary mt-3 border p-4">
+                  <div class="d-flex align-items-center mb-4">
+                    <p class="h5">
+                      {{ j + 1 }} - {{ empFactura.cliente?.nombre }}
+                      {{ empFactura.cliente?.apellido }}
+                    </p>
+
+                    <span
+                      class="ms-3 pointer"
+                      (click)="
+                        eliminarFacturaDetalle(
+                          empFactura,
+                          numberValue(empleado.id)
+                        )
+                      "
+                    >
+                      <svg
+                        cIcon
+                        height="18"
+                        class="text-danger"
+                        name="cil-trash"
+                      ></svg>
+                    </span>
+                    <!-- <button cButton color="danger">
+                    </button> -->
+                  </div>
                   <app-pedido-new-form
                     (FormsValues)="FormsValues($event)"
                     [Clientes]="Clientes"
@@ -54,7 +91,7 @@
         <!-- Botón flotante dentro de la pestaña -->
         <button
           class="btn btn-primary btn-flotante"
-          (click)="agregarFactura(empleado.id)"
+          (click)="agregarFactura(empleado?.id)"
           *ngIf="scrollPosition > 70"
         >
           <svg cIcon height="18" name="cil-plus"></svg>
