@@ -39,6 +39,7 @@ import { FacturaDetalle } from '../../../models/FacturaDetail';
 import { FacturaDetalleService } from '../../../services/factura_detalle.service';
 import Swal from 'sweetalert2';
 import { environment } from '../../../../environments/environment';
+import { numberValue } from '../../../shared/utils/constants/function-value';
 
 @Component({
   selector: 'app-factura-insertar2',
@@ -63,7 +64,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class FacturaInsertar2Component {
   private destruir$: Subject<void> = new Subject<void>();
-
+  public numberValue = numberValue;
   #colorModeService = inject(ColorModeService);
   private _HelpersService = inject(HelpersService);
   private _ClientesService = inject(ClientesService);
@@ -339,9 +340,5 @@ export class FacturaInsertar2Component {
     //         this._Router.navigateByUrl(`/clientes/editar/${data.id}`);
     //       });
     //   });
-  }
-
-  numberValue(value: any) {
-    return Number(value);
   }
 }

@@ -235,6 +235,14 @@ export class PedidoNewFormComponent {
 
     this.getValueFacturaTotal();
 
+    let dataService = this.Servicios.find(
+      (servicio) => servicio.id == this.PedidoCrudForm.get('servicio_id')?.value
+    );
+    this._FacturaPedidoService.actualizarTotalServicio(
+      Number(this.PedidoDetail.id),
+      Number(dataService?.precio)
+    );
+
     // logger.log('this.PedidoCrudForm', this.PedidoCrudForm.value);
     this.PedidoCrudForm.get('servicio_id')?.valueChanges.subscribe((data) => {
       let dataService = this.Servicios.find((servicio) => servicio.id == data);
