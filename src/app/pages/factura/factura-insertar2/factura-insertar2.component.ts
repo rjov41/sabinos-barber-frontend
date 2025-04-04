@@ -34,6 +34,12 @@ import { NOW } from '../../../shared/utils/constants/filtro';
 import { ServicioService } from '../../../services/servicios.service';
 import { Servicios } from '../../../models/Servicios.model';
 import { LoginService } from '../../../services/login.service';
+import { FacturaPedidoService } from '../../../services/factura_pedido.service';
+import { FacturaDetalle } from '../../../models/FacturaDetail';
+import { FacturaDetalleService } from '../../../services/factura_detalle.service';
+import Swal from 'sweetalert2';
+import { environment } from '../../../../environments/environment';
+import { numberValue } from '../../../shared/utils/constants/function-value';
 
 @Component({
   selector: 'app-factura-insertar2',
@@ -58,7 +64,7 @@ import { LoginService } from '../../../services/login.service';
 })
 export class FacturaInsertar2Component {
   private destruir$: Subject<void> = new Subject<void>();
-
+  public numberValue = numberValue;
   #colorModeService = inject(ColorModeService);
   private _HelpersService = inject(HelpersService);
   private _ClientesService = inject(ClientesService);
@@ -68,8 +74,10 @@ export class FacturaInsertar2Component {
   private _MetodoPagoService = inject(MetodoPagoService);
   private _LoginService = inject(LoginService);
   private _ModalServiceNgB = inject(NgbModal);
+  public _FacturaPedidoService = inject(FacturaPedidoService);
+  public _FacturaDetalleService = inject(FacturaDetalleService);
 
-  EmpleadoList: any[] = [];
+  EmpleadoList: Empleado[] = [];
   Servicios: Servicios[] = [];
   Productos: Producto[] = [];
   MetodosPagos: MetodoPago[] = [];
@@ -135,11 +143,23 @@ export class FacturaInsertar2Component {
         fecha_creacion_factura: NOW.format('YYYY-MM-DD'),
         total_facturado: '1',
         local_id: this._LoginService.getUserData().local.id,
+        estado_detalle: 1,
       })
       .pipe(takeUntil(this.destruir$))
       .subscribe((data: Empleado[]) => {
         this.loaderEmpleados = false;
         this.EmpleadoList = [...data];
+        data.forEach((empleado) => {
+          empleado.facturas?.forEach((factura) => {
+            let empleadoId = empleado.id;
+            factura.factura_detalle?.forEach((fdetalle) => {
+              this._FacturaPedidoService.definirPosicion(
+                Number(empleadoId),
+                Number(fdetalle.id)
+              );
+            });
+          });
+        });
         // logger.log(data);
       });
   }
@@ -208,7 +228,60 @@ export class FacturaInsertar2Component {
       });
   }
 
-  agregarFactura(empleadiId: number) {
+  eliminarFacturaDetalle(facturaDetalle: FacturaDetalle, empleado_id: number) {
+    Swal.fire({
+      title: '¿Desea eliminar la factura?',
+      text: 'Una vez que acepte se eliminará la factura',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'No, quedarme aquí',
+      customClass: {
+        container: this.#colorModeService.getStoredTheme(
+          environment.SabinosTheme
+        ),
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._HelpersService.loaderSweetAlert({
+          title: 'Eliminando',
+          text: 'Esto puede demorar un momento.',
+        });
+        this._FacturaDetalleService
+          .deleteFactura(Number(facturaDetalle.id))
+          // .pipe(delay(3000))
+          .pipe(takeUntil(this.destruir$))
+          .subscribe((data: any) => {
+            Swal.mixin({
+              customClass: {
+                container: this.#colorModeService.getStoredTheme(
+                  environment.SabinosTheme
+                ),
+              },
+            }).fire({
+              text: 'Factura eliminada',
+              icon: 'success',
+            });
+
+            let EmpleadoId = this.EmpleadoList.findIndex(
+              (empleadoFind) => empleadoFind.id === empleado_id
+            );
+            if (this.EmpleadoList[EmpleadoId].facturas) {
+              this.EmpleadoList[EmpleadoId].facturas[0].factura_detalle =
+                this.EmpleadoList[
+                  EmpleadoId
+                ].facturas[0].factura_detalle?.filter(
+                  (facturaDFilter) => facturaDFilter.id !== facturaDetalle.id
+                );
+            }
+            // this.Clientes = [...data];
+            // logger.log(data);
+          });
+      }
+    });
+  }
+
+  agregarFactura(empleadiId: any) {
     const modalRef = this._ModalServiceNgB.open(FacturarClienteModalComponent);
     modalRef.componentInstance.Clientes = this.Clientes;
     modalRef.componentInstance.MetodosPagos = this.MetodosPagos;
@@ -216,20 +289,20 @@ export class FacturaInsertar2Component {
     modalRef.componentInstance.empleado_id = empleadiId;
 
     modalRef.componentInstance.ResponseFacturaCreate.subscribe((data: any) => {
-      logger.log('datacreateFactura', data);
+      // logger.log('datacreateFactura', data);
       const EmpleadoResponse = [...data];
       const empleadoIndex = this.EmpleadoList.findIndex(
         (empleado) => empleado.id === EmpleadoResponse[0].empleado_id
       );
-      logger.log('empleadoIndex', empleadoIndex);
-      logger.log(
-        'this.EmpleadoList[empleadoIndex].',
-        this.EmpleadoList[empleadoIndex]
-      );
-      logger.log(
-        'this.EmpleadoList[empleadoIndex].facturas',
-        this.EmpleadoList[empleadoIndex].facturas
-      );
+      // logger.log('empleadoIndex', empleadoIndex);
+      // logger.log(
+      //   'this.EmpleadoList[empleadoIndex].',
+      //   this.EmpleadoList[empleadoIndex]
+      // );
+      // logger.log(
+      //   'this.EmpleadoList[empleadoIndex].facturas',
+      //   this.EmpleadoList[empleadoIndex].facturas
+      // );
       if (empleadoIndex !== -1 && this.EmpleadoList[empleadoIndex].facturas) {
         // Actualizamos solo la propiedad 'factura' para el empleado encontrado
 

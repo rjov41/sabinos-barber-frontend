@@ -11,7 +11,7 @@
           <p class="h3">Facturación {{ Factura.empleado?.nombre_completo }}</p>
           <!-- Botón principal (visible en la parte normal de la pantalla) -->
           <!-- Botón principal -->
-          <div class="scroll-info" *ngIf="scrollPosition <= 70">
+          <!-- <div class="scroll-info" *ngIf="scrollPosition <= 70">
             <button
               class="btn btn-primary"
               (click)="agregarFactura(Factura.empleado_id)"
@@ -19,16 +19,44 @@
               <svg cIcon height="18" name="cil-plus"></svg>
               Agregar Factura
             </button>
-          </div>
+          </div> -->
         </c-card-header>
         <c-card-body class="pt-4">
           <c-container [fluid]="true" class="px-0">
             <c-row
               class="mb-4"
-              *ngFor="let facturaDetail of Factura.factura_detalle"
+              *ngFor="
+                let facturaDetail of Factura.factura_detalle;
+                let j = index
+              "
             >
               <c-col>
-                <div class="small text-body-secondary mt-3">
+                <div class="small text-body-secondary mt-3 border p-4">
+                  <div class="d-flex align-items-center mb-4">
+                    <p class="h5">
+                      {{ j + 1 }} - {{ facturaDetail.cliente?.nombre }}
+                      {{ facturaDetail.cliente?.apellido }}
+                    </p>
+
+                    <span
+                      class="ms-3 pointer"
+                      (click)="
+                        eliminarFacturaDetalle(
+                          facturaDetail,
+                          numberValue(Factura.empleado_id)
+                        )
+                      "
+                    >
+                      <svg
+                        cIcon
+                        height="18"
+                        class="text-danger"
+                        name="cil-trash"
+                      ></svg>
+                    </span>
+                    <!-- <button cButton color="danger">
+                    </button> -->
+                  </div>
                   <app-pedido-new-form
                     (FormsValues)="FormsValues($event)"
                     [Clientes]="Clientes"
@@ -44,14 +72,14 @@
           </c-container>
         </c-card-body>
         <!-- Botón flotante dentro de la pestaña -->
-        <button
+        <!-- <button
           class="btn btn-primary btn-flotante"
           (click)="agregarFactura(Factura.empleado_id)"
           *ngIf="scrollPosition > 70"
         >
           <svg cIcon height="18" name="cil-plus"></svg>
           Factura {{ Factura.empleado?.nombre_completo }}
-        </button>
+        </button> -->
       </c-tab-panel>
     </c-tabs-content>
   </c-tabs>

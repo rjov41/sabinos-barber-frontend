@@ -12,4 +12,5 @@ export interface ParametersUrl extends Relaciones {
   fecha_creacion_factura?: string;
   local?: string | number;
   total_facturado?: string | number;
+  estado_detalle?: string | number;
 }

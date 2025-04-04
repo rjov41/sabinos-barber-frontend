@@ -20,7 +20,6 @@ import { IconDirective } from '@coreui/icons-angular';
 import { FacturasService } from '../../../services/facturas.service';
 import { CommonModule } from '@angular/common';
 import { Listado } from 'src/app/models/Listados.model';
-import { Producto } from 'src/app/models/Producto.model';
 import { ParametersUrl } from 'src/app/models/Parameter.model';
 import { FiltrosListFormComponent } from '../../../shared/components/forms/filtros-list-form/filtros-list-form.component';
 import { IModalAction } from '@coreui/angular/lib/modal/modal.service';

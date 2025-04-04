@@ -38,6 +38,12 @@ import { LoginService } from '../../../services/login.service';
 import { ActivatedRoute } from '@angular/router';
 import { FacturasService } from '../../../services/facturas.service';
 import { Factura } from '../../../models/Factura.model';
+import { FacturaPedidoService } from '../../../services/factura_pedido.service';
+import Swal from 'sweetalert2';
+import { FacturaDetalle } from '../../../models/FacturaDetail';
+import { environment } from '../../../../environments/environment';
+import { FacturaDetalleService } from '../../../services/factura_detalle.service';
+import { numberValue } from '../../../shared/utils/constants/function-value';
 
 @Component({
   selector: 'app-factura-editar',
@@ -63,6 +69,7 @@ import { Factura } from '../../../models/Factura.model';
 })
 export class FacturaEditarComponent {
   private destruir$: Subject<void> = new Subject<void>();
+  public numberValue = numberValue;
 
   #colorModeService = inject(ColorModeService);
   private _HelpersService = inject(HelpersService);
@@ -74,7 +81,9 @@ export class FacturaEditarComponent {
   private _LoginService = inject(LoginService);
   private _ModalServiceNgB = inject(NgbModal);
   private _ActivatedRoute = inject(ActivatedRoute);
+  private _FacturaPedidoService = inject(FacturaPedidoService);
   private _FacturasService = inject(FacturasService);
+  private _FacturaDetalleService = inject(FacturaDetalleService);
 
   // Empleado: Empleado = {
   //   nombre_completo: '',
@@ -178,7 +187,15 @@ export class FacturaEditarComponent {
       .subscribe((data: Factura) => {
         this.loaderFacturas = false;
         this.Factura = { ...data };
-        // logger.log(data);
+
+        data.factura_detalle?.forEach((fdetalle) => {
+          this._FacturaPedidoService.definirPosicion(
+            Number(this.EmpleadoId),
+            Number(fdetalle.id)
+          );
+        });
+
+        // logger.log(this._FacturaPedidoService.facturaDetalle());
       });
   }
 
@@ -270,6 +287,62 @@ export class FacturaEditarComponent {
     //     this.getClientes();
     //   }
     // });
+  }
+
+  eliminarFacturaDetalle(facturaDetalle: FacturaDetalle, empleado_id: number) {
+    Swal.fire({
+      title: '¿Desea eliminar la factura?',
+      text: 'Una vez que acepte se eliminará la factura',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'No, quedarme aquí',
+      customClass: {
+        container: this.#colorModeService.getStoredTheme(
+          environment.SabinosTheme
+        ),
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._HelpersService.loaderSweetAlert({
+          title: 'Eliminando',
+          text: 'Esto puede demorar un momento.',
+        });
+        this._FacturaDetalleService
+          .deleteFactura(Number(facturaDetalle.id))
+          // .pipe(delay(3000))
+          .pipe(takeUntil(this.destruir$))
+          .subscribe((data: any) => {
+            Swal.mixin({
+              customClass: {
+                container: this.#colorModeService.getStoredTheme(
+                  environment.SabinosTheme
+                ),
+              },
+            }).fire({
+              text: 'Factura eliminada',
+              icon: 'success',
+            });
+            this.Factura.factura_detalle = this.Factura.factura_detalle?.filter(
+              (facturaDFilter) => facturaDFilter.id !== facturaDetalle.id
+            );
+
+            // let EmpleadoId = this.EmpleadoList.findIndex(
+            //   (empleadoFind) => empleadoFind.id === empleado_id
+            // );
+            // if (this.EmpleadoList[EmpleadoId].facturas) {
+            //   this.EmpleadoList[EmpleadoId].facturas[0].factura_detalle =
+            //     this.EmpleadoList[
+            //       EmpleadoId
+            //     ].facturas[0].factura_detalle?.filter(
+            //       (facturaDFilter) => facturaDFilter.id !== facturaDetalle.id
+            //     );
+            // }
+            // this.Clientes = [...data];
+            // logger.log(data);
+          });
+      }
+    });
   }
 
   FormsValues(Cliente: Cliente) {
